@@ -1,36 +1,18 @@
-import { createFileRoute } from '@tanstack/react-router'
-import logo from '../logo.svg'
-import '../App.css'
+import { createFileRoute } from "@tanstack/react-router";
+import { List } from "@mantine/core";
 
-export const Route = createFileRoute('/')({
-  component: App,
-})
+export const Route = createFileRoute("/")({
+  component: Home,
+});
 
-function App() {
+function Home() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/routes/index.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-        <a
-          className="App-link"
-          href="https://tanstack.com"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn TanStack
-        </a>
-      </header>
-    </div>
-  )
+    <>
+      <List>
+        <List.Item>Show total for expense period</List.Item>
+        <List.Item>Show total for expense year</List.Item>
+        <List.Item>Show money earned</List.Item>
+      </List>
+    </>
+  );
 }
