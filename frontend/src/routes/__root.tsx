@@ -4,6 +4,7 @@ import { TanStackDevtools } from "@tanstack/react-devtools";
 import { AppShell, Burger, Group, Title } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { Navigation } from "@/components/navigation.tsx";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
 export const Route = createRootRoute({
   component: RootLayout,
@@ -39,9 +40,10 @@ function RootLayout() {
         <AppShell.Main>
           <Outlet />
         </AppShell.Main>
+        <ReactQueryDevtools />
         <TanStackDevtools
           config={{
-            position: "bottom-right",
+            position: "bottom-left",
           }}
           plugins={[
             {
