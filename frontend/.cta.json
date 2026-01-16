@@ -1,0 +1,12 @@
+{
+  "projectName": "frontend",
+  "mode": "file-router",
+  "typescript": true,
+  "tailwind": false,
+  "packageManager": "npm",
+  "addOnOptions": {},
+  "git": false,
+  "version": 1,
+  "framework": "react-cra",
+  "chosenAddOns": []
+}

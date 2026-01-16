@@ -1,0 +1,6 @@
+@WimpeyTrack.Api_HostAddress = http://localhost:5229
+
+GET {{WimpeyTrack.Api_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
