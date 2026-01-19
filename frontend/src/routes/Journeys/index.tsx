@@ -1,13 +1,13 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useGetWeatherForecast } from "@/api-client.gen.ts";
+import { usePostApiReasons } from "@/api-client.gen.ts";
 
 export const Route = createFileRoute("/Journeys/")({
   component: RouteComponent,
 });
 
 function RouteComponent() {
-  const { data: weather } = useGetWeatherForecast();
+  const mutation = usePostApiReasons();
   return (
-    <>{weather && weather.map((w) => <div id={w.summary!}>{w.summary}</div>)}</>
+    <>{journeys && journeys.map((w) => <div id={w.name}>{w.name}</div>)}</>
   );
 }

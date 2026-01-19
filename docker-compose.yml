@@ -1,0 +1,39 @@
+services:
+  osrm-backend:
+    image: ghcr.io/project-osrm/osrm-backend:latest
+    ports:
+      - "5001:5000"
+    volumes:
+      - osrm-data:/data
+    command: osrm-routed --algorithm mld /data/scotland-latest.osrm
+    restart: unless-stopped
+    depends_on:
+      osrm-data-prep:
+        condition: service_completed_successfully
+
+  # This runs once to prepare the map data
+  osrm-data-prep:
+    image: ghcr.io/project-osrm/osrm-backend:latest
+    entrypoint: /bin/sh
+    command: >
+      -c "
+        if [ ! -f /data/scotland-latest.osrm ]; then
+          echo 'Downloading Scotland map data'
+          wget -O /data/scotland-latest.osm.pbf https://download.geofabrik.de/europe/united-kingdom/scotland-latest.osm.pbf || exit 1
+          echo 'Extracting road network'
+          osrm-extract -p /opt/car.lua /data/scotland-latest.osm.pbf || exit 1
+          echo 'Partitioning graph'
+          osrm-partition /data/scotland-latest.osrm || exit 1
+          echo 'Customizing graph'
+          osrm-customize /data/scotland-latest.osrm || exit 1
+          echo 'OSRM data preparation complete!'
+        else
+          echo 'OSRM data already prepared, skipping download'
+        fi
+      "
+    volumes:
+      - osrm-data:/data
+
+volumes:
+  osrm-data:
+    driver: local
