@@ -13,6 +13,7 @@ namespace WimpeyTrack.Api.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly IRouteService _routeService;
+        private const double AdjustmentFactor = 1.2;
 
         public TripsController(ApplicationDbContext context, IRouteService routeService)
         {
@@ -197,7 +198,10 @@ namespace WimpeyTrack.Api.Controllers
                 coordList.Add(homeCoord);
 
                 var distance = await _routeService.CalculateAllTripsDistancesAsync(coordList);
-                journey.TotalMiles = distance;
+                
+                var adjustedDistance = (int) Math.Round(distance * AdjustmentFactor, 0);
+                
+                journey.TotalMiles = adjustedDistance;
             }
 
             await _context.SaveChangesAsync();

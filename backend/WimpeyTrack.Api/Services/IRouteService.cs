@@ -4,5 +4,5 @@ namespace WimpeyTrack.Api.Services;
 
 public interface IRouteService
 {
-    Task<int> CalculateAllTripsDistancesAsync(List<(double Latitude, double Longitude)> coordinates);
+    Task<double> CalculateAllTripsDistancesAsync(List<(double Latitude, double Longitude)> coordinates);
 }

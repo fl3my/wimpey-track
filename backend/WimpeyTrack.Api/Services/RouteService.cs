@@ -11,7 +11,7 @@ public class RouteService : IRouteService
         _httpClient = httpClient;
     }
     
-    public async Task<int> CalculateAllTripsDistancesAsync(List<(double Latitude, double Longitude)> coordinates)
+    public async Task<double> CalculateAllTripsDistancesAsync(List<(double Latitude, double Longitude)> coordinates)
     {
         // If less than 3 coordinates, return 0
         if (coordinates.Count < 2)
@@ -37,7 +37,7 @@ public class RouteService : IRouteService
             .GetDouble();
         
         // Convert meters to miles
-        var distanceMiles = (int) Math.Round(distance * 0.000621371, 0);
+        var distanceMiles = Math.Round(distance * 0.000621371, 2);
         
         return distanceMiles;
     }
