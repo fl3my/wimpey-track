@@ -63,6 +63,8 @@ function RouteComponent() {
       createTrip.isSuccess
     ) {
       journeys.refetch();
+      setSelectedLocation(null);
+      setSelectedReason(null);
     }
   }, [createJourney.isSuccess, deleteJourney.isSuccess, createTrip.isSuccess]);
 
@@ -123,8 +125,6 @@ function RouteComponent() {
           reasonId: selectedReason,
         },
       });
-      setSelectedLocation("");
-      setSelectedReason("");
     }
   };
 
@@ -154,8 +154,8 @@ function RouteComponent() {
   const toggleForm = (offset: number) => {
     if (showFormForDay === offset) {
       setShowFormForDay(null);
-      setSelectedLocation(null);
-      setSelectedReason(null);
+      setSelectedLocation("");
+      setSelectedReason("");
     } else {
       setShowFormForDay(offset);
     }
