@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Scalar.AspNetCore;
 using WimpeyTrack.Api.Data;
+using WimpeyTrack.Api.Data.Seed;
 using WimpeyTrack.Api.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -22,6 +23,7 @@ builder.Services.AddHttpClient<IRouteService, RouteService>(client =>
     client.BaseAddress = new Uri(osrmBaseUrl);
 });
 
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -30,6 +32,9 @@ if (app.Environment.IsDevelopment())
     app.MapOpenApi();
     app.MapScalarApiReference();
 }
+
+// Seed data
+await DatabaseInitializer.InitializeAsync(app.Services);
 
 app.UseHttpsRedirection();
 

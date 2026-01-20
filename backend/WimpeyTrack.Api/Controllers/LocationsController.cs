@@ -21,13 +21,16 @@ namespace WimpeyTrack.Api.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<LocationDto>>> GetLocations()
         {
-            var locations = await _context.Locations.Select(r => new LocationDto()
+            var locations = await _context.Locations
+                .OrderByDescending(l => l.Trips.Count())
+                .Select(r => new LocationDto()
             {
                 Id =  r.Id,
                 Name = r.Name,
                 Latitude = r.Latitude,
                 Longitude = r.Longitude,
-            }).ToListAsync();
+            })
+            .ToListAsync();
             
             return locations;
         }

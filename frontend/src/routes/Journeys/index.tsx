@@ -109,7 +109,7 @@ function RouteComponent() {
       data: {
         date: dateStr,
         isManualMiles: false,
-        homeLocationId: 1, // TODO DO NOT KEEP THIS BAD
+        homeLocationId: 11, // TODO DO NOT KEEP THIS BAD
       },
     });
   };
@@ -123,6 +123,8 @@ function RouteComponent() {
           reasonId: selectedReason,
         },
       });
+      setSelectedLocation("");
+      setSelectedReason("");
     }
   };
 
@@ -150,7 +152,13 @@ function RouteComponent() {
   };
 
   const toggleForm = (offset: number) => {
-    setShowFormForDay(showFormForDay === offset ? null : offset);
+    if (showFormForDay === offset) {
+      setShowFormForDay(null);
+      setSelectedLocation(null);
+      setSelectedReason(null);
+    } else {
+      setShowFormForDay(offset);
+    }
   };
 
   return (
@@ -216,6 +224,7 @@ function RouteComponent() {
                                 onChange={setSelectedLocation}
                                 placeholder={"Location"}
                                 data={populateLocations()}
+                                limit={5}
                               />
                               <Select
                                 searchable
@@ -223,6 +232,7 @@ function RouteComponent() {
                                 onChange={setSelectedReason}
                                 placeholder={"Reason"}
                                 data={populateReasons()}
+                                limit={5}
                               />
                               <Button
                                 loading={createTrip.isPending}
