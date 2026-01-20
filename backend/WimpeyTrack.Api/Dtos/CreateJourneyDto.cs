@@ -7,8 +7,7 @@ public class CreateJourneyDto
     [Required]
     public DateOnly Date { get; set; }
     
-    [Required]
-    public int TotalMiles { get; set; }
+    public int? TotalMiles { get; set; }
     
     [Required]
     public bool IsManualMiles { get; set; }

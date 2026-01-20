@@ -23,12 +23,70 @@ import type {
   UseQueryResult
 } from '@tanstack/react-query';
 
+/**
+ * @pattern ^-?(?:0|[1-9]\d*)$
+ */
+export type CreateJourneyDtoTotalMiles = null | number | string;
+
+/**
+ * @pattern ^-?(?:0|[1-9]\d*)$
+ */
+export type CreateJourneyDtoHomeLocationId = number | string;
+
+export interface CreateJourneyDto {
+  date: string;
+  /** @pattern ^-?(?:0|[1-9]\d*)$ */
+  totalMiles?: CreateJourneyDtoTotalMiles;
+  isManualMiles: boolean;
+  /** @pattern ^-?(?:0|[1-9]\d*)$ */
+  homeLocationId: CreateJourneyDtoHomeLocationId;
+}
+
+/**
+ * @pattern ^-?(?:0|[1-9]\d*)(?:\.\d+)?(?:[eE][+-]?\d+)?$
+ */
+export type CreateLocationDtoLatitude = number | string;
+
+/**
+ * @pattern ^-?(?:0|[1-9]\d*)(?:\.\d+)?(?:[eE][+-]?\d+)?$
+ */
+export type CreateLocationDtoLongitude = number | string;
+
+export interface CreateLocationDto {
+  /**
+   * @minLength 3
+   * @maxLength 50
+   */
+  name: string;
+  /** @pattern ^-?(?:0|[1-9]\d*)(?:\.\d+)?(?:[eE][+-]?\d+)?$ */
+  latitude: CreateLocationDtoLatitude;
+  /** @pattern ^-?(?:0|[1-9]\d*)(?:\.\d+)?(?:[eE][+-]?\d+)?$ */
+  longitude: CreateLocationDtoLongitude;
+}
+
 export interface CreateReasonDto {
   /**
    * @minLength 2
    * @maxLength 50
    */
   name: string;
+}
+
+/**
+ * @pattern ^-?(?:0|[1-9]\d*)$
+ */
+export type CreateTripDtoLocationId = number | string;
+
+/**
+ * @pattern ^-?(?:0|[1-9]\d*)$
+ */
+export type CreateTripDtoReasonId = number | string;
+
+export interface CreateTripDto {
+  /** @pattern ^-?(?:0|[1-9]\d*)$ */
+  locationId?: CreateTripDtoLocationId;
+  /** @pattern ^-?(?:0|[1-9]\d*)$ */
+  reasonId?: CreateTripDtoReasonId;
 }
 
 /**
@@ -59,6 +117,51 @@ export interface Journey {
   trips?: Trip[];
 }
 
+export interface JourneyByWeekDto {
+  journeys?: JourneyDto[];
+  startDate?: string;
+  endDate?: string;
+}
+
+/**
+ * @pattern ^-?(?:0|[1-9]\d*)$
+ */
+export type JourneyDtoId = number | string;
+
+/**
+ * @pattern ^-?(?:0|[1-9]\d*)$
+ */
+export type JourneyDtoTotalMiles = number | string;
+
+/**
+ * @pattern ^-?(?:0|[1-9]\d*)$
+ */
+export type JourneyDtoHomeLocationId = number | string;
+
+export interface JourneyDto {
+  /** @pattern ^-?(?:0|[1-9]\d*)$ */
+  id?: JourneyDtoId;
+  date?: string;
+  /** @pattern ^-?(?:0|[1-9]\d*)$ */
+  totalMiles?: JourneyDtoTotalMiles;
+  isManualMiles?: boolean;
+  /** @pattern ^-?(?:0|[1-9]\d*)$ */
+  homeLocationId?: JourneyDtoHomeLocationId;
+  trips?: JourneyTripDto[];
+}
+
+/**
+ * @pattern ^-?(?:0|[1-9]\d*)$
+ */
+export type JourneyTripDtoId = number | string;
+
+export interface JourneyTripDto {
+  /** @pattern ^-?(?:0|[1-9]\d*)$ */
+  id?: JourneyTripDtoId;
+  locationName?: string;
+  reasonName?: string;
+}
+
 /**
  * @pattern ^-?(?:0|[1-9]\d*)$
  */
@@ -82,6 +185,31 @@ export interface Location {
   latitude?: LocationLatitude;
   /** @pattern ^-?(?:0|[1-9]\d*)(?:\.\d+)?(?:[eE][+-]?\d+)?$ */
   longitude?: LocationLongitude;
+}
+
+/**
+ * @pattern ^-?(?:0|[1-9]\d*)$
+ */
+export type LocationDtoId = number | string;
+
+/**
+ * @pattern ^-?(?:0|[1-9]\d*)(?:\.\d+)?(?:[eE][+-]?\d+)?$
+ */
+export type LocationDtoLatitude = number | string;
+
+/**
+ * @pattern ^-?(?:0|[1-9]\d*)(?:\.\d+)?(?:[eE][+-]?\d+)?$
+ */
+export type LocationDtoLongitude = number | string;
+
+export interface LocationDto {
+  /** @pattern ^-?(?:0|[1-9]\d*)$ */
+  id?: LocationDtoId;
+  name?: string;
+  /** @pattern ^-?(?:0|[1-9]\d*)(?:\.\d+)?(?:[eE][+-]?\d+)?$ */
+  latitude?: LocationDtoLatitude;
+  /** @pattern ^-?(?:0|[1-9]\d*)(?:\.\d+)?(?:[eE][+-]?\d+)?$ */
+  longitude?: LocationDtoLongitude;
 }
 
 /**
@@ -114,11 +242,6 @@ export type TripId = number | string;
 /**
  * @pattern ^-?(?:0|[1-9]\d*)$
  */
-export type TripOrder = number | string;
-
-/**
- * @pattern ^-?(?:0|[1-9]\d*)$
- */
 export type TripLocationId = number | string;
 
 /**
@@ -135,8 +258,6 @@ export interface Trip {
   /** @pattern ^-?(?:0|[1-9]\d*)$ */
   id?: TripId;
   /** @pattern ^-?(?:0|[1-9]\d*)$ */
-  order?: TripOrder;
-  /** @pattern ^-?(?:0|[1-9]\d*)$ */
   locationId?: TripLocationId;
   location?: Location;
   /** @pattern ^-?(?:0|[1-9]\d*)$ */
@@ -145,6 +266,85 @@ export interface Trip {
   /** @pattern ^-?(?:0|[1-9]\d*)$ */
   journeyId?: TripJourneyId;
   journey?: Journey;
+}
+
+/**
+ * @pattern ^-?(?:0|[1-9]\d*)$
+ */
+export type TripDtoId = number | string;
+
+/**
+ * @pattern ^-?(?:0|[1-9]\d*)$
+ */
+export type TripDtoLocationId = number | string;
+
+/**
+ * @pattern ^-?(?:0|[1-9]\d*)$
+ */
+export type TripDtoReasonId = number | string;
+
+export interface TripDto {
+  /** @pattern ^-?(?:0|[1-9]\d*)$ */
+  id?: TripDtoId;
+  /** @pattern ^-?(?:0|[1-9]\d*)$ */
+  locationId?: TripDtoLocationId;
+  /** @pattern ^-?(?:0|[1-9]\d*)$ */
+  reasonId?: TripDtoReasonId;
+}
+
+/**
+ * @pattern ^-?(?:0|[1-9]\d*)$
+ */
+export type UpdateJourneyDtoId = number | string;
+
+/**
+ * @pattern ^-?(?:0|[1-9]\d*)$
+ */
+export type UpdateJourneyDtoTotalMiles = null | number | string;
+
+/**
+ * @pattern ^-?(?:0|[1-9]\d*)$
+ */
+export type UpdateJourneyDtoHomeLocationId = number | string;
+
+export interface UpdateJourneyDto {
+  /** @pattern ^-?(?:0|[1-9]\d*)$ */
+  id: UpdateJourneyDtoId;
+  date: string;
+  /** @pattern ^-?(?:0|[1-9]\d*)$ */
+  totalMiles?: UpdateJourneyDtoTotalMiles;
+  isManualMiles: boolean;
+  /** @pattern ^-?(?:0|[1-9]\d*)$ */
+  homeLocationId: UpdateJourneyDtoHomeLocationId;
+}
+
+/**
+ * @pattern ^-?(?:0|[1-9]\d*)$
+ */
+export type UpdateLocationDtoId = number | string;
+
+/**
+ * @pattern ^-?(?:0|[1-9]\d*)(?:\.\d+)?(?:[eE][+-]?\d+)?$
+ */
+export type UpdateLocationDtoLatitude = number | string;
+
+/**
+ * @pattern ^-?(?:0|[1-9]\d*)(?:\.\d+)?(?:[eE][+-]?\d+)?$
+ */
+export type UpdateLocationDtoLongitude = number | string;
+
+export interface UpdateLocationDto {
+  /** @pattern ^-?(?:0|[1-9]\d*)$ */
+  id?: UpdateLocationDtoId;
+  /**
+   * @minLength 3
+   * @maxLength 50
+   */
+  name: string;
+  /** @pattern ^-?(?:0|[1-9]\d*)(?:\.\d+)?(?:[eE][+-]?\d+)?$ */
+  latitude: UpdateLocationDtoLatitude;
+  /** @pattern ^-?(?:0|[1-9]\d*)(?:\.\d+)?(?:[eE][+-]?\d+)?$ */
+  longitude: UpdateLocationDtoLongitude;
 }
 
 /**
@@ -162,54 +362,52 @@ export interface UpdateReasonDto {
   name: string;
 }
 
-export type ValidationProblemDetailsType = null | string;
-
-export type ValidationProblemDetailsTitle = null | string;
+/**
+ * @pattern ^-?(?:0|[1-9]\d*)$
+ */
+export type UpdateTripDtoId = number | string;
 
 /**
  * @pattern ^-?(?:0|[1-9]\d*)$
  */
-export type ValidationProblemDetailsStatus = null | number | string;
+export type UpdateTripDtoLocationId = number | string;
 
-export type ValidationProblemDetailsDetail = null | string;
+/**
+ * @pattern ^-?(?:0|[1-9]\d*)$
+ */
+export type UpdateTripDtoReasonId = number | string;
 
-export type ValidationProblemDetailsInstance = null | string;
-
-export type ValidationProblemDetailsErrors = {[key: string]: string[]};
-
-export interface ValidationProblemDetails {
-  type?: ValidationProblemDetailsType;
-  title?: ValidationProblemDetailsTitle;
+export interface UpdateTripDto {
   /** @pattern ^-?(?:0|[1-9]\d*)$ */
-  status?: ValidationProblemDetailsStatus;
-  detail?: ValidationProblemDetailsDetail;
-  instance?: ValidationProblemDetailsInstance;
-  errors?: ValidationProblemDetailsErrors;
+  id?: UpdateTripDtoId;
+  /** @pattern ^-?(?:0|[1-9]\d*)$ */
+  locationId?: UpdateTripDtoLocationId;
+  /** @pattern ^-?(?:0|[1-9]\d*)$ */
+  reasonId?: UpdateTripDtoReasonId;
 }
 
-export type getApiJourneysResponse200 = {
-  data: Journey[]
-  status: 200
-}
-    
-export type getApiJourneysResponseSuccess = (getApiJourneysResponse200) & {
-  headers: Headers;
+export type GetApiJourneysParams = {
+weekStart: string;
 };
-;
 
-export type getApiJourneysResponse = (getApiJourneysResponseSuccess)
+export const getGetApiJourneysUrl = (params: GetApiJourneysParams,) => {
+  const normalizedParams = new URLSearchParams();
 
-export const getGetApiJourneysUrl = () => {
+  Object.entries(params || {}).forEach(([key, value]) => {
+    
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? 'null' : value.toString())
+    }
+  });
 
+  const stringifiedParams = normalizedParams.toString();
 
-  
-
-  return `/api/Journeys`
+  return stringifiedParams.length > 0 ? `/api/Journeys?${stringifiedParams}` : `/api/Journeys`
 }
 
-export const getApiJourneys = async ( options?: RequestInit): Promise<getApiJourneysResponse> => {
+export const getApiJourneys = async (params: GetApiJourneysParams, options?: RequestInit): Promise<JourneyByWeekDto> => {
   
-  const res = await fetch(getGetApiJourneysUrl(),
+  const res = await fetch(getGetApiJourneysUrl(params),
   {      
     ...options,
     method: 'GET'
@@ -220,31 +418,31 @@ export const getApiJourneys = async ( options?: RequestInit): Promise<getApiJour
 
   const body = [204, 205, 304].includes(res.status) ? null : await res.text();
   
-  const data: getApiJourneysResponse['data'] = body ? JSON.parse(body) : {}
-  return { data, status: res.status, headers: res.headers } as getApiJourneysResponse
+  const data: JourneyByWeekDto = body ? JSON.parse(body) : {}
+  return data
 }
 
 
 
 
 
-export const getGetApiJourneysQueryKey = () => {
+export const getGetApiJourneysQueryKey = (params?: GetApiJourneysParams,) => {
     return [
-    `/api/Journeys`
+    `/api/Journeys`, ...(params ? [params]: [])
     ] as const;
     }
 
     
-export const getGetApiJourneysQueryOptions = <TData = Awaited<ReturnType<typeof getApiJourneys>>, TError = unknown>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiJourneys>>, TError, TData>>, fetch?: RequestInit}
+export const getGetApiJourneysQueryOptions = <TData = Awaited<ReturnType<typeof getApiJourneys>>, TError = unknown>(params: GetApiJourneysParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiJourneys>>, TError, TData>>, fetch?: RequestInit}
 ) => {
 
 const {query: queryOptions, fetch: fetchOptions} = options ?? {};
 
-  const queryKey =  queryOptions?.queryKey ?? getGetApiJourneysQueryKey();
+  const queryKey =  queryOptions?.queryKey ?? getGetApiJourneysQueryKey(params);
 
   
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getApiJourneys>>> = ({ signal }) => getApiJourneys({ signal, ...fetchOptions });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getApiJourneys>>> = ({ signal }) => getApiJourneys(params, { signal, ...fetchOptions });
 
       
 
@@ -258,7 +456,7 @@ export type GetApiJourneysQueryError = unknown
 
 
 export function useGetApiJourneys<TData = Awaited<ReturnType<typeof getApiJourneys>>, TError = unknown>(
-  options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiJourneys>>, TError, TData>> & Pick<
+ params: GetApiJourneysParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiJourneys>>, TError, TData>> & Pick<
         DefinedInitialDataOptions<
           Awaited<ReturnType<typeof getApiJourneys>>,
           TError,
@@ -268,7 +466,7 @@ export function useGetApiJourneys<TData = Awaited<ReturnType<typeof getApiJourne
  , queryClient?: QueryClient
   ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 export function useGetApiJourneys<TData = Awaited<ReturnType<typeof getApiJourneys>>, TError = unknown>(
-  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiJourneys>>, TError, TData>> & Pick<
+ params: GetApiJourneysParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiJourneys>>, TError, TData>> & Pick<
         UndefinedInitialDataOptions<
           Awaited<ReturnType<typeof getApiJourneys>>,
           TError,
@@ -278,16 +476,16 @@ export function useGetApiJourneys<TData = Awaited<ReturnType<typeof getApiJourne
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 export function useGetApiJourneys<TData = Awaited<ReturnType<typeof getApiJourneys>>, TError = unknown>(
-  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiJourneys>>, TError, TData>>, fetch?: RequestInit}
+ params: GetApiJourneysParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiJourneys>>, TError, TData>>, fetch?: RequestInit}
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 
 export function useGetApiJourneys<TData = Awaited<ReturnType<typeof getApiJourneys>>, TError = unknown>(
-  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiJourneys>>, TError, TData>>, fetch?: RequestInit}
+ params: GetApiJourneysParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiJourneys>>, TError, TData>>, fetch?: RequestInit}
  , queryClient?: QueryClient 
  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
-  const queryOptions = getGetApiJourneysQueryOptions(options)
+  const queryOptions = getGetApiJourneysQueryOptions(params,options)
 
   const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
@@ -299,18 +497,6 @@ export function useGetApiJourneys<TData = Awaited<ReturnType<typeof getApiJourne
 
 
 
-export type postApiJourneysResponse200 = {
-  data: Journey
-  status: 200
-}
-    
-export type postApiJourneysResponseSuccess = (postApiJourneysResponse200) & {
-  headers: Headers;
-};
-;
-
-export type postApiJourneysResponse = (postApiJourneysResponseSuccess)
-
 export const getPostApiJourneysUrl = () => {
 
 
@@ -319,7 +505,7 @@ export const getPostApiJourneysUrl = () => {
   return `/api/Journeys`
 }
 
-export const postApiJourneys = async (journey: Journey, options?: RequestInit): Promise<postApiJourneysResponse> => {
+export const postApiJourneys = async (createJourneyDto: CreateJourneyDto, options?: RequestInit): Promise<JourneyDto> => {
   
   const res = await fetch(getPostApiJourneysUrl(),
   {      
@@ -327,22 +513,22 @@ export const postApiJourneys = async (journey: Journey, options?: RequestInit): 
     method: 'POST',
     headers: { 'Content-Type': 'application/json', ...options?.headers },
     body: JSON.stringify(
-      journey,)
+      createJourneyDto,)
   }
 )
 
   const body = [204, 205, 304].includes(res.status) ? null : await res.text();
   
-  const data: postApiJourneysResponse['data'] = body ? JSON.parse(body) : {}
-  return { data, status: res.status, headers: res.headers } as postApiJourneysResponse
+  const data: JourneyDto = body ? JSON.parse(body) : {}
+  return data
 }
 
 
 
 
 export const getPostApiJourneysMutationOptions = <TError = unknown,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiJourneys>>, TError,{data: Journey}, TContext>, fetch?: RequestInit}
-): UseMutationOptions<Awaited<ReturnType<typeof postApiJourneys>>, TError,{data: Journey}, TContext> => {
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiJourneys>>, TError,{data: CreateJourneyDto}, TContext>, fetch?: RequestInit}
+): UseMutationOptions<Awaited<ReturnType<typeof postApiJourneys>>, TError,{data: CreateJourneyDto}, TContext> => {
 
 const mutationKey = ['postApiJourneys'];
 const {mutation: mutationOptions, fetch: fetchOptions} = options ?
@@ -354,7 +540,7 @@ const {mutation: mutationOptions, fetch: fetchOptions} = options ?
       
 
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof postApiJourneys>>, {data: Journey}> = (props) => {
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof postApiJourneys>>, {data: CreateJourneyDto}> = (props) => {
           const {data} = props ?? {};
 
           return  postApiJourneys(data,fetchOptions)
@@ -366,15 +552,15 @@ const {mutation: mutationOptions, fetch: fetchOptions} = options ?
   return  { mutationFn, ...mutationOptions }}
 
     export type PostApiJourneysMutationResult = NonNullable<Awaited<ReturnType<typeof postApiJourneys>>>
-    export type PostApiJourneysMutationBody = Journey
+    export type PostApiJourneysMutationBody = CreateJourneyDto
     export type PostApiJourneysMutationError = unknown
 
     export const usePostApiJourneys = <TError = unknown,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiJourneys>>, TError,{data: Journey}, TContext>, fetch?: RequestInit}
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiJourneys>>, TError,{data: CreateJourneyDto}, TContext>, fetch?: RequestInit}
  , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof postApiJourneys>>,
         TError,
-        {data: Journey},
+        {data: CreateJourneyDto},
         TContext
       > => {
 
@@ -383,18 +569,6 @@ const {mutation: mutationOptions, fetch: fetchOptions} = options ?
       return useMutation(mutationOptions, queryClient);
     }
     
-export type getApiJourneysIdResponse200 = {
-  data: Journey
-  status: 200
-}
-    
-export type getApiJourneysIdResponseSuccess = (getApiJourneysIdResponse200) & {
-  headers: Headers;
-};
-;
-
-export type getApiJourneysIdResponse = (getApiJourneysIdResponseSuccess)
-
 export const getGetApiJourneysIdUrl = (id: number | string,) => {
 
 
@@ -403,7 +577,7 @@ export const getGetApiJourneysIdUrl = (id: number | string,) => {
   return `/api/Journeys/${id}`
 }
 
-export const getApiJourneysId = async (id: number | string, options?: RequestInit): Promise<getApiJourneysIdResponse> => {
+export const getApiJourneysId = async (id: number | string, options?: RequestInit): Promise<JourneyDto> => {
   
   const res = await fetch(getGetApiJourneysIdUrl(id),
   {      
@@ -416,8 +590,8 @@ export const getApiJourneysId = async (id: number | string, options?: RequestIni
 
   const body = [204, 205, 304].includes(res.status) ? null : await res.text();
   
-  const data: getApiJourneysIdResponse['data'] = body ? JSON.parse(body) : {}
-  return { data, status: res.status, headers: res.headers } as getApiJourneysIdResponse
+  const data: JourneyDto = body ? JSON.parse(body) : {}
+  return data
 }
 
 
@@ -495,18 +669,6 @@ export function useGetApiJourneysId<TData = Awaited<ReturnType<typeof getApiJour
 
 
 
-export type putApiJourneysIdResponse200 = {
-  data: void
-  status: 200
-}
-    
-export type putApiJourneysIdResponseSuccess = (putApiJourneysIdResponse200) & {
-  headers: Headers;
-};
-;
-
-export type putApiJourneysIdResponse = (putApiJourneysIdResponseSuccess)
-
 export const getPutApiJourneysIdUrl = (id: number | string,) => {
 
 
@@ -516,7 +678,7 @@ export const getPutApiJourneysIdUrl = (id: number | string,) => {
 }
 
 export const putApiJourneysId = async (id: number | string,
-    journey: Journey, options?: RequestInit): Promise<putApiJourneysIdResponse> => {
+    updateJourneyDto: UpdateJourneyDto, options?: RequestInit): Promise<void> => {
   
   const res = await fetch(getPutApiJourneysIdUrl(id),
   {      
@@ -524,22 +686,22 @@ export const putApiJourneysId = async (id: number | string,
     method: 'PUT',
     headers: { 'Content-Type': 'application/json', ...options?.headers },
     body: JSON.stringify(
-      journey,)
+      updateJourneyDto,)
   }
 )
 
   const body = [204, 205, 304].includes(res.status) ? null : await res.text();
   
-  const data: putApiJourneysIdResponse['data'] = body ? JSON.parse(body) : {}
-  return { data, status: res.status, headers: res.headers } as putApiJourneysIdResponse
+  const data: void = body ? JSON.parse(body) : {}
+  return data
 }
 
 
 
 
 export const getPutApiJourneysIdMutationOptions = <TError = unknown,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof putApiJourneysId>>, TError,{id: number | string;data: Journey}, TContext>, fetch?: RequestInit}
-): UseMutationOptions<Awaited<ReturnType<typeof putApiJourneysId>>, TError,{id: number | string;data: Journey}, TContext> => {
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof putApiJourneysId>>, TError,{id: number | string;data: UpdateJourneyDto}, TContext>, fetch?: RequestInit}
+): UseMutationOptions<Awaited<ReturnType<typeof putApiJourneysId>>, TError,{id: number | string;data: UpdateJourneyDto}, TContext> => {
 
 const mutationKey = ['putApiJourneysId'];
 const {mutation: mutationOptions, fetch: fetchOptions} = options ?
@@ -551,7 +713,7 @@ const {mutation: mutationOptions, fetch: fetchOptions} = options ?
       
 
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof putApiJourneysId>>, {id: number | string;data: Journey}> = (props) => {
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof putApiJourneysId>>, {id: number | string;data: UpdateJourneyDto}> = (props) => {
           const {id,data} = props ?? {};
 
           return  putApiJourneysId(id,data,fetchOptions)
@@ -563,15 +725,15 @@ const {mutation: mutationOptions, fetch: fetchOptions} = options ?
   return  { mutationFn, ...mutationOptions }}
 
     export type PutApiJourneysIdMutationResult = NonNullable<Awaited<ReturnType<typeof putApiJourneysId>>>
-    export type PutApiJourneysIdMutationBody = Journey
+    export type PutApiJourneysIdMutationBody = UpdateJourneyDto
     export type PutApiJourneysIdMutationError = unknown
 
     export const usePutApiJourneysId = <TError = unknown,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof putApiJourneysId>>, TError,{id: number | string;data: Journey}, TContext>, fetch?: RequestInit}
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof putApiJourneysId>>, TError,{id: number | string;data: UpdateJourneyDto}, TContext>, fetch?: RequestInit}
  , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof putApiJourneysId>>,
         TError,
-        {id: number | string;data: Journey},
+        {id: number | string;data: UpdateJourneyDto},
         TContext
       > => {
 
@@ -580,18 +742,6 @@ const {mutation: mutationOptions, fetch: fetchOptions} = options ?
       return useMutation(mutationOptions, queryClient);
     }
     
-export type deleteApiJourneysIdResponse200 = {
-  data: void
-  status: 200
-}
-    
-export type deleteApiJourneysIdResponseSuccess = (deleteApiJourneysIdResponse200) & {
-  headers: Headers;
-};
-;
-
-export type deleteApiJourneysIdResponse = (deleteApiJourneysIdResponseSuccess)
-
 export const getDeleteApiJourneysIdUrl = (id: number | string,) => {
 
 
@@ -600,7 +750,7 @@ export const getDeleteApiJourneysIdUrl = (id: number | string,) => {
   return `/api/Journeys/${id}`
 }
 
-export const deleteApiJourneysId = async (id: number | string, options?: RequestInit): Promise<deleteApiJourneysIdResponse> => {
+export const deleteApiJourneysId = async (id: number | string, options?: RequestInit): Promise<void> => {
   
   const res = await fetch(getDeleteApiJourneysIdUrl(id),
   {      
@@ -613,8 +763,8 @@ export const deleteApiJourneysId = async (id: number | string, options?: Request
 
   const body = [204, 205, 304].includes(res.status) ? null : await res.text();
   
-  const data: deleteApiJourneysIdResponse['data'] = body ? JSON.parse(body) : {}
-  return { data, status: res.status, headers: res.headers } as deleteApiJourneysIdResponse
+  const data: void = body ? JSON.parse(body) : {}
+  return data
 }
 
 
@@ -663,18 +813,6 @@ const {mutation: mutationOptions, fetch: fetchOptions} = options ?
       return useMutation(mutationOptions, queryClient);
     }
     
-export type getApiLocationsResponse200 = {
-  data: Location[]
-  status: 200
-}
-    
-export type getApiLocationsResponseSuccess = (getApiLocationsResponse200) & {
-  headers: Headers;
-};
-;
-
-export type getApiLocationsResponse = (getApiLocationsResponseSuccess)
-
 export const getGetApiLocationsUrl = () => {
 
 
@@ -683,7 +821,7 @@ export const getGetApiLocationsUrl = () => {
   return `/api/Locations`
 }
 
-export const getApiLocations = async ( options?: RequestInit): Promise<getApiLocationsResponse> => {
+export const getApiLocations = async ( options?: RequestInit): Promise<LocationDto[]> => {
   
   const res = await fetch(getGetApiLocationsUrl(),
   {      
@@ -696,8 +834,8 @@ export const getApiLocations = async ( options?: RequestInit): Promise<getApiLoc
 
   const body = [204, 205, 304].includes(res.status) ? null : await res.text();
   
-  const data: getApiLocationsResponse['data'] = body ? JSON.parse(body) : {}
-  return { data, status: res.status, headers: res.headers } as getApiLocationsResponse
+  const data: LocationDto[] = body ? JSON.parse(body) : {}
+  return data
 }
 
 
@@ -775,18 +913,6 @@ export function useGetApiLocations<TData = Awaited<ReturnType<typeof getApiLocat
 
 
 
-export type postApiLocationsResponse200 = {
-  data: Location
-  status: 200
-}
-    
-export type postApiLocationsResponseSuccess = (postApiLocationsResponse200) & {
-  headers: Headers;
-};
-;
-
-export type postApiLocationsResponse = (postApiLocationsResponseSuccess)
-
 export const getPostApiLocationsUrl = () => {
 
 
@@ -795,7 +921,7 @@ export const getPostApiLocationsUrl = () => {
   return `/api/Locations`
 }
 
-export const postApiLocations = async (location: Location, options?: RequestInit): Promise<postApiLocationsResponse> => {
+export const postApiLocations = async (createLocationDto: CreateLocationDto, options?: RequestInit): Promise<LocationDto> => {
   
   const res = await fetch(getPostApiLocationsUrl(),
   {      
@@ -803,22 +929,22 @@ export const postApiLocations = async (location: Location, options?: RequestInit
     method: 'POST',
     headers: { 'Content-Type': 'application/json', ...options?.headers },
     body: JSON.stringify(
-      location,)
+      createLocationDto,)
   }
 )
 
   const body = [204, 205, 304].includes(res.status) ? null : await res.text();
   
-  const data: postApiLocationsResponse['data'] = body ? JSON.parse(body) : {}
-  return { data, status: res.status, headers: res.headers } as postApiLocationsResponse
+  const data: LocationDto = body ? JSON.parse(body) : {}
+  return data
 }
 
 
 
 
 export const getPostApiLocationsMutationOptions = <TError = unknown,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiLocations>>, TError,{data: Location}, TContext>, fetch?: RequestInit}
-): UseMutationOptions<Awaited<ReturnType<typeof postApiLocations>>, TError,{data: Location}, TContext> => {
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiLocations>>, TError,{data: CreateLocationDto}, TContext>, fetch?: RequestInit}
+): UseMutationOptions<Awaited<ReturnType<typeof postApiLocations>>, TError,{data: CreateLocationDto}, TContext> => {
 
 const mutationKey = ['postApiLocations'];
 const {mutation: mutationOptions, fetch: fetchOptions} = options ?
@@ -830,7 +956,7 @@ const {mutation: mutationOptions, fetch: fetchOptions} = options ?
       
 
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof postApiLocations>>, {data: Location}> = (props) => {
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof postApiLocations>>, {data: CreateLocationDto}> = (props) => {
           const {data} = props ?? {};
 
           return  postApiLocations(data,fetchOptions)
@@ -842,15 +968,15 @@ const {mutation: mutationOptions, fetch: fetchOptions} = options ?
   return  { mutationFn, ...mutationOptions }}
 
     export type PostApiLocationsMutationResult = NonNullable<Awaited<ReturnType<typeof postApiLocations>>>
-    export type PostApiLocationsMutationBody = Location
+    export type PostApiLocationsMutationBody = CreateLocationDto
     export type PostApiLocationsMutationError = unknown
 
     export const usePostApiLocations = <TError = unknown,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiLocations>>, TError,{data: Location}, TContext>, fetch?: RequestInit}
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiLocations>>, TError,{data: CreateLocationDto}, TContext>, fetch?: RequestInit}
  , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof postApiLocations>>,
         TError,
-        {data: Location},
+        {data: CreateLocationDto},
         TContext
       > => {
 
@@ -859,18 +985,6 @@ const {mutation: mutationOptions, fetch: fetchOptions} = options ?
       return useMutation(mutationOptions, queryClient);
     }
     
-export type getApiLocationsIdResponse200 = {
-  data: Location
-  status: 200
-}
-    
-export type getApiLocationsIdResponseSuccess = (getApiLocationsIdResponse200) & {
-  headers: Headers;
-};
-;
-
-export type getApiLocationsIdResponse = (getApiLocationsIdResponseSuccess)
-
 export const getGetApiLocationsIdUrl = (id: number | string,) => {
 
 
@@ -879,7 +993,7 @@ export const getGetApiLocationsIdUrl = (id: number | string,) => {
   return `/api/Locations/${id}`
 }
 
-export const getApiLocationsId = async (id: number | string, options?: RequestInit): Promise<getApiLocationsIdResponse> => {
+export const getApiLocationsId = async (id: number | string, options?: RequestInit): Promise<LocationDto> => {
   
   const res = await fetch(getGetApiLocationsIdUrl(id),
   {      
@@ -892,8 +1006,8 @@ export const getApiLocationsId = async (id: number | string, options?: RequestIn
 
   const body = [204, 205, 304].includes(res.status) ? null : await res.text();
   
-  const data: getApiLocationsIdResponse['data'] = body ? JSON.parse(body) : {}
-  return { data, status: res.status, headers: res.headers } as getApiLocationsIdResponse
+  const data: LocationDto = body ? JSON.parse(body) : {}
+  return data
 }
 
 
@@ -971,18 +1085,6 @@ export function useGetApiLocationsId<TData = Awaited<ReturnType<typeof getApiLoc
 
 
 
-export type putApiLocationsIdResponse200 = {
-  data: void
-  status: 200
-}
-    
-export type putApiLocationsIdResponseSuccess = (putApiLocationsIdResponse200) & {
-  headers: Headers;
-};
-;
-
-export type putApiLocationsIdResponse = (putApiLocationsIdResponseSuccess)
-
 export const getPutApiLocationsIdUrl = (id: number | string,) => {
 
 
@@ -992,7 +1094,7 @@ export const getPutApiLocationsIdUrl = (id: number | string,) => {
 }
 
 export const putApiLocationsId = async (id: number | string,
-    location: Location, options?: RequestInit): Promise<putApiLocationsIdResponse> => {
+    updateLocationDto: UpdateLocationDto, options?: RequestInit): Promise<void> => {
   
   const res = await fetch(getPutApiLocationsIdUrl(id),
   {      
@@ -1000,22 +1102,22 @@ export const putApiLocationsId = async (id: number | string,
     method: 'PUT',
     headers: { 'Content-Type': 'application/json', ...options?.headers },
     body: JSON.stringify(
-      location,)
+      updateLocationDto,)
   }
 )
 
   const body = [204, 205, 304].includes(res.status) ? null : await res.text();
   
-  const data: putApiLocationsIdResponse['data'] = body ? JSON.parse(body) : {}
-  return { data, status: res.status, headers: res.headers } as putApiLocationsIdResponse
+  const data: void = body ? JSON.parse(body) : {}
+  return data
 }
 
 
 
 
 export const getPutApiLocationsIdMutationOptions = <TError = unknown,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof putApiLocationsId>>, TError,{id: number | string;data: Location}, TContext>, fetch?: RequestInit}
-): UseMutationOptions<Awaited<ReturnType<typeof putApiLocationsId>>, TError,{id: number | string;data: Location}, TContext> => {
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof putApiLocationsId>>, TError,{id: number | string;data: UpdateLocationDto}, TContext>, fetch?: RequestInit}
+): UseMutationOptions<Awaited<ReturnType<typeof putApiLocationsId>>, TError,{id: number | string;data: UpdateLocationDto}, TContext> => {
 
 const mutationKey = ['putApiLocationsId'];
 const {mutation: mutationOptions, fetch: fetchOptions} = options ?
@@ -1027,7 +1129,7 @@ const {mutation: mutationOptions, fetch: fetchOptions} = options ?
       
 
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof putApiLocationsId>>, {id: number | string;data: Location}> = (props) => {
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof putApiLocationsId>>, {id: number | string;data: UpdateLocationDto}> = (props) => {
           const {id,data} = props ?? {};
 
           return  putApiLocationsId(id,data,fetchOptions)
@@ -1039,15 +1141,15 @@ const {mutation: mutationOptions, fetch: fetchOptions} = options ?
   return  { mutationFn, ...mutationOptions }}
 
     export type PutApiLocationsIdMutationResult = NonNullable<Awaited<ReturnType<typeof putApiLocationsId>>>
-    export type PutApiLocationsIdMutationBody = Location
+    export type PutApiLocationsIdMutationBody = UpdateLocationDto
     export type PutApiLocationsIdMutationError = unknown
 
     export const usePutApiLocationsId = <TError = unknown,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof putApiLocationsId>>, TError,{id: number | string;data: Location}, TContext>, fetch?: RequestInit}
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof putApiLocationsId>>, TError,{id: number | string;data: UpdateLocationDto}, TContext>, fetch?: RequestInit}
  , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof putApiLocationsId>>,
         TError,
-        {id: number | string;data: Location},
+        {id: number | string;data: UpdateLocationDto},
         TContext
       > => {
 
@@ -1056,18 +1158,6 @@ const {mutation: mutationOptions, fetch: fetchOptions} = options ?
       return useMutation(mutationOptions, queryClient);
     }
     
-export type deleteApiLocationsIdResponse200 = {
-  data: void
-  status: 200
-}
-    
-export type deleteApiLocationsIdResponseSuccess = (deleteApiLocationsIdResponse200) & {
-  headers: Headers;
-};
-;
-
-export type deleteApiLocationsIdResponse = (deleteApiLocationsIdResponseSuccess)
-
 export const getDeleteApiLocationsIdUrl = (id: number | string,) => {
 
 
@@ -1076,7 +1166,7 @@ export const getDeleteApiLocationsIdUrl = (id: number | string,) => {
   return `/api/Locations/${id}`
 }
 
-export const deleteApiLocationsId = async (id: number | string, options?: RequestInit): Promise<deleteApiLocationsIdResponse> => {
+export const deleteApiLocationsId = async (id: number | string, options?: RequestInit): Promise<void> => {
   
   const res = await fetch(getDeleteApiLocationsIdUrl(id),
   {      
@@ -1089,8 +1179,8 @@ export const deleteApiLocationsId = async (id: number | string, options?: Reques
 
   const body = [204, 205, 304].includes(res.status) ? null : await res.text();
   
-  const data: deleteApiLocationsIdResponse['data'] = body ? JSON.parse(body) : {}
-  return { data, status: res.status, headers: res.headers } as deleteApiLocationsIdResponse
+  const data: void = body ? JSON.parse(body) : {}
+  return data
 }
 
 
@@ -1139,18 +1229,6 @@ const {mutation: mutationOptions, fetch: fetchOptions} = options ?
       return useMutation(mutationOptions, queryClient);
     }
     
-export type getApiReasonsResponse200 = {
-  data: ReasonDto[]
-  status: 200
-}
-    
-export type getApiReasonsResponseSuccess = (getApiReasonsResponse200) & {
-  headers: Headers;
-};
-;
-
-export type getApiReasonsResponse = (getApiReasonsResponseSuccess)
-
 export const getGetApiReasonsUrl = () => {
 
 
@@ -1159,7 +1237,7 @@ export const getGetApiReasonsUrl = () => {
   return `/api/Reasons`
 }
 
-export const getApiReasons = async ( options?: RequestInit): Promise<getApiReasonsResponse> => {
+export const getApiReasons = async ( options?: RequestInit): Promise<ReasonDto[]> => {
   
   const res = await fetch(getGetApiReasonsUrl(),
   {      
@@ -1172,8 +1250,8 @@ export const getApiReasons = async ( options?: RequestInit): Promise<getApiReaso
 
   const body = [204, 205, 304].includes(res.status) ? null : await res.text();
   
-  const data: getApiReasonsResponse['data'] = body ? JSON.parse(body) : {}
-  return { data, status: res.status, headers: res.headers } as getApiReasonsResponse
+  const data: ReasonDto[] = body ? JSON.parse(body) : {}
+  return data
 }
 
 
@@ -1251,25 +1329,6 @@ export function useGetApiReasons<TData = Awaited<ReturnType<typeof getApiReasons
 
 
 
-export type postApiReasonsResponse201 = {
-  data: ReasonDto
-  status: 201
-}
-
-export type postApiReasonsResponse400 = {
-  data: ValidationProblemDetails
-  status: 400
-}
-    
-export type postApiReasonsResponseSuccess = (postApiReasonsResponse201) & {
-  headers: Headers;
-};
-export type postApiReasonsResponseError = (postApiReasonsResponse400) & {
-  headers: Headers;
-};
-
-export type postApiReasonsResponse = (postApiReasonsResponseSuccess | postApiReasonsResponseError)
-
 export const getPostApiReasonsUrl = () => {
 
 
@@ -1278,7 +1337,7 @@ export const getPostApiReasonsUrl = () => {
   return `/api/Reasons`
 }
 
-export const postApiReasons = async (createReasonDto: CreateReasonDto, options?: RequestInit): Promise<postApiReasonsResponse> => {
+export const postApiReasons = async (createReasonDto: CreateReasonDto, options?: RequestInit): Promise<ReasonDto> => {
   
   const res = await fetch(getPostApiReasonsUrl(),
   {      
@@ -1292,14 +1351,14 @@ export const postApiReasons = async (createReasonDto: CreateReasonDto, options?:
 
   const body = [204, 205, 304].includes(res.status) ? null : await res.text();
   
-  const data: postApiReasonsResponse['data'] = body ? JSON.parse(body) : {}
-  return { data, status: res.status, headers: res.headers } as postApiReasonsResponse
+  const data: ReasonDto = body ? JSON.parse(body) : {}
+  return data
 }
 
 
 
 
-export const getPostApiReasonsMutationOptions = <TError = ValidationProblemDetails,
+export const getPostApiReasonsMutationOptions = <TError = unknown,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiReasons>>, TError,{data: CreateReasonDto}, TContext>, fetch?: RequestInit}
 ): UseMutationOptions<Awaited<ReturnType<typeof postApiReasons>>, TError,{data: CreateReasonDto}, TContext> => {
 
@@ -1326,9 +1385,9 @@ const {mutation: mutationOptions, fetch: fetchOptions} = options ?
 
     export type PostApiReasonsMutationResult = NonNullable<Awaited<ReturnType<typeof postApiReasons>>>
     export type PostApiReasonsMutationBody = CreateReasonDto
-    export type PostApiReasonsMutationError = ValidationProblemDetails
+    export type PostApiReasonsMutationError = unknown
 
-    export const usePostApiReasons = <TError = ValidationProblemDetails,
+    export const usePostApiReasons = <TError = unknown,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiReasons>>, TError,{data: CreateReasonDto}, TContext>, fetch?: RequestInit}
  , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof postApiReasons>>,
@@ -1342,18 +1401,6 @@ const {mutation: mutationOptions, fetch: fetchOptions} = options ?
       return useMutation(mutationOptions, queryClient);
     }
     
-export type getApiReasonsIdResponse200 = {
-  data: ReasonDto
-  status: 200
-}
-    
-export type getApiReasonsIdResponseSuccess = (getApiReasonsIdResponse200) & {
-  headers: Headers;
-};
-;
-
-export type getApiReasonsIdResponse = (getApiReasonsIdResponseSuccess)
-
 export const getGetApiReasonsIdUrl = (id: number | string,) => {
 
 
@@ -1362,7 +1409,7 @@ export const getGetApiReasonsIdUrl = (id: number | string,) => {
   return `/api/Reasons/${id}`
 }
 
-export const getApiReasonsId = async (id: number | string, options?: RequestInit): Promise<getApiReasonsIdResponse> => {
+export const getApiReasonsId = async (id: number | string, options?: RequestInit): Promise<ReasonDto> => {
   
   const res = await fetch(getGetApiReasonsIdUrl(id),
   {      
@@ -1375,8 +1422,8 @@ export const getApiReasonsId = async (id: number | string, options?: RequestInit
 
   const body = [204, 205, 304].includes(res.status) ? null : await res.text();
   
-  const data: getApiReasonsIdResponse['data'] = body ? JSON.parse(body) : {}
-  return { data, status: res.status, headers: res.headers } as getApiReasonsIdResponse
+  const data: ReasonDto = body ? JSON.parse(body) : {}
+  return data
 }
 
 
@@ -1454,18 +1501,6 @@ export function useGetApiReasonsId<TData = Awaited<ReturnType<typeof getApiReaso
 
 
 
-export type putApiReasonsIdResponse200 = {
-  data: void
-  status: 200
-}
-    
-export type putApiReasonsIdResponseSuccess = (putApiReasonsIdResponse200) & {
-  headers: Headers;
-};
-;
-
-export type putApiReasonsIdResponse = (putApiReasonsIdResponseSuccess)
-
 export const getPutApiReasonsIdUrl = (id: number | string,) => {
 
 
@@ -1475,7 +1510,7 @@ export const getPutApiReasonsIdUrl = (id: number | string,) => {
 }
 
 export const putApiReasonsId = async (id: number | string,
-    updateReasonDto: UpdateReasonDto, options?: RequestInit): Promise<putApiReasonsIdResponse> => {
+    updateReasonDto: UpdateReasonDto, options?: RequestInit): Promise<void> => {
   
   const res = await fetch(getPutApiReasonsIdUrl(id),
   {      
@@ -1489,8 +1524,8 @@ export const putApiReasonsId = async (id: number | string,
 
   const body = [204, 205, 304].includes(res.status) ? null : await res.text();
   
-  const data: putApiReasonsIdResponse['data'] = body ? JSON.parse(body) : {}
-  return { data, status: res.status, headers: res.headers } as putApiReasonsIdResponse
+  const data: void = body ? JSON.parse(body) : {}
+  return data
 }
 
 
@@ -1539,18 +1574,6 @@ const {mutation: mutationOptions, fetch: fetchOptions} = options ?
       return useMutation(mutationOptions, queryClient);
     }
     
-export type deleteApiReasonsIdResponse200 = {
-  data: void
-  status: 200
-}
-    
-export type deleteApiReasonsIdResponseSuccess = (deleteApiReasonsIdResponse200) & {
-  headers: Headers;
-};
-;
-
-export type deleteApiReasonsIdResponse = (deleteApiReasonsIdResponseSuccess)
-
 export const getDeleteApiReasonsIdUrl = (id: number | string,) => {
 
 
@@ -1559,7 +1582,7 @@ export const getDeleteApiReasonsIdUrl = (id: number | string,) => {
   return `/api/Reasons/${id}`
 }
 
-export const deleteApiReasonsId = async (id: number | string, options?: RequestInit): Promise<deleteApiReasonsIdResponse> => {
+export const deleteApiReasonsId = async (id: number | string, options?: RequestInit): Promise<void> => {
   
   const res = await fetch(getDeleteApiReasonsIdUrl(id),
   {      
@@ -1572,8 +1595,8 @@ export const deleteApiReasonsId = async (id: number | string, options?: RequestI
 
   const body = [204, 205, 304].includes(res.status) ? null : await res.text();
   
-  const data: deleteApiReasonsIdResponse['data'] = body ? JSON.parse(body) : {}
-  return { data, status: res.status, headers: res.headers } as deleteApiReasonsIdResponse
+  const data: void = body ? JSON.parse(body) : {}
+  return data
 }
 
 
@@ -1622,18 +1645,6 @@ const {mutation: mutationOptions, fetch: fetchOptions} = options ?
       return useMutation(mutationOptions, queryClient);
     }
     
-export type getApiJourneysJourneyIdTripsResponse200 = {
-  data: Trip[]
-  status: 200
-}
-    
-export type getApiJourneysJourneyIdTripsResponseSuccess = (getApiJourneysJourneyIdTripsResponse200) & {
-  headers: Headers;
-};
-;
-
-export type getApiJourneysJourneyIdTripsResponse = (getApiJourneysJourneyIdTripsResponseSuccess)
-
 export const getGetApiJourneysJourneyIdTripsUrl = (journeyId: number | string,) => {
 
 
@@ -1642,7 +1653,7 @@ export const getGetApiJourneysJourneyIdTripsUrl = (journeyId: number | string,) 
   return `/api/journeys/${journeyId}/Trips`
 }
 
-export const getApiJourneysJourneyIdTrips = async (journeyId: number | string, options?: RequestInit): Promise<getApiJourneysJourneyIdTripsResponse> => {
+export const getApiJourneysJourneyIdTrips = async (journeyId: number | string, options?: RequestInit): Promise<TripDto[]> => {
   
   const res = await fetch(getGetApiJourneysJourneyIdTripsUrl(journeyId),
   {      
@@ -1655,8 +1666,8 @@ export const getApiJourneysJourneyIdTrips = async (journeyId: number | string, o
 
   const body = [204, 205, 304].includes(res.status) ? null : await res.text();
   
-  const data: getApiJourneysJourneyIdTripsResponse['data'] = body ? JSON.parse(body) : {}
-  return { data, status: res.status, headers: res.headers } as getApiJourneysJourneyIdTripsResponse
+  const data: TripDto[] = body ? JSON.parse(body) : {}
+  return data
 }
 
 
@@ -1734,18 +1745,6 @@ export function useGetApiJourneysJourneyIdTrips<TData = Awaited<ReturnType<typeo
 
 
 
-export type postApiJourneysJourneyIdTripsResponse200 = {
-  data: Trip
-  status: 200
-}
-    
-export type postApiJourneysJourneyIdTripsResponseSuccess = (postApiJourneysJourneyIdTripsResponse200) & {
-  headers: Headers;
-};
-;
-
-export type postApiJourneysJourneyIdTripsResponse = (postApiJourneysJourneyIdTripsResponseSuccess)
-
 export const getPostApiJourneysJourneyIdTripsUrl = (journeyId: number | string,) => {
 
 
@@ -1755,7 +1754,7 @@ export const getPostApiJourneysJourneyIdTripsUrl = (journeyId: number | string,)
 }
 
 export const postApiJourneysJourneyIdTrips = async (journeyId: number | string,
-    trip: Trip, options?: RequestInit): Promise<postApiJourneysJourneyIdTripsResponse> => {
+    createTripDto: CreateTripDto, options?: RequestInit): Promise<Trip> => {
   
   const res = await fetch(getPostApiJourneysJourneyIdTripsUrl(journeyId),
   {      
@@ -1763,22 +1762,22 @@ export const postApiJourneysJourneyIdTrips = async (journeyId: number | string,
     method: 'POST',
     headers: { 'Content-Type': 'application/json', ...options?.headers },
     body: JSON.stringify(
-      trip,)
+      createTripDto,)
   }
 )
 
   const body = [204, 205, 304].includes(res.status) ? null : await res.text();
   
-  const data: postApiJourneysJourneyIdTripsResponse['data'] = body ? JSON.parse(body) : {}
-  return { data, status: res.status, headers: res.headers } as postApiJourneysJourneyIdTripsResponse
+  const data: Trip = body ? JSON.parse(body) : {}
+  return data
 }
 
 
 
 
 export const getPostApiJourneysJourneyIdTripsMutationOptions = <TError = unknown,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiJourneysJourneyIdTrips>>, TError,{journeyId: number | string;data: Trip}, TContext>, fetch?: RequestInit}
-): UseMutationOptions<Awaited<ReturnType<typeof postApiJourneysJourneyIdTrips>>, TError,{journeyId: number | string;data: Trip}, TContext> => {
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiJourneysJourneyIdTrips>>, TError,{journeyId: number | string;data: CreateTripDto}, TContext>, fetch?: RequestInit}
+): UseMutationOptions<Awaited<ReturnType<typeof postApiJourneysJourneyIdTrips>>, TError,{journeyId: number | string;data: CreateTripDto}, TContext> => {
 
 const mutationKey = ['postApiJourneysJourneyIdTrips'];
 const {mutation: mutationOptions, fetch: fetchOptions} = options ?
@@ -1790,7 +1789,7 @@ const {mutation: mutationOptions, fetch: fetchOptions} = options ?
       
 
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof postApiJourneysJourneyIdTrips>>, {journeyId: number | string;data: Trip}> = (props) => {
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof postApiJourneysJourneyIdTrips>>, {journeyId: number | string;data: CreateTripDto}> = (props) => {
           const {journeyId,data} = props ?? {};
 
           return  postApiJourneysJourneyIdTrips(journeyId,data,fetchOptions)
@@ -1802,15 +1801,15 @@ const {mutation: mutationOptions, fetch: fetchOptions} = options ?
   return  { mutationFn, ...mutationOptions }}
 
     export type PostApiJourneysJourneyIdTripsMutationResult = NonNullable<Awaited<ReturnType<typeof postApiJourneysJourneyIdTrips>>>
-    export type PostApiJourneysJourneyIdTripsMutationBody = Trip
+    export type PostApiJourneysJourneyIdTripsMutationBody = CreateTripDto
     export type PostApiJourneysJourneyIdTripsMutationError = unknown
 
     export const usePostApiJourneysJourneyIdTrips = <TError = unknown,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiJourneysJourneyIdTrips>>, TError,{journeyId: number | string;data: Trip}, TContext>, fetch?: RequestInit}
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiJourneysJourneyIdTrips>>, TError,{journeyId: number | string;data: CreateTripDto}, TContext>, fetch?: RequestInit}
  , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof postApiJourneysJourneyIdTrips>>,
         TError,
-        {journeyId: number | string;data: Trip},
+        {journeyId: number | string;data: CreateTripDto},
         TContext
       > => {
 
@@ -1819,18 +1818,6 @@ const {mutation: mutationOptions, fetch: fetchOptions} = options ?
       return useMutation(mutationOptions, queryClient);
     }
     
-export type getApiJourneysJourneyIdTripsTripIdResponse200 = {
-  data: Trip
-  status: 200
-}
-    
-export type getApiJourneysJourneyIdTripsTripIdResponseSuccess = (getApiJourneysJourneyIdTripsTripIdResponse200) & {
-  headers: Headers;
-};
-;
-
-export type getApiJourneysJourneyIdTripsTripIdResponse = (getApiJourneysJourneyIdTripsTripIdResponseSuccess)
-
 export const getGetApiJourneysJourneyIdTripsTripIdUrl = (journeyId: number | string,
     tripId: number | string,) => {
 
@@ -1841,7 +1828,7 @@ export const getGetApiJourneysJourneyIdTripsTripIdUrl = (journeyId: number | str
 }
 
 export const getApiJourneysJourneyIdTripsTripId = async (journeyId: number | string,
-    tripId: number | string, options?: RequestInit): Promise<getApiJourneysJourneyIdTripsTripIdResponse> => {
+    tripId: number | string, options?: RequestInit): Promise<Trip> => {
   
   const res = await fetch(getGetApiJourneysJourneyIdTripsTripIdUrl(journeyId,tripId),
   {      
@@ -1854,8 +1841,8 @@ export const getApiJourneysJourneyIdTripsTripId = async (journeyId: number | str
 
   const body = [204, 205, 304].includes(res.status) ? null : await res.text();
   
-  const data: getApiJourneysJourneyIdTripsTripIdResponse['data'] = body ? JSON.parse(body) : {}
-  return { data, status: res.status, headers: res.headers } as getApiJourneysJourneyIdTripsTripIdResponse
+  const data: Trip = body ? JSON.parse(body) : {}
+  return data
 }
 
 
@@ -1939,18 +1926,6 @@ export function useGetApiJourneysJourneyIdTripsTripId<TData = Awaited<ReturnType
 
 
 
-export type putApiJourneysJourneyIdTripsTripIdResponse200 = {
-  data: void
-  status: 200
-}
-    
-export type putApiJourneysJourneyIdTripsTripIdResponseSuccess = (putApiJourneysJourneyIdTripsTripIdResponse200) & {
-  headers: Headers;
-};
-;
-
-export type putApiJourneysJourneyIdTripsTripIdResponse = (putApiJourneysJourneyIdTripsTripIdResponseSuccess)
-
 export const getPutApiJourneysJourneyIdTripsTripIdUrl = (journeyId: number | string,
     tripId: number | string,) => {
 
@@ -1962,7 +1937,7 @@ export const getPutApiJourneysJourneyIdTripsTripIdUrl = (journeyId: number | str
 
 export const putApiJourneysJourneyIdTripsTripId = async (journeyId: number | string,
     tripId: number | string,
-    trip: Trip, options?: RequestInit): Promise<putApiJourneysJourneyIdTripsTripIdResponse> => {
+    updateTripDto: UpdateTripDto, options?: RequestInit): Promise<void> => {
   
   const res = await fetch(getPutApiJourneysJourneyIdTripsTripIdUrl(journeyId,tripId),
   {      
@@ -1970,22 +1945,22 @@ export const putApiJourneysJourneyIdTripsTripId = async (journeyId: number | str
     method: 'PUT',
     headers: { 'Content-Type': 'application/json', ...options?.headers },
     body: JSON.stringify(
-      trip,)
+      updateTripDto,)
   }
 )
 
   const body = [204, 205, 304].includes(res.status) ? null : await res.text();
   
-  const data: putApiJourneysJourneyIdTripsTripIdResponse['data'] = body ? JSON.parse(body) : {}
-  return { data, status: res.status, headers: res.headers } as putApiJourneysJourneyIdTripsTripIdResponse
+  const data: void = body ? JSON.parse(body) : {}
+  return data
 }
 
 
 
 
 export const getPutApiJourneysJourneyIdTripsTripIdMutationOptions = <TError = unknown,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof putApiJourneysJourneyIdTripsTripId>>, TError,{journeyId: number | string;tripId: number | string;data: Trip}, TContext>, fetch?: RequestInit}
-): UseMutationOptions<Awaited<ReturnType<typeof putApiJourneysJourneyIdTripsTripId>>, TError,{journeyId: number | string;tripId: number | string;data: Trip}, TContext> => {
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof putApiJourneysJourneyIdTripsTripId>>, TError,{journeyId: number | string;tripId: number | string;data: UpdateTripDto}, TContext>, fetch?: RequestInit}
+): UseMutationOptions<Awaited<ReturnType<typeof putApiJourneysJourneyIdTripsTripId>>, TError,{journeyId: number | string;tripId: number | string;data: UpdateTripDto}, TContext> => {
 
 const mutationKey = ['putApiJourneysJourneyIdTripsTripId'];
 const {mutation: mutationOptions, fetch: fetchOptions} = options ?
@@ -1997,7 +1972,7 @@ const {mutation: mutationOptions, fetch: fetchOptions} = options ?
       
 
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof putApiJourneysJourneyIdTripsTripId>>, {journeyId: number | string;tripId: number | string;data: Trip}> = (props) => {
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof putApiJourneysJourneyIdTripsTripId>>, {journeyId: number | string;tripId: number | string;data: UpdateTripDto}> = (props) => {
           const {journeyId,tripId,data} = props ?? {};
 
           return  putApiJourneysJourneyIdTripsTripId(journeyId,tripId,data,fetchOptions)
@@ -2009,15 +1984,15 @@ const {mutation: mutationOptions, fetch: fetchOptions} = options ?
   return  { mutationFn, ...mutationOptions }}
 
     export type PutApiJourneysJourneyIdTripsTripIdMutationResult = NonNullable<Awaited<ReturnType<typeof putApiJourneysJourneyIdTripsTripId>>>
-    export type PutApiJourneysJourneyIdTripsTripIdMutationBody = Trip
+    export type PutApiJourneysJourneyIdTripsTripIdMutationBody = UpdateTripDto
     export type PutApiJourneysJourneyIdTripsTripIdMutationError = unknown
 
     export const usePutApiJourneysJourneyIdTripsTripId = <TError = unknown,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof putApiJourneysJourneyIdTripsTripId>>, TError,{journeyId: number | string;tripId: number | string;data: Trip}, TContext>, fetch?: RequestInit}
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof putApiJourneysJourneyIdTripsTripId>>, TError,{journeyId: number | string;tripId: number | string;data: UpdateTripDto}, TContext>, fetch?: RequestInit}
  , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof putApiJourneysJourneyIdTripsTripId>>,
         TError,
-        {journeyId: number | string;tripId: number | string;data: Trip},
+        {journeyId: number | string;tripId: number | string;data: UpdateTripDto},
         TContext
       > => {
 
@@ -2026,18 +2001,6 @@ const {mutation: mutationOptions, fetch: fetchOptions} = options ?
       return useMutation(mutationOptions, queryClient);
     }
     
-export type deleteApiJourneysJourneyIdTripsTripIdResponse200 = {
-  data: void
-  status: 200
-}
-    
-export type deleteApiJourneysJourneyIdTripsTripIdResponseSuccess = (deleteApiJourneysJourneyIdTripsTripIdResponse200) & {
-  headers: Headers;
-};
-;
-
-export type deleteApiJourneysJourneyIdTripsTripIdResponse = (deleteApiJourneysJourneyIdTripsTripIdResponseSuccess)
-
 export const getDeleteApiJourneysJourneyIdTripsTripIdUrl = (journeyId: number | string,
     tripId: number | string,) => {
 
@@ -2048,7 +2011,7 @@ export const getDeleteApiJourneysJourneyIdTripsTripIdUrl = (journeyId: number | 
 }
 
 export const deleteApiJourneysJourneyIdTripsTripId = async (journeyId: number | string,
-    tripId: number | string, options?: RequestInit): Promise<deleteApiJourneysJourneyIdTripsTripIdResponse> => {
+    tripId: number | string, options?: RequestInit): Promise<void> => {
   
   const res = await fetch(getDeleteApiJourneysJourneyIdTripsTripIdUrl(journeyId,tripId),
   {      
@@ -2061,8 +2024,8 @@ export const deleteApiJourneysJourneyIdTripsTripId = async (journeyId: number | 
 
   const body = [204, 205, 304].includes(res.status) ? null : await res.text();
   
-  const data: deleteApiJourneysJourneyIdTripsTripIdResponse['data'] = body ? JSON.parse(body) : {}
-  return { data, status: res.status, headers: res.headers } as deleteApiJourneysJourneyIdTripsTripIdResponse
+  const data: void = body ? JSON.parse(body) : {}
+  return data
 }
 
 

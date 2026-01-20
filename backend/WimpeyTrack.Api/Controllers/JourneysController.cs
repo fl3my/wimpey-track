@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WimpeyTrack.Api.Data;
@@ -19,20 +20,41 @@ namespace WimpeyTrack.Api.Controllers
 
         // GET: api/Journeys
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<JourneyDto>>> GetJourneys()
+        public async Task<ActionResult<JourneyByWeekDto>> GetJourneysByWeek([Required] DateOnly weekStart)
         {
+            var weekEnd = weekStart.AddDays(7);
+            
             var journeys = await _context.Journeys
+                .Include(j => j.Trips)
+                .ThenInclude(t => t.Location)
+                .Include(j => j.Trips)
+                .ThenInclude(t => t.Reason)
+                .Where(j => j.Date >= weekStart && j.Date < weekEnd)
+                .OrderBy(j => j.Date)
                 .Select(j => new JourneyDto() 
                 { 
                     Id = j.Id, 
                     Date =  j.Date, 
                     TotalMiles =  j.TotalMiles, 
                     IsManualMiles =  j.IsManualMiles, 
-                    HomeLocationId =  j.HomeLocationId, 
-                })
-                .ToListAsync();
+                    HomeLocationId =  j.HomeLocationId,
+                    Trips = j.Trips
+                        .Select(t => new JourneyTripDto()
+                    {
+                        Id = t.Id,
+                        LocationName = t.Location.Name,
+                        ReasonName = t.Reason.Name
+                    })
+                        .OrderBy(t => t.Id)
+                        .ToList()
+                }).ToListAsync();
             
-            return journeys;
+            return new JourneyByWeekDto()
+            {
+                Journeys = journeys,
+                StartDate = weekStart,
+                EndDate = weekEnd
+            };
         }
 
         // GET: api/Journeys/5
@@ -82,7 +104,7 @@ namespace WimpeyTrack.Api.Controllers
             if (dto.IsManualMiles)
             {
                 journey.IsManualMiles = true;
-                journey.TotalMiles = dto.TotalMiles;
+                journey.TotalMiles = dto.TotalMiles ?? 0;
             }
 
             try
@@ -120,7 +142,7 @@ namespace WimpeyTrack.Api.Controllers
             if (dto.IsManualMiles)
             {
                 journey.IsManualMiles = true;
-                journey.TotalMiles = dto.TotalMiles;
+                journey.TotalMiles = dto.TotalMiles ?? 0;
             }
             
             _context.Journeys.Add(journey);
