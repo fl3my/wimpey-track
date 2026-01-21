@@ -2,8 +2,11 @@ using System.IO.Compression;
 using ClosedXML.Excel;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using PdfSharp.Pdf;
+using PdfSharp.Pdf.IO;
 using WimpeyTrack.Api.Data;
 using WimpeyTrack.Api.Models;
+using WimpeyTrack.Api.Services;
 
 namespace WimpeyTrack.Api.Controllers
 {
@@ -12,15 +15,22 @@ namespace WimpeyTrack.Api.Controllers
     public class ReportController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
+        private readonly IPdfConverterService _pdfConverterService;
         
-        public ReportController(ApplicationDbContext context)
+        public ReportController(ApplicationDbContext context, IPdfConverterService pdfConverterService)
         {
             _context = context;
+            _pdfConverterService = pdfConverterService;
         }
         
         [HttpGet]
         public async Task<IActionResult> DownloadReport(DateOnly startDate, DateOnly endDate)
         {
+            if (startDate > endDate)
+            {
+                return BadRequest("Start date cannot be after end date.");
+            }
+            
             // Retrieve the data
             var books = await CreateBooksAsync(startDate, endDate);
 
@@ -40,7 +50,7 @@ namespace WimpeyTrack.Api.Controllers
                 // For each book
                 for (var bookIndex = 0; bookIndex < books.Count; bookIndex++)
                 {
-                    var book = books[bookIndex];
+                    var book = books[bookIndex]; ;
                     
                     // Create an instance of ClosedXML
                     using var workbook = new XLWorkbook(templatePath);
@@ -72,31 +82,53 @@ namespace WimpeyTrack.Api.Controllers
                             }
                         }
                     }
-
+                    
                     // Save workbook to memory
-                    using var bookStream = new MemoryStream();
-                    workbook.SaveAs(bookStream);
-                    bookStream.Position = 0;
+                    using var xlsxStream = new MemoryStream();
+                    workbook.SaveAs(xlsxStream);
+                    xlsxStream.Position = 0;
 
-                    // Add XLSX to ZIP
-                    var entryName =
-                        $"Mileage_Report_{bookIndex + 1}_{startDate:yyyy-MM-dd}_to_{endDate:yyyy-MM-dd}.xlsx";
+                    // Hardcoded page range
+                    var pageRange = "1,3";
 
-                    // Add the file to the archive
-                    var entry = archive.CreateEntry(entryName, CompressionLevel.Fastest);
+                    // If the mileage detail goes over to the next page, add the last page
+                    if (book.Sheets.Count > 1)
+                    {
+                        pageRange = $"{pageRange},4";
+                    }
+                    
+                    // Convert the xlsx to pdf
+                    var pdfBytes = await _pdfConverterService.ConvertXlsxToPdfAsync(xlsxStream, pageRange);
+                    
+                    // Split pdf pages
+                    using var inputPdfStream = new MemoryStream(pdfBytes);
+                    var inputPdf = PdfReader.Open(inputPdfStream, PdfDocumentOpenMode.Import);
 
-                    await using var entryStream = await entry.OpenAsync();
-                    await bookStream.CopyToAsync(entryStream);
+                    for (var pageIndex = 0; pageIndex < inputPdf.PageCount; pageIndex++)
+                    {
+                        using var singlePageDoc = new PdfDocument();
+                        singlePageDoc.AddPage(inputPdf.Pages[pageIndex]);
+                        
+                        using var singlePageStream = new MemoryStream();
+                        await singlePageDoc.SaveAsync(singlePageStream);
+                        singlePageStream.Position = 0;
+                        
+                        var entryName = $"Expenses_{bookIndex + 1}_Page_{pageIndex + 1}_{startDate:yyyy-MM-dd}_to_{endDate:yyyy-MM-dd}.pdf";
+                        
+                        var entry = archive.CreateEntry(entryName, CompressionLevel.Fastest);
+                        await using var entryStream = await entry.OpenAsync();
+                        await singlePageStream.CopyToAsync(entryStream);
+                    }
                 }
             }
 
             zipStream.Position = 0;
-                
+            
             // Return a zip file
             return File(
                 zipStream.ToArray(),
                 "application/zip",
-                $"Mileage_Reports_{startDate:yyyy-MM-dd}_to_{endDate:yyyy-MM-dd}.zip"
+                $"Expenses_{startDate:yyyy-MM-dd}_to_{endDate:yyyy-MM-dd}.zip"
             );
         }
 

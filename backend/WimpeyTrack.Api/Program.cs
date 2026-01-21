@@ -23,6 +23,8 @@ builder.Services.AddHttpClient<IRouteService, RouteService>(client =>
     client.BaseAddress = new Uri(osrmBaseUrl);
 });
 
+// Add the PDF conversion service
+builder.Services.AddScoped<IPdfConverterService, PdfConverterService>();
 
 var app = builder.Build();
 
