@@ -7,7 +7,7 @@ import {
   usePostApiJourneys,
   usePostApiJourneysJourneyIdTrips,
 } from "@/api-client.gen.ts";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import {
   Button,
   Group,
@@ -20,6 +20,7 @@ import {
   Timeline,
   Select,
 } from "@mantine/core";
+import { useForm } from "@mantine/form";
 
 export const Route = createFileRoute("/Journeys/")({
   component: RouteComponent,
@@ -41,32 +42,28 @@ function RouteComponent() {
 
   // Use state to keep track of which week
   const [weekStart, setWeekStart] = useState(getMonday(new Date()));
-  const [selectedLocation, setSelectedLocation] = useState<string | null>(null);
-  const [selectedReason, setSelectedReason] = useState<string | null>(null);
   const [showFormForDay, setShowFormForDay] = useState<number | null>(null);
 
   // Query the journeys
   const journeys = useGetApiJourneys({
     weekStart: formatDate(weekStart),
   });
-
   const createJourney = usePostApiJourneys();
   const deleteJourney = useDeleteApiJourneysId();
   const locations = useGetApiLocations();
   const reasons = useGetApiReasons();
   const createTrip = usePostApiJourneysJourneyIdTrips();
 
-  useEffect(() => {
-    if (
-      createJourney.isSuccess ||
-      deleteJourney.isSuccess ||
-      createTrip.isSuccess
-    ) {
-      journeys.refetch();
-      setSelectedLocation(null);
-      setSelectedReason(null);
-    }
-  }, [createJourney.isSuccess, deleteJourney.isSuccess, createTrip.isSuccess]);
+  const form = useForm({
+    initialValues: {
+      locationId: "",
+      reasonId: "",
+    },
+    validate: {
+      locationId: (value) => (value ? null : "Please select a location"),
+      reasonId: (value) => (value ? null : "Please select a reason"),
+    },
+  });
 
   // When button is pressed, go back 7 days
   const goToPreviousWeek = () => {
@@ -107,31 +104,55 @@ function RouteComponent() {
     date.setDate(date.getDate() + offset);
     const dateStr = formatDate(date);
 
-    createJourney.mutate({
-      data: {
-        date: dateStr,
-        isManualMiles: false,
-        homeLocationId: 11, // TODO DO NOT KEEP THIS BAD
+    createJourney.mutate(
+      {
+        data: {
+          date: dateStr,
+          isManualMiles: false,
+          homeLocationId: 11, // TODO DO NOT KEEP THIS BAD
+        },
       },
-    });
+      {
+        onSuccess: async () => {
+          await journeys.refetch();
+        },
+      },
+    );
   };
 
   const handleAddTrip = (journeyId: number) => {
-    if (selectedLocation && selectedReason) {
-      createTrip.mutate({
-        journeyId: journeyId,
-        data: {
-          locationId: selectedLocation,
-          reasonId: selectedReason,
+    const validation = form.validate();
+    if (!validation.hasErrors) {
+      createTrip.mutate(
+        {
+          journeyId: journeyId,
+          data: {
+            locationId: form.values.locationId,
+            reasonId: form.values.reasonId,
+          },
         },
-      });
+        {
+          onSuccess: async () => {
+            await journeys.refetch();
+            form.reset();
+            setShowFormForDay(null);
+          },
+        },
+      );
     }
   };
 
   const handleDeleteJourney = (journeyId: number) => {
-    deleteJourney.mutate({
-      id: journeyId,
-    });
+    deleteJourney.mutate(
+      {
+        id: journeyId,
+      },
+      {
+        onSuccess: async () => {
+          await journeys.refetch();
+        },
+      },
+    );
   };
   const populateLocations = () => {
     if (!locations?.data) return [];
@@ -154,8 +175,7 @@ function RouteComponent() {
   const toggleForm = (offset: number) => {
     if (showFormForDay === offset) {
       setShowFormForDay(null);
-      setSelectedLocation("");
-      setSelectedReason("");
+      form.reset();
     } else {
       setShowFormForDay(offset);
     }
@@ -220,19 +240,19 @@ function RouteComponent() {
                             <Group mt="sm">
                               <Select
                                 searchable
-                                value={selectedLocation}
-                                onChange={setSelectedLocation}
                                 placeholder={"Location"}
                                 data={populateLocations()}
                                 limit={5}
+                                key={form.key("locationId")}
+                                {...form.getInputProps("locationId")}
                               />
                               <Select
                                 searchable
-                                value={selectedReason}
-                                onChange={setSelectedReason}
                                 placeholder={"Reason"}
                                 data={populateReasons()}
                                 limit={5}
+                                key={form.key("reasonId")}
+                                {...form.getInputProps("reasonId")}
                               />
                               <Button
                                 loading={createTrip.isPending}

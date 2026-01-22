@@ -12,11 +12,11 @@ services:
     volumes:
       - ./logs:/app/logs
     restart: unless-stopped
+    depends_on:
+      - osrm-backend
     
   osrm-backend:
     image: ghcr.io/project-osrm/osrm-backend:latest
-    ports:
-      - "5001:5000"
     volumes:
       - osrm-data:/data
     command: osrm-routed --algorithm mld /data/scotland-latest.osrm
