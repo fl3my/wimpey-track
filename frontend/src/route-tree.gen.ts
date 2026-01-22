@@ -20,6 +20,7 @@ import { Route as LocationsNewRouteImport } from './routes/Locations/new'
 import { Route as PurchasesPurchaseIdIndexRouteImport } from './routes/Purchases/$purchaseId/index'
 import { Route as LocationsLocationIdIndexRouteImport } from './routes/Locations/$locationId/index'
 import { Route as PurchasesPurchaseIdEditRouteImport } from './routes/Purchases/$purchaseId/edit'
+import { Route as JourneysJourneyIdEditRouteImport } from './routes/Journeys/$journeyId/edit'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -78,6 +79,11 @@ const PurchasesPurchaseIdEditRoute = PurchasesPurchaseIdEditRouteImport.update({
   path: '/Purchases/$purchaseId/edit',
   getParentRoute: () => rootRouteImport,
 } as any)
+const JourneysJourneyIdEditRoute = JourneysJourneyIdEditRouteImport.update({
+  id: '/Journeys/$journeyId/edit',
+  path: '/Journeys/$journeyId/edit',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -88,6 +94,7 @@ export interface FileRoutesByFullPath {
   '/Locations': typeof LocationsIndexRoute
   '/Purchases': typeof PurchasesIndexRoute
   '/Reasons': typeof ReasonsIndexRoute
+  '/Journeys/$journeyId/edit': typeof JourneysJourneyIdEditRoute
   '/Purchases/$purchaseId/edit': typeof PurchasesPurchaseIdEditRoute
   '/Locations/$locationId': typeof LocationsLocationIdIndexRoute
   '/Purchases/$purchaseId': typeof PurchasesPurchaseIdIndexRoute
@@ -101,6 +108,7 @@ export interface FileRoutesByTo {
   '/Locations': typeof LocationsIndexRoute
   '/Purchases': typeof PurchasesIndexRoute
   '/Reasons': typeof ReasonsIndexRoute
+  '/Journeys/$journeyId/edit': typeof JourneysJourneyIdEditRoute
   '/Purchases/$purchaseId/edit': typeof PurchasesPurchaseIdEditRoute
   '/Locations/$locationId': typeof LocationsLocationIdIndexRoute
   '/Purchases/$purchaseId': typeof PurchasesPurchaseIdIndexRoute
@@ -115,6 +123,7 @@ export interface FileRoutesById {
   '/Locations/': typeof LocationsIndexRoute
   '/Purchases/': typeof PurchasesIndexRoute
   '/Reasons/': typeof ReasonsIndexRoute
+  '/Journeys/$journeyId/edit': typeof JourneysJourneyIdEditRoute
   '/Purchases/$purchaseId/edit': typeof PurchasesPurchaseIdEditRoute
   '/Locations/$locationId/': typeof LocationsLocationIdIndexRoute
   '/Purchases/$purchaseId/': typeof PurchasesPurchaseIdIndexRoute
@@ -130,6 +139,7 @@ export interface FileRouteTypes {
     | '/Locations'
     | '/Purchases'
     | '/Reasons'
+    | '/Journeys/$journeyId/edit'
     | '/Purchases/$purchaseId/edit'
     | '/Locations/$locationId'
     | '/Purchases/$purchaseId'
@@ -143,6 +153,7 @@ export interface FileRouteTypes {
     | '/Locations'
     | '/Purchases'
     | '/Reasons'
+    | '/Journeys/$journeyId/edit'
     | '/Purchases/$purchaseId/edit'
     | '/Locations/$locationId'
     | '/Purchases/$purchaseId'
@@ -156,6 +167,7 @@ export interface FileRouteTypes {
     | '/Locations/'
     | '/Purchases/'
     | '/Reasons/'
+    | '/Journeys/$journeyId/edit'
     | '/Purchases/$purchaseId/edit'
     | '/Locations/$locationId/'
     | '/Purchases/$purchaseId/'
@@ -170,6 +182,7 @@ export interface RootRouteChildren {
   LocationsIndexRoute: typeof LocationsIndexRoute
   PurchasesIndexRoute: typeof PurchasesIndexRoute
   ReasonsIndexRoute: typeof ReasonsIndexRoute
+  JourneysJourneyIdEditRoute: typeof JourneysJourneyIdEditRoute
   PurchasesPurchaseIdEditRoute: typeof PurchasesPurchaseIdEditRoute
   LocationsLocationIdIndexRoute: typeof LocationsLocationIdIndexRoute
   PurchasesPurchaseIdIndexRoute: typeof PurchasesPurchaseIdIndexRoute
@@ -254,6 +267,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PurchasesPurchaseIdEditRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/Journeys/$journeyId/edit': {
+      id: '/Journeys/$journeyId/edit'
+      path: '/Journeys/$journeyId/edit'
+      fullPath: '/Journeys/$journeyId/edit'
+      preLoaderRoute: typeof JourneysJourneyIdEditRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -266,6 +286,7 @@ const rootRouteChildren: RootRouteChildren = {
   LocationsIndexRoute: LocationsIndexRoute,
   PurchasesIndexRoute: PurchasesIndexRoute,
   ReasonsIndexRoute: ReasonsIndexRoute,
+  JourneysJourneyIdEditRoute: JourneysJourneyIdEditRoute,
   PurchasesPurchaseIdEditRoute: PurchasesPurchaseIdEditRoute,
   LocationsLocationIdIndexRoute: LocationsLocationIdIndexRoute,
   PurchasesPurchaseIdIndexRoute: PurchasesPurchaseIdIndexRoute,

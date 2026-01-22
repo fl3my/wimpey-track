@@ -1,6 +1,7 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import {
   useDeleteApiJourneysId,
+  useDeleteApiJourneysJourneyIdTripsTripId,
   useGetApiJourneys,
   useGetApiLocations,
   useGetApiReasons,
@@ -19,14 +20,23 @@ import {
   Paper,
   Timeline,
   Select,
+  Anchor,
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
+import { CustomButtonLink } from "@/components/custom-button-link.tsx";
 
 export const Route = createFileRoute("/Journeys/")({
   component: RouteComponent,
+  validateSearch: (search: { weekStart?: string }) => {
+    return {
+      weekStart: search.weekStart,
+    };
+  },
 });
 
 function RouteComponent() {
+  const { weekStart: weekStartParam } = Route.useSearch();
+
   // Get the date of monday for any day of the week
   const getMonday = (date: Date) => {
     const d = new Date(date);
@@ -41,7 +51,11 @@ function RouteComponent() {
   };
 
   // Use state to keep track of which week
-  const [weekStart, setWeekStart] = useState(getMonday(new Date()));
+  const [weekStart, setWeekStart] = useState(() => {
+    if (!weekStartParam) return getMonday(new Date());
+    return new Date(weekStartParam);
+  });
+
   const [showFormForDay, setShowFormForDay] = useState<number | null>(null);
 
   // Query the journeys
@@ -53,6 +67,7 @@ function RouteComponent() {
   const locations = useGetApiLocations();
   const reasons = useGetApiReasons();
   const createTrip = usePostApiJourneysJourneyIdTrips();
+  const deleteTrip = useDeleteApiJourneysJourneyIdTripsTripId();
 
   const form = useForm({
     initialValues: {
@@ -65,11 +80,15 @@ function RouteComponent() {
     },
   });
 
+  const navigate = useNavigate();
+
   // When button is pressed, go back 7 days
   const goToPreviousWeek = () => {
     const prev = new Date(weekStart);
     prev.setDate(prev.getDate() - 7);
     setWeekStart(prev);
+
+    navigate({ to: "/Journeys", search: { weekStart: formatDate(prev) } });
   };
 
   // When this button is pressed, go forward 7 days
@@ -77,6 +96,8 @@ function RouteComponent() {
     const next = new Date(weekStart);
     next.setDate(next.getDate() + 7);
     setWeekStart(next);
+
+    navigate({ to: "/Journeys", search: { weekStart: formatDate(next) } });
   };
 
   // Get the name of the day including, day month and year
@@ -154,6 +175,21 @@ function RouteComponent() {
       },
     );
   };
+
+  const handleDeleteTrip = (journeyId: number, tripId: number) => {
+    deleteTrip.mutate(
+      {
+        journeyId: journeyId,
+        tripId: tripId,
+      },
+      {
+        onSuccess: async () => {
+          await journeys.refetch();
+        },
+      },
+    );
+  };
+
   const populateLocations = () => {
     if (!locations?.data) return [];
 
@@ -231,7 +267,18 @@ function RouteComponent() {
                           journey.trips.map((t) => (
                             <Timeline.Item title={t.locationName} key={t.id}>
                               <Text c={"dimmed"} size={"sm"}>
-                                {t.reasonName}
+                                {t.reasonName}{" "}
+                                <Anchor
+                                  c={"red"}
+                                  onClick={() =>
+                                    handleDeleteTrip(
+                                      Number(journey.id),
+                                      Number(t.id),
+                                    )
+                                  }
+                                >
+                                  Delete
+                                </Anchor>
                               </Text>
                             </Timeline.Item>
                           ))}
@@ -280,7 +327,14 @@ function RouteComponent() {
                         {showFormForDay === offset ? "Exit" : "Edit Trips"}
                       </Button>
                       <Group grow>
-                        <Button size={"xs"}>Edit Details</Button>
+                        <CustomButtonLink
+                          to={"/Journeys/$journeyId/edit"}
+                          size={"xs"}
+                          params={{ journeyId: journey.id!.toString() }}
+                          search={{ weekStart: formatDate(weekStart) }}
+                        >
+                          Custom link
+                        </CustomButtonLink>
                         <Button
                           size={"xs"}
                           loading={deleteJourney.isPending}

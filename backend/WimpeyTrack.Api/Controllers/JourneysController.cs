@@ -106,6 +106,10 @@ namespace WimpeyTrack.Api.Controllers
                 journey.IsManualMiles = true;
                 journey.TotalMiles = dto.TotalMiles ?? 0;
             }
+            else
+            {
+                journey.IsManualMiles = dto.IsManualMiles;
+            }
 
             try
             {
