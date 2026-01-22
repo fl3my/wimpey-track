@@ -14,8 +14,11 @@ import { Route as ReasonsIndexRouteImport } from './routes/Reasons/index'
 import { Route as PurchasesIndexRouteImport } from './routes/Purchases/index'
 import { Route as LocationsIndexRouteImport } from './routes/Locations/index'
 import { Route as JourneysIndexRouteImport } from './routes/Journeys/index'
+import { Route as ReasonsNewRouteImport } from './routes/Reasons/new'
 import { Route as PurchasesNewRouteImport } from './routes/Purchases/new'
+import { Route as LocationsNewRouteImport } from './routes/Locations/new'
 import { Route as PurchasesPurchaseIdIndexRouteImport } from './routes/Purchases/$purchaseId/index'
+import { Route as LocationsLocationIdIndexRouteImport } from './routes/Locations/$locationId/index'
 import { Route as PurchasesPurchaseIdEditRouteImport } from './routes/Purchases/$purchaseId/edit'
 
 const IndexRoute = IndexRouteImport.update({
@@ -43,15 +46,31 @@ const JourneysIndexRoute = JourneysIndexRouteImport.update({
   path: '/Journeys/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ReasonsNewRoute = ReasonsNewRouteImport.update({
+  id: '/Reasons/new',
+  path: '/Reasons/new',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const PurchasesNewRoute = PurchasesNewRouteImport.update({
   id: '/Purchases/new',
   path: '/Purchases/new',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LocationsNewRoute = LocationsNewRouteImport.update({
+  id: '/Locations/new',
+  path: '/Locations/new',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PurchasesPurchaseIdIndexRoute =
   PurchasesPurchaseIdIndexRouteImport.update({
     id: '/Purchases/$purchaseId/',
     path: '/Purchases/$purchaseId/',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const LocationsLocationIdIndexRoute =
+  LocationsLocationIdIndexRouteImport.update({
+    id: '/Locations/$locationId/',
+    path: '/Locations/$locationId/',
     getParentRoute: () => rootRouteImport,
   } as any)
 const PurchasesPurchaseIdEditRoute = PurchasesPurchaseIdEditRouteImport.update({
@@ -62,76 +81,97 @@ const PurchasesPurchaseIdEditRoute = PurchasesPurchaseIdEditRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/Locations/new': typeof LocationsNewRoute
   '/Purchases/new': typeof PurchasesNewRoute
+  '/Reasons/new': typeof ReasonsNewRoute
   '/Journeys': typeof JourneysIndexRoute
   '/Locations': typeof LocationsIndexRoute
   '/Purchases': typeof PurchasesIndexRoute
   '/Reasons': typeof ReasonsIndexRoute
   '/Purchases/$purchaseId/edit': typeof PurchasesPurchaseIdEditRoute
+  '/Locations/$locationId': typeof LocationsLocationIdIndexRoute
   '/Purchases/$purchaseId': typeof PurchasesPurchaseIdIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/Locations/new': typeof LocationsNewRoute
   '/Purchases/new': typeof PurchasesNewRoute
+  '/Reasons/new': typeof ReasonsNewRoute
   '/Journeys': typeof JourneysIndexRoute
   '/Locations': typeof LocationsIndexRoute
   '/Purchases': typeof PurchasesIndexRoute
   '/Reasons': typeof ReasonsIndexRoute
   '/Purchases/$purchaseId/edit': typeof PurchasesPurchaseIdEditRoute
+  '/Locations/$locationId': typeof LocationsLocationIdIndexRoute
   '/Purchases/$purchaseId': typeof PurchasesPurchaseIdIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/Locations/new': typeof LocationsNewRoute
   '/Purchases/new': typeof PurchasesNewRoute
+  '/Reasons/new': typeof ReasonsNewRoute
   '/Journeys/': typeof JourneysIndexRoute
   '/Locations/': typeof LocationsIndexRoute
   '/Purchases/': typeof PurchasesIndexRoute
   '/Reasons/': typeof ReasonsIndexRoute
   '/Purchases/$purchaseId/edit': typeof PurchasesPurchaseIdEditRoute
+  '/Locations/$locationId/': typeof LocationsLocationIdIndexRoute
   '/Purchases/$purchaseId/': typeof PurchasesPurchaseIdIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/Locations/new'
     | '/Purchases/new'
+    | '/Reasons/new'
     | '/Journeys'
     | '/Locations'
     | '/Purchases'
     | '/Reasons'
     | '/Purchases/$purchaseId/edit'
+    | '/Locations/$locationId'
     | '/Purchases/$purchaseId'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/Locations/new'
     | '/Purchases/new'
+    | '/Reasons/new'
     | '/Journeys'
     | '/Locations'
     | '/Purchases'
     | '/Reasons'
     | '/Purchases/$purchaseId/edit'
+    | '/Locations/$locationId'
     | '/Purchases/$purchaseId'
   id:
     | '__root__'
     | '/'
+    | '/Locations/new'
     | '/Purchases/new'
+    | '/Reasons/new'
     | '/Journeys/'
     | '/Locations/'
     | '/Purchases/'
     | '/Reasons/'
     | '/Purchases/$purchaseId/edit'
+    | '/Locations/$locationId/'
     | '/Purchases/$purchaseId/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  LocationsNewRoute: typeof LocationsNewRoute
   PurchasesNewRoute: typeof PurchasesNewRoute
+  ReasonsNewRoute: typeof ReasonsNewRoute
   JourneysIndexRoute: typeof JourneysIndexRoute
   LocationsIndexRoute: typeof LocationsIndexRoute
   PurchasesIndexRoute: typeof PurchasesIndexRoute
   ReasonsIndexRoute: typeof ReasonsIndexRoute
   PurchasesPurchaseIdEditRoute: typeof PurchasesPurchaseIdEditRoute
+  LocationsLocationIdIndexRoute: typeof LocationsLocationIdIndexRoute
   PurchasesPurchaseIdIndexRoute: typeof PurchasesPurchaseIdIndexRoute
 }
 
@@ -172,6 +212,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof JourneysIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/Reasons/new': {
+      id: '/Reasons/new'
+      path: '/Reasons/new'
+      fullPath: '/Reasons/new'
+      preLoaderRoute: typeof ReasonsNewRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/Purchases/new': {
       id: '/Purchases/new'
       path: '/Purchases/new'
@@ -179,11 +226,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PurchasesNewRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/Locations/new': {
+      id: '/Locations/new'
+      path: '/Locations/new'
+      fullPath: '/Locations/new'
+      preLoaderRoute: typeof LocationsNewRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/Purchases/$purchaseId/': {
       id: '/Purchases/$purchaseId/'
       path: '/Purchases/$purchaseId'
       fullPath: '/Purchases/$purchaseId'
       preLoaderRoute: typeof PurchasesPurchaseIdIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/Locations/$locationId/': {
+      id: '/Locations/$locationId/'
+      path: '/Locations/$locationId'
+      fullPath: '/Locations/$locationId'
+      preLoaderRoute: typeof LocationsLocationIdIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/Purchases/$purchaseId/edit': {
@@ -198,12 +259,15 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  LocationsNewRoute: LocationsNewRoute,
   PurchasesNewRoute: PurchasesNewRoute,
+  ReasonsNewRoute: ReasonsNewRoute,
   JourneysIndexRoute: JourneysIndexRoute,
   LocationsIndexRoute: LocationsIndexRoute,
   PurchasesIndexRoute: PurchasesIndexRoute,
   ReasonsIndexRoute: ReasonsIndexRoute,
   PurchasesPurchaseIdEditRoute: PurchasesPurchaseIdEditRoute,
+  LocationsLocationIdIndexRoute: LocationsLocationIdIndexRoute,
   PurchasesPurchaseIdIndexRoute: PurchasesPurchaseIdIndexRoute,
 }
 export const routeTree = rootRouteImport

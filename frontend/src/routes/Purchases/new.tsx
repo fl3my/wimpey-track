@@ -26,7 +26,14 @@ function RouteComponent() {
     initialValues: {
       date: null as Date | null,
       storeName: "",
-      items: [] as ItemForm[],
+      items: [
+        {
+          name: "",
+          quantity: 1,
+          cost: 0,
+          reason: "For plastic surgery",
+        },
+      ] as ItemForm[],
     },
   });
   const createPurchase = usePostApiPurchases();
@@ -81,6 +88,7 @@ function RouteComponent() {
           <Group key={index}>
             <TextInput
               label={"Item name"}
+              placeholder={"Item name"}
               key={form.key(`items.${index}.name`)}
               {...form.getInputProps(`items.${index}.name`)}
             />
