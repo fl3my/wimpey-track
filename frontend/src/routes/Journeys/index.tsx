@@ -69,10 +69,10 @@ function RouteComponent() {
   const createTrip = usePostApiJourneysJourneyIdTrips();
   const deleteTrip = useDeleteApiJourneysJourneyIdTripsTripId();
 
-  const form = useForm({
+  const form = useForm<{ locationId: string | null; reasonId: string | null }>({
     initialValues: {
-      locationId: "",
-      reasonId: "",
+      locationId: null,
+      reasonId: null,
     },
     validate: {
       locationId: (value) => (value ? null : "Please select a location"),
@@ -141,22 +141,21 @@ function RouteComponent() {
     );
   };
 
-  const handleAddTrip = (journeyId: number) => {
+  const handleAddTrip = (journeyId: number, values: typeof form.values) => {
     const validation = form.validate();
     if (!validation.hasErrors) {
       createTrip.mutate(
         {
           journeyId: journeyId,
           data: {
-            locationId: form.values.locationId,
-            reasonId: form.values.reasonId,
+            locationId: values.locationId!,
+            reasonId: values.reasonId!,
           },
         },
         {
           onSuccess: async () => {
             await journeys.refetch();
             form.reset();
-            setShowFormForDay(null);
           },
         },
       );
@@ -268,6 +267,8 @@ function RouteComponent() {
                             <Timeline.Item title={t.locationName} key={t.id}>
                               <Text c={"dimmed"} size={"sm"}>
                                 {t.reasonName}{" "}
+                              </Text>
+                              {showFormForDay === offset && (
                                 <Anchor
                                   c={"red"}
                                   onClick={() =>
@@ -279,36 +280,40 @@ function RouteComponent() {
                                 >
                                   Delete
                                 </Anchor>
-                              </Text>
+                              )}
                             </Timeline.Item>
                           ))}
                         {showFormForDay === offset && (
                           <Timeline.Item title={"Enter new trip"}>
                             <Group mt="sm">
-                              <Select
-                                searchable
-                                placeholder={"Location"}
-                                data={populateLocations()}
-                                limit={5}
-                                key={form.key("locationId")}
-                                {...form.getInputProps("locationId")}
-                              />
-                              <Select
-                                searchable
-                                placeholder={"Reason"}
-                                data={populateReasons()}
-                                limit={5}
-                                key={form.key("reasonId")}
-                                {...form.getInputProps("reasonId")}
-                              />
-                              <Button
-                                loading={createTrip.isPending}
-                                onClick={() =>
-                                  handleAddTrip(Number(journey.id))
-                                }
+                              <form
+                                onSubmit={form.onSubmit((values) =>
+                                  handleAddTrip(Number(journey.id), values),
+                                )}
                               >
-                                Add
-                              </Button>
+                                <Select
+                                  searchable
+                                  placeholder={"Location"}
+                                  data={populateLocations()}
+                                  limit={5}
+                                  key={form.key("locationId")}
+                                  {...form.getInputProps("locationId")}
+                                />
+                                <Select
+                                  searchable
+                                  placeholder={"Reason"}
+                                  data={populateReasons()}
+                                  limit={5}
+                                  key={form.key("reasonId")}
+                                  {...form.getInputProps("reasonId")}
+                                />
+                                <Button
+                                  loading={createTrip.isPending}
+                                  type="submit"
+                                >
+                                  Add
+                                </Button>
+                              </form>
                             </Group>
                           </Timeline.Item>
                         )}
@@ -333,7 +338,7 @@ function RouteComponent() {
                           params={{ journeyId: journey.id!.toString() }}
                           search={{ weekStart: formatDate(weekStart) }}
                         >
-                          Custom link
+                          Edit Journey Details
                         </CustomButtonLink>
                         <Button
                           size={"xs"}
