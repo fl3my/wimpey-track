@@ -57,9 +57,25 @@ namespace WimpeyTrack.Api.Controllers
 
                     // Fill Claim rate on first sheet
                     var expenseSheet = workbook.Worksheet(1);
+                    
                     expenseSheet.Cell(53, 2).Value = book.IsOverThreshold ? 0.25 : 0.45;
                     expenseSheet.Cell(49, 2).Value = book.IsOverThreshold ? "YES" : "NO";
-
+                    
+                    // Fill the sheet with purchases
+                    var currentPurchaseRow = 12;
+                    foreach (var purchaseRow in book.PurchaseRows)
+                    {
+                        expenseSheet.Cell(currentPurchaseRow, 1).Value = purchaseRow.ExpenseCode;
+                        expenseSheet.Cell(currentPurchaseRow, 2).Value = purchaseRow.Date;
+                        expenseSheet.Cell(currentPurchaseRow, 3).Value = purchaseRow.ExpenseDetail;
+                        expenseSheet.Cell(currentPurchaseRow, 4).Value = purchaseRow.ReasonForExpense;
+                        expenseSheet.Cell(currentPurchaseRow, 5).Value = purchaseRow.VatCode;
+                        expenseSheet.Cell(currentPurchaseRow, 6).Value = purchaseRow.ReceiptAttached ? "YES" : "NO";
+                        expenseSheet.Cell(currentPurchaseRow, 7).Value = purchaseRow.Cost;
+                        
+                        currentPurchaseRow++;
+                    }
+                    
                     // Fill sheets
                     for (var sheetIndex = 0; sheetIndex < book.Sheets.Count; sheetIndex++)
                     {
@@ -145,6 +161,12 @@ namespace WimpeyTrack.Api.Controllers
                 .OrderBy(j => j.Date)
                 .ToListAsync();
             
+            var purchases = await _context.Purchases
+                .Where(p => p.Date >= startDate && p.Date <= endDate)
+                .OrderBy(p => p.Date)
+                .Include(purchase => purchase.Items)
+                .ToListAsync();
+            
             var books = new List<Book>();
             
             // Create a list of journeys in a buffer
@@ -167,10 +189,34 @@ namespace WimpeyTrack.Api.Controllers
                 // The claim rate has changed, so previous book msut be finished
                 } else if (previousOverThreshold != currentOverThreshold)
                 {
-                    // Create the book at curent claim rate with buffered journeys
+                    var bookStartDate = bufferedJourneys.First().Date;
+                    var bookEndDate = journey.Date;
+                    
+                    var itemsInBook = purchases
+                        .Where(p => p.Date >= bookStartDate && p.Date <= bookEndDate && p.Items.Count != 0) 
+                        .SelectMany(p => p.Items,
+                            (p, i) => new
+                            {
+                                Purchase = p,
+                                Item = i,
+                            })
+                        .Select(x => new PurchaseRow
+                        {
+                            ExpenseCode = "O",
+                            Date = x.Purchase.Date.ToString("yyyy-MM-dd"),
+                            ExpenseDetail = $"{x.Purchase.StoreName} - {x.Item.Name} *{x.Item.Quantity}",
+                            ReasonForExpense = x.Item.Reason,
+                            VatCode = "P10",
+                            ReceiptAttached = true,
+                            Cost = x.Item.Cost * x.Item.Quantity,
+                        })
+                        .ToList();
+                    
+                    // Create the book at current claim rate with buffered journeys
                     books.Add(new Book()
                     {
                         IsOverThreshold = previousOverThreshold.Value,
+                        PurchaseRows = itemsInBook,
                         Sheets = BuildSheets(bufferedJourneys),
                     });
                     
@@ -188,9 +234,33 @@ namespace WimpeyTrack.Api.Controllers
             // If any journeys are left, add to book
             if (bufferedJourneys.Count != 0)
             {
+                var bookStartDate = bufferedJourneys.First().Date;
+                var bookEndDate = bufferedJourneys.Last().Date;
+                
+                var itemsInBook = purchases
+                    .Where(p => p.Date >= bookStartDate && p.Date <= bookEndDate && p.Items.Count != 0) 
+                    .SelectMany(p => p.Items,
+                        (p, i) => new
+                        {
+                            Purchase = p,
+                            Item = i,
+                        })
+                    .Select(x => new PurchaseRow
+                    {
+                        ExpenseCode = "O",
+                        Date = x.Purchase.Date.ToString("yyyy-MM-dd"),
+                        ExpenseDetail = $"{x.Purchase.StoreName} - {x.Item.Name} +  *{x.Item.Quantity}",
+                        ReasonForExpense = x.Item.Reason,
+                        VatCode = "P10",
+                        ReceiptAttached = true,
+                        Cost = x.Item.Cost * x.Item.Quantity,
+                    })
+                    .ToList();
+                
                 books.Add(new Book
                 {
                     IsOverThreshold = previousOverThreshold!.Value,
+                    PurchaseRows = itemsInBook,
                     Sheets = BuildSheets(bufferedJourneys)
                 });
             }
@@ -301,9 +371,21 @@ namespace WimpeyTrack.Api.Controllers
         public ICollection<Row> Rows { get; set; } = new  List<Row>();
     }
 
+    public class PurchaseRow
+    {
+        public string ExpenseCode  { get; set; } = string.Empty;
+        public string Date { get; set; } = string.Empty;
+        public string ExpenseDetail { get; set; } = string.Empty;
+        public string ReasonForExpense { get; set; } = string.Empty;
+        public string VatCode { get; set; } = string.Empty;
+        public bool ReceiptAttached { get; set; }
+        public double Cost { get; set; }
+    }
+    
     public class Book
     {
         public ICollection<Sheet> Sheets { get; set; } = new List<Sheet>();
+        public ICollection<PurchaseRow> PurchaseRows { get; set; } = new List<PurchaseRow>();
         public bool IsOverThreshold { get; set; }
     }
 }
