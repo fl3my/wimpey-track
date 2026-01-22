@@ -44,7 +44,7 @@ namespace WimpeyTrack.Api.Controllers
 
         // GET: api/Trips/5
         [HttpGet("{tripId}")]
-        public async Task<ActionResult<Trip>> GetTrip(int journeyId, int tripId)
+        public async Task<ActionResult<TripDto>> GetTrip(int journeyId, int tripId)
         {
             var trip = await _context.Trips
                 .FirstOrDefaultAsync(t => t.JourneyId == journeyId && t.Id == tripId);
@@ -54,7 +54,13 @@ namespace WimpeyTrack.Api.Controllers
                 return NotFound();
             }
 
-            return trip;
+            var tripDto = new TripDto()
+            {
+                Id = trip.Id,
+                LocationId = trip.LocationId,
+                ReasonId = trip.ReasonId,
+            };
+            return tripDto;
         }
 
         // PUT: api/Journeys/1/Trips/5
@@ -105,7 +111,7 @@ namespace WimpeyTrack.Api.Controllers
 
         // POST: api/Journeys/1/Trips
         [HttpPost]
-        public async Task<ActionResult<Trip>> PostTrip(int journeyId, CreateTripDto dto)
+        public async Task<ActionResult<TripDto>> PostTrip(int journeyId, CreateTripDto dto)
         {
             if (!await _context.Journeys.AnyAsync(t => t.Id == journeyId))
                 return NotFound();

@@ -1,6 +1,7 @@
 import { NavLink } from "@mantine/core";
 import { Link } from "@tanstack/react-router";
 import {
+  IconCash,
   IconFileExport,
   IconHome2,
   IconMap2,
@@ -22,6 +23,12 @@ export function Navigation() {
         to="/journeys"
         label={"Journeys"}
         leftSection={<IconRoute size={16} stroke={1.5} />}
+      />
+      <NavLink
+        component={Link}
+        to="/purchases"
+        label={"Purchases"}
+        leftSection={<IconCash size={16} stroke={1.5} />}
       />
       <NavLink
         component={Link}

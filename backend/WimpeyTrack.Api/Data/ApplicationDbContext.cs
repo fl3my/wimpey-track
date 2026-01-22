@@ -11,4 +11,6 @@ public class ApplicationDbContext : DbContext
     public DbSet<Trip> Trips { get; set; }
     public DbSet<Location> Locations { get; set; }
     public DbSet<Reason> Reasons { get; set; }
+    public DbSet<Purchase> Purchases { get; set; }
+    public DbSet<Item> Items { get; set; }
 }
