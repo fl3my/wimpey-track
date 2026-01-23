@@ -36,7 +36,7 @@ namespace WimpeyTrack.Api.Controllers
 
             if (books.Count == 0)
             {
-                return BadRequest();
+                return BadRequest(new { message = "Sorry, no journeys have been made during this time range"});
             }
             
             // Load template

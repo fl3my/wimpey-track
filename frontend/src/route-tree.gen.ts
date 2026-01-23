@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ReportsIndexRouteImport } from './routes/Reports/index'
 import { Route as ReasonsIndexRouteImport } from './routes/Reasons/index'
 import { Route as PurchasesIndexRouteImport } from './routes/Purchases/index'
 import { Route as LocationsIndexRouteImport } from './routes/Locations/index'
@@ -25,6 +26,11 @@ import { Route as JourneysJourneyIdEditRouteImport } from './routes/Journeys/$jo
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ReportsIndexRoute = ReportsIndexRouteImport.update({
+  id: '/Reports/',
+  path: '/Reports/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ReasonsIndexRoute = ReasonsIndexRouteImport.update({
@@ -94,6 +100,7 @@ export interface FileRoutesByFullPath {
   '/Locations': typeof LocationsIndexRoute
   '/Purchases': typeof PurchasesIndexRoute
   '/Reasons': typeof ReasonsIndexRoute
+  '/Reports': typeof ReportsIndexRoute
   '/Journeys/$journeyId/edit': typeof JourneysJourneyIdEditRoute
   '/Purchases/$purchaseId/edit': typeof PurchasesPurchaseIdEditRoute
   '/Locations/$locationId': typeof LocationsLocationIdIndexRoute
@@ -108,6 +115,7 @@ export interface FileRoutesByTo {
   '/Locations': typeof LocationsIndexRoute
   '/Purchases': typeof PurchasesIndexRoute
   '/Reasons': typeof ReasonsIndexRoute
+  '/Reports': typeof ReportsIndexRoute
   '/Journeys/$journeyId/edit': typeof JourneysJourneyIdEditRoute
   '/Purchases/$purchaseId/edit': typeof PurchasesPurchaseIdEditRoute
   '/Locations/$locationId': typeof LocationsLocationIdIndexRoute
@@ -123,6 +131,7 @@ export interface FileRoutesById {
   '/Locations/': typeof LocationsIndexRoute
   '/Purchases/': typeof PurchasesIndexRoute
   '/Reasons/': typeof ReasonsIndexRoute
+  '/Reports/': typeof ReportsIndexRoute
   '/Journeys/$journeyId/edit': typeof JourneysJourneyIdEditRoute
   '/Purchases/$purchaseId/edit': typeof PurchasesPurchaseIdEditRoute
   '/Locations/$locationId/': typeof LocationsLocationIdIndexRoute
@@ -139,6 +148,7 @@ export interface FileRouteTypes {
     | '/Locations'
     | '/Purchases'
     | '/Reasons'
+    | '/Reports'
     | '/Journeys/$journeyId/edit'
     | '/Purchases/$purchaseId/edit'
     | '/Locations/$locationId'
@@ -153,6 +163,7 @@ export interface FileRouteTypes {
     | '/Locations'
     | '/Purchases'
     | '/Reasons'
+    | '/Reports'
     | '/Journeys/$journeyId/edit'
     | '/Purchases/$purchaseId/edit'
     | '/Locations/$locationId'
@@ -167,6 +178,7 @@ export interface FileRouteTypes {
     | '/Locations/'
     | '/Purchases/'
     | '/Reasons/'
+    | '/Reports/'
     | '/Journeys/$journeyId/edit'
     | '/Purchases/$purchaseId/edit'
     | '/Locations/$locationId/'
@@ -182,6 +194,7 @@ export interface RootRouteChildren {
   LocationsIndexRoute: typeof LocationsIndexRoute
   PurchasesIndexRoute: typeof PurchasesIndexRoute
   ReasonsIndexRoute: typeof ReasonsIndexRoute
+  ReportsIndexRoute: typeof ReportsIndexRoute
   JourneysJourneyIdEditRoute: typeof JourneysJourneyIdEditRoute
   PurchasesPurchaseIdEditRoute: typeof PurchasesPurchaseIdEditRoute
   LocationsLocationIdIndexRoute: typeof LocationsLocationIdIndexRoute
@@ -195,6 +208,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/Reports/': {
+      id: '/Reports/'
+      path: '/Reports'
+      fullPath: '/Reports'
+      preLoaderRoute: typeof ReportsIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/Reasons/': {
@@ -286,6 +306,7 @@ const rootRouteChildren: RootRouteChildren = {
   LocationsIndexRoute: LocationsIndexRoute,
   PurchasesIndexRoute: PurchasesIndexRoute,
   ReasonsIndexRoute: ReasonsIndexRoute,
+  ReportsIndexRoute: ReportsIndexRoute,
   JourneysJourneyIdEditRoute: JourneysJourneyIdEditRoute,
   PurchasesPurchaseIdEditRoute: PurchasesPurchaseIdEditRoute,
   LocationsLocationIdIndexRoute: LocationsLocationIdIndexRoute,

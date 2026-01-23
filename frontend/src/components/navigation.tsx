@@ -44,8 +44,8 @@ export function Navigation() {
       />
       <NavLink
         component={Link}
-        to="/spreadsheets"
-        label={"Spreadsheets"}
+        to="/Reports"
+        label={"Reports"}
         leftSection={<IconFileExport size={16} stroke={1.5} />}
       />
     </>
