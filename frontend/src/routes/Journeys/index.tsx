@@ -216,6 +216,14 @@ function RouteComponent() {
     }
   };
 
+  const isToday = (offset: number) => {
+    const date = new Date(weekStart);
+    date.setDate(date.getDate() + offset);
+
+    const today = new Date();
+    return formatDate(date) === formatDate(today);
+  };
+
   return (
     <>
       <Stack gap={"lg"}>
@@ -252,7 +260,9 @@ function RouteComponent() {
 
               return (
                 <Paper key={offset} withBorder radius="md" p="md">
-                  <Text fw={500}>{getDayName(offset)}</Text>
+                  <Text fw={500}>
+                    {getDayName(offset)} {isToday(offset) && "(Today)"}
+                  </Text>
                   {journey ? (
                     <Stack>
                       <>Total Distance: {journey.totalMiles} miles</>

@@ -9,6 +9,8 @@ import reportWebVitals from "./report-web-vitals.ts";
 
 import "@mantine/core/styles.css";
 import "@mantine/dates/styles.css";
+import "@mantine/charts/styles.css";
+
 import { MantineProvider } from "@mantine/core";
 import { QueryClient } from "@tanstack/query-core";
 import { QueryClientProvider } from "@tanstack/react-query";

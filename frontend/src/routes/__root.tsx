@@ -37,7 +37,7 @@ function RootLayout() {
         <AppShell.Navbar p="md">
           <Navigation />
         </AppShell.Navbar>
-        <AppShell.Main>
+        <AppShell.Main bg={"gray.1"}>
           <Outlet />
         </AppShell.Main>
         <ReactQueryDevtools />
