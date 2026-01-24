@@ -26,6 +26,9 @@ builder.Services.AddHttpClient<IRouteService, RouteService>(client =>
 // Add the PDF conversion service
 builder.Services.AddScoped<IPdfConverterService, PdfConverterService>();
 
+// Add the Receipt Analysis endpoint
+builder.Services.AddScoped<IReceiptAnalysisService, ReceiptAnalysisService>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
