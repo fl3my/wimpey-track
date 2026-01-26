@@ -16,11 +16,13 @@ namespace WimpeyTrack.Api.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly IPdfConverterService _pdfConverterService;
+        private readonly IReceiptImageStorage _imageStorage;
         
-        public ReportController(ApplicationDbContext context, IPdfConverterService pdfConverterService)
+        public ReportController(ApplicationDbContext context, IPdfConverterService pdfConverterService, IReceiptImageStorage imageStorage)
         {
             _context = context;
             _pdfConverterService = pdfConverterService;
+            _imageStorage = imageStorage;
         }
         
         [HttpGet]
@@ -39,10 +41,15 @@ namespace WimpeyTrack.Api.Controllers
                 return BadRequest(new { message = "Sorry, no journeys have been made during this time range"});
             }
             
+            var receipts = await _context.Receipts
+                .Where(r => r.Date >= startDate && r.Date <= endDate)
+                .OrderBy(r => r.Date)
+                .ToListAsync();
+
+            
             // Load template
             var templatePath = Path.Combine(Directory.GetCurrentDirectory(), "Templates", "template.xlsx");
             
-            // For testing purposes, put xlsx in zip archive
             using var zipStream = new MemoryStream();
 
             await using (var archive = new ZipArchive(zipStream, ZipArchiveMode.Create, true))
@@ -136,8 +143,29 @@ namespace WimpeyTrack.Api.Controllers
                         await singlePageStream.CopyToAsync(entryStream);
                     }
                 }
-            }
+                
+                // Add receipt images to the archive
+                for (var receiptIndex = 0; receiptIndex < receipts.Count; receiptIndex++)
+                {
+                    // Get the full path starting at wwwroot
+                    var receipt = receipts[receiptIndex];
+                    var imageBytes = await _imageStorage.GetAsync(receipt.ImagePath);
 
+                    if (imageBytes is { Length: > 0 })
+                    {
+                        // Construct the file name
+                        var fileExtension = Path.GetExtension(receipt.ImagePath) ?? ".jpg";
+                        var entryName = $"Receipt_{receiptIndex + 1}{fileExtension}";
+                        
+                        // Save to the archive
+                        var entry = archive.CreateEntry(entryName, CompressionLevel.Fastest);
+                        await using var entryStream = await entry.OpenAsync();
+                        await entryStream.WriteAsync(imageBytes);
+                    }
+                }
+                
+            }
+            
             zipStream.Position = 0;
             
             // Return a zip file
@@ -189,8 +217,8 @@ namespace WimpeyTrack.Api.Controllers
                 // The claim rate has changed, so previous book msut be finished
                 } else if (previousOverThreshold != currentOverThreshold)
                 {
-                    var bookStartDate = bufferedJourneys.First().Date;
-                    var bookEndDate = journey.Date;
+                    var bookStartDate = books.Count == 0 ? startDate : bufferedJourneys.First().Date;
+                    var bookEndDate = bufferedJourneys.Last().Date;
                     
                     var itemsInBook = purchases
                         .Where(p => p.Date >= bookStartDate && p.Date <= bookEndDate && p.Items.Count != 0) 
@@ -234,8 +262,8 @@ namespace WimpeyTrack.Api.Controllers
             // If any journeys are left, add to book
             if (bufferedJourneys.Count != 0)
             {
-                var bookStartDate = bufferedJourneys.First().Date;
-                var bookEndDate = bufferedJourneys.Last().Date;
+                var bookStartDate = books.Count == 0 ? startDate : bufferedJourneys.First().Date;
+                var bookEndDate = endDate;
                 
                 var itemsInBook = purchases
                     .Where(p => p.Date >= bookStartDate && p.Date <= bookEndDate && p.Items.Count != 0) 
@@ -249,7 +277,7 @@ namespace WimpeyTrack.Api.Controllers
                     {
                         ExpenseCode = "O",
                         Date = x.Purchase.Date.ToString("yyyy-MM-dd"),
-                        ExpenseDetail = $"{x.Purchase.StoreName} - {x.Item.Name} +  *{x.Item.Quantity}",
+                        ExpenseDetail = $"{x.Purchase.StoreName} - {x.Item.Name} *{x.Item.Quantity}",
                         ReasonForExpense = x.Item.Reason,
                         VatCode = "P10",
                         ReceiptAttached = true,
