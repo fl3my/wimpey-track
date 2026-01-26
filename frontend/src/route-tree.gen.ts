@@ -16,9 +16,12 @@ import { Route as ReasonsIndexRouteImport } from './routes/Reasons/index'
 import { Route as PurchasesIndexRouteImport } from './routes/Purchases/index'
 import { Route as LocationsIndexRouteImport } from './routes/Locations/index'
 import { Route as JourneysIndexRouteImport } from './routes/Journeys/index'
+import { Route as ReceiptsOcrRouteImport } from './routes/Receipts/ocr'
+import { Route as ReceiptsNewRouteImport } from './routes/Receipts/new'
 import { Route as ReasonsNewRouteImport } from './routes/Reasons/new'
 import { Route as PurchasesNewRouteImport } from './routes/Purchases/new'
 import { Route as LocationsNewRouteImport } from './routes/Locations/new'
+import { Route as ReceiptsReceiptIdIndexRouteImport } from './routes/Receipts/$receiptId/index'
 import { Route as PurchasesPurchaseIdIndexRouteImport } from './routes/Purchases/$purchaseId/index'
 import { Route as LocationsLocationIdIndexRouteImport } from './routes/Locations/$locationId/index'
 import { Route as PurchasesPurchaseIdEditRouteImport } from './routes/Purchases/$purchaseId/edit'
@@ -59,6 +62,16 @@ const JourneysIndexRoute = JourneysIndexRouteImport.update({
   path: '/Journeys/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ReceiptsOcrRoute = ReceiptsOcrRouteImport.update({
+  id: '/Receipts/ocr',
+  path: '/Receipts/ocr',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ReceiptsNewRoute = ReceiptsNewRouteImport.update({
+  id: '/Receipts/new',
+  path: '/Receipts/new',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ReasonsNewRoute = ReasonsNewRouteImport.update({
   id: '/Reasons/new',
   path: '/Reasons/new',
@@ -72,6 +85,11 @@ const PurchasesNewRoute = PurchasesNewRouteImport.update({
 const LocationsNewRoute = LocationsNewRouteImport.update({
   id: '/Locations/new',
   path: '/Locations/new',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ReceiptsReceiptIdIndexRoute = ReceiptsReceiptIdIndexRouteImport.update({
+  id: '/Receipts/$receiptId/',
+  path: '/Receipts/$receiptId/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PurchasesPurchaseIdIndexRoute =
@@ -102,6 +120,8 @@ export interface FileRoutesByFullPath {
   '/Locations/new': typeof LocationsNewRoute
   '/Purchases/new': typeof PurchasesNewRoute
   '/Reasons/new': typeof ReasonsNewRoute
+  '/Receipts/new': typeof ReceiptsNewRoute
+  '/Receipts/ocr': typeof ReceiptsOcrRoute
   '/Journeys': typeof JourneysIndexRoute
   '/Locations': typeof LocationsIndexRoute
   '/Purchases': typeof PurchasesIndexRoute
@@ -112,12 +132,15 @@ export interface FileRoutesByFullPath {
   '/Purchases/$purchaseId/edit': typeof PurchasesPurchaseIdEditRoute
   '/Locations/$locationId': typeof LocationsLocationIdIndexRoute
   '/Purchases/$purchaseId': typeof PurchasesPurchaseIdIndexRoute
+  '/Receipts/$receiptId': typeof ReceiptsReceiptIdIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/Locations/new': typeof LocationsNewRoute
   '/Purchases/new': typeof PurchasesNewRoute
   '/Reasons/new': typeof ReasonsNewRoute
+  '/Receipts/new': typeof ReceiptsNewRoute
+  '/Receipts/ocr': typeof ReceiptsOcrRoute
   '/Journeys': typeof JourneysIndexRoute
   '/Locations': typeof LocationsIndexRoute
   '/Purchases': typeof PurchasesIndexRoute
@@ -128,6 +151,7 @@ export interface FileRoutesByTo {
   '/Purchases/$purchaseId/edit': typeof PurchasesPurchaseIdEditRoute
   '/Locations/$locationId': typeof LocationsLocationIdIndexRoute
   '/Purchases/$purchaseId': typeof PurchasesPurchaseIdIndexRoute
+  '/Receipts/$receiptId': typeof ReceiptsReceiptIdIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -135,6 +159,8 @@ export interface FileRoutesById {
   '/Locations/new': typeof LocationsNewRoute
   '/Purchases/new': typeof PurchasesNewRoute
   '/Reasons/new': typeof ReasonsNewRoute
+  '/Receipts/new': typeof ReceiptsNewRoute
+  '/Receipts/ocr': typeof ReceiptsOcrRoute
   '/Journeys/': typeof JourneysIndexRoute
   '/Locations/': typeof LocationsIndexRoute
   '/Purchases/': typeof PurchasesIndexRoute
@@ -145,6 +171,7 @@ export interface FileRoutesById {
   '/Purchases/$purchaseId/edit': typeof PurchasesPurchaseIdEditRoute
   '/Locations/$locationId/': typeof LocationsLocationIdIndexRoute
   '/Purchases/$purchaseId/': typeof PurchasesPurchaseIdIndexRoute
+  '/Receipts/$receiptId/': typeof ReceiptsReceiptIdIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -153,6 +180,8 @@ export interface FileRouteTypes {
     | '/Locations/new'
     | '/Purchases/new'
     | '/Reasons/new'
+    | '/Receipts/new'
+    | '/Receipts/ocr'
     | '/Journeys'
     | '/Locations'
     | '/Purchases'
@@ -163,12 +192,15 @@ export interface FileRouteTypes {
     | '/Purchases/$purchaseId/edit'
     | '/Locations/$locationId'
     | '/Purchases/$purchaseId'
+    | '/Receipts/$receiptId'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/Locations/new'
     | '/Purchases/new'
     | '/Reasons/new'
+    | '/Receipts/new'
+    | '/Receipts/ocr'
     | '/Journeys'
     | '/Locations'
     | '/Purchases'
@@ -179,12 +211,15 @@ export interface FileRouteTypes {
     | '/Purchases/$purchaseId/edit'
     | '/Locations/$locationId'
     | '/Purchases/$purchaseId'
+    | '/Receipts/$receiptId'
   id:
     | '__root__'
     | '/'
     | '/Locations/new'
     | '/Purchases/new'
     | '/Reasons/new'
+    | '/Receipts/new'
+    | '/Receipts/ocr'
     | '/Journeys/'
     | '/Locations/'
     | '/Purchases/'
@@ -195,6 +230,7 @@ export interface FileRouteTypes {
     | '/Purchases/$purchaseId/edit'
     | '/Locations/$locationId/'
     | '/Purchases/$purchaseId/'
+    | '/Receipts/$receiptId/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -202,6 +238,8 @@ export interface RootRouteChildren {
   LocationsNewRoute: typeof LocationsNewRoute
   PurchasesNewRoute: typeof PurchasesNewRoute
   ReasonsNewRoute: typeof ReasonsNewRoute
+  ReceiptsNewRoute: typeof ReceiptsNewRoute
+  ReceiptsOcrRoute: typeof ReceiptsOcrRoute
   JourneysIndexRoute: typeof JourneysIndexRoute
   LocationsIndexRoute: typeof LocationsIndexRoute
   PurchasesIndexRoute: typeof PurchasesIndexRoute
@@ -212,6 +250,7 @@ export interface RootRouteChildren {
   PurchasesPurchaseIdEditRoute: typeof PurchasesPurchaseIdEditRoute
   LocationsLocationIdIndexRoute: typeof LocationsLocationIdIndexRoute
   PurchasesPurchaseIdIndexRoute: typeof PurchasesPurchaseIdIndexRoute
+  ReceiptsReceiptIdIndexRoute: typeof ReceiptsReceiptIdIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -265,6 +304,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof JourneysIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/Receipts/ocr': {
+      id: '/Receipts/ocr'
+      path: '/Receipts/ocr'
+      fullPath: '/Receipts/ocr'
+      preLoaderRoute: typeof ReceiptsOcrRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/Receipts/new': {
+      id: '/Receipts/new'
+      path: '/Receipts/new'
+      fullPath: '/Receipts/new'
+      preLoaderRoute: typeof ReceiptsNewRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/Reasons/new': {
       id: '/Reasons/new'
       path: '/Reasons/new'
@@ -284,6 +337,13 @@ declare module '@tanstack/react-router' {
       path: '/Locations/new'
       fullPath: '/Locations/new'
       preLoaderRoute: typeof LocationsNewRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/Receipts/$receiptId/': {
+      id: '/Receipts/$receiptId/'
+      path: '/Receipts/$receiptId'
+      fullPath: '/Receipts/$receiptId'
+      preLoaderRoute: typeof ReceiptsReceiptIdIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/Purchases/$purchaseId/': {
@@ -322,6 +382,8 @@ const rootRouteChildren: RootRouteChildren = {
   LocationsNewRoute: LocationsNewRoute,
   PurchasesNewRoute: PurchasesNewRoute,
   ReasonsNewRoute: ReasonsNewRoute,
+  ReceiptsNewRoute: ReceiptsNewRoute,
+  ReceiptsOcrRoute: ReceiptsOcrRoute,
   JourneysIndexRoute: JourneysIndexRoute,
   LocationsIndexRoute: LocationsIndexRoute,
   PurchasesIndexRoute: PurchasesIndexRoute,
@@ -332,6 +394,7 @@ const rootRouteChildren: RootRouteChildren = {
   PurchasesPurchaseIdEditRoute: PurchasesPurchaseIdEditRoute,
   LocationsLocationIdIndexRoute: LocationsLocationIdIndexRoute,
   PurchasesPurchaseIdIndexRoute: PurchasesPurchaseIdIndexRoute,
+  ReceiptsReceiptIdIndexRoute: ReceiptsReceiptIdIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

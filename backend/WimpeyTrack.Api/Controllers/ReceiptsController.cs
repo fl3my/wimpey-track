@@ -126,7 +126,9 @@ public class ReceiptsController : ControllerBase
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteReceipt(int id)
     {
-        var receipt = await _context.Receipts.FindAsync(id);
+        var receipt = await _context.Receipts
+            .Include(r => r.Purchase)
+            .FirstOrDefaultAsync(r => r.Id == id);
         if (receipt == null) return NotFound();
         
         if (!string.IsNullOrWhiteSpace(receipt.ImagePath))
