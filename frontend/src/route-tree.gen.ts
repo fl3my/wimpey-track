@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ReportsIndexRouteImport } from './routes/Reports/index'
+import { Route as ReceiptsIndexRouteImport } from './routes/Receipts/index'
 import { Route as ReasonsIndexRouteImport } from './routes/Reasons/index'
 import { Route as PurchasesIndexRouteImport } from './routes/Purchases/index'
 import { Route as LocationsIndexRouteImport } from './routes/Locations/index'
@@ -31,6 +32,11 @@ const IndexRoute = IndexRouteImport.update({
 const ReportsIndexRoute = ReportsIndexRouteImport.update({
   id: '/Reports/',
   path: '/Reports/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ReceiptsIndexRoute = ReceiptsIndexRouteImport.update({
+  id: '/Receipts/',
+  path: '/Receipts/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ReasonsIndexRoute = ReasonsIndexRouteImport.update({
@@ -100,6 +106,7 @@ export interface FileRoutesByFullPath {
   '/Locations': typeof LocationsIndexRoute
   '/Purchases': typeof PurchasesIndexRoute
   '/Reasons': typeof ReasonsIndexRoute
+  '/Receipts': typeof ReceiptsIndexRoute
   '/Reports': typeof ReportsIndexRoute
   '/Journeys/$journeyId/edit': typeof JourneysJourneyIdEditRoute
   '/Purchases/$purchaseId/edit': typeof PurchasesPurchaseIdEditRoute
@@ -115,6 +122,7 @@ export interface FileRoutesByTo {
   '/Locations': typeof LocationsIndexRoute
   '/Purchases': typeof PurchasesIndexRoute
   '/Reasons': typeof ReasonsIndexRoute
+  '/Receipts': typeof ReceiptsIndexRoute
   '/Reports': typeof ReportsIndexRoute
   '/Journeys/$journeyId/edit': typeof JourneysJourneyIdEditRoute
   '/Purchases/$purchaseId/edit': typeof PurchasesPurchaseIdEditRoute
@@ -131,6 +139,7 @@ export interface FileRoutesById {
   '/Locations/': typeof LocationsIndexRoute
   '/Purchases/': typeof PurchasesIndexRoute
   '/Reasons/': typeof ReasonsIndexRoute
+  '/Receipts/': typeof ReceiptsIndexRoute
   '/Reports/': typeof ReportsIndexRoute
   '/Journeys/$journeyId/edit': typeof JourneysJourneyIdEditRoute
   '/Purchases/$purchaseId/edit': typeof PurchasesPurchaseIdEditRoute
@@ -148,6 +157,7 @@ export interface FileRouteTypes {
     | '/Locations'
     | '/Purchases'
     | '/Reasons'
+    | '/Receipts'
     | '/Reports'
     | '/Journeys/$journeyId/edit'
     | '/Purchases/$purchaseId/edit'
@@ -163,6 +173,7 @@ export interface FileRouteTypes {
     | '/Locations'
     | '/Purchases'
     | '/Reasons'
+    | '/Receipts'
     | '/Reports'
     | '/Journeys/$journeyId/edit'
     | '/Purchases/$purchaseId/edit'
@@ -178,6 +189,7 @@ export interface FileRouteTypes {
     | '/Locations/'
     | '/Purchases/'
     | '/Reasons/'
+    | '/Receipts/'
     | '/Reports/'
     | '/Journeys/$journeyId/edit'
     | '/Purchases/$purchaseId/edit'
@@ -194,6 +206,7 @@ export interface RootRouteChildren {
   LocationsIndexRoute: typeof LocationsIndexRoute
   PurchasesIndexRoute: typeof PurchasesIndexRoute
   ReasonsIndexRoute: typeof ReasonsIndexRoute
+  ReceiptsIndexRoute: typeof ReceiptsIndexRoute
   ReportsIndexRoute: typeof ReportsIndexRoute
   JourneysJourneyIdEditRoute: typeof JourneysJourneyIdEditRoute
   PurchasesPurchaseIdEditRoute: typeof PurchasesPurchaseIdEditRoute
@@ -215,6 +228,13 @@ declare module '@tanstack/react-router' {
       path: '/Reports'
       fullPath: '/Reports'
       preLoaderRoute: typeof ReportsIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/Receipts/': {
+      id: '/Receipts/'
+      path: '/Receipts'
+      fullPath: '/Receipts'
+      preLoaderRoute: typeof ReceiptsIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/Reasons/': {
@@ -306,6 +326,7 @@ const rootRouteChildren: RootRouteChildren = {
   LocationsIndexRoute: LocationsIndexRoute,
   PurchasesIndexRoute: PurchasesIndexRoute,
   ReasonsIndexRoute: ReasonsIndexRoute,
+  ReceiptsIndexRoute: ReceiptsIndexRoute,
   ReportsIndexRoute: ReportsIndexRoute,
   JourneysJourneyIdEditRoute: JourneysJourneyIdEditRoute,
   PurchasesPurchaseIdEditRoute: PurchasesPurchaseIdEditRoute,

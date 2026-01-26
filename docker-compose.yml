@@ -9,11 +9,12 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+:8080
+      - AZUREDOCUMENTINTELLIGENCE__ENDPOINT=${AZURE_DOCUMENT_ENDPOINT}
+      - AZUREDOCUMENTINTELLIGENCE__APIKEY=${AZURE_DOCUMENT_APIKEY}
     volumes:
       - ./logs:/app/logs
+      - ./data:/app/data
     restart: unless-stopped
-    depends_on:
-      - osrm-backend
     
   osrm-backend:
     image: ghcr.io/project-osrm/osrm-backend:latest

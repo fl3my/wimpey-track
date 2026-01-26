@@ -30,6 +30,7 @@
 
     <ItemGroup>
       <Folder Include="Controllers\" />
+      <Folder Include="wwwroot\" />
     </ItemGroup>
 
     <ItemGroup>
@@ -38,4 +39,21 @@
       </Content>
     </ItemGroup>
 
+    <ItemGroup>
+        <None Update="Data\SeedData\central-belt-locations.tsv">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+    </ItemGroup>
+
+    <ItemGroup>
+        <None Update="Templates/**">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+    </ItemGroup>
+
+    <ItemGroup>
+        <Content Include="wwwroot\**\*">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+    </ItemGroup>
 </Project>

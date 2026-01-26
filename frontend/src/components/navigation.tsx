@@ -5,6 +5,7 @@ import {
   IconFileExport,
   IconHome2,
   IconMap2,
+  IconReceipt,
   IconRoute,
   IconZoomQuestion,
 } from "@tabler/icons-react";
@@ -17,6 +18,12 @@ export function Navigation() {
         to="/"
         label={"Home"}
         leftSection={<IconHome2 size={16} stroke={1.5} />}
+      />
+      <NavLink
+        component={Link}
+        to={"/receipts"}
+        label={"Receipts"}
+        leftSection={<IconReceipt size={16} stroke={1.5} />}
       />
       <NavLink
         component={Link}

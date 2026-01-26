@@ -5,10 +5,11 @@ public class FileSystemReceiptImageStorage : IReceiptImageStorage
     private readonly string _storagePath;
     private readonly ILogger<FileSystemReceiptImageStorage> _logger;
 
-    public FileSystemReceiptImageStorage(IConfiguration configuration, ILogger<FileSystemReceiptImageStorage> logger)
+    public FileSystemReceiptImageStorage(IConfiguration configuration, IWebHostEnvironment env, ILogger<FileSystemReceiptImageStorage> logger)
     {
         _storagePath = configuration["ReceiptStorage:Path"] 
-                       ?? Path.Combine(Directory.GetCurrentDirectory(), "ReceiptImages");
+                       ?? Path.Combine(env.WebRootPath , "uploads", "receipts");;
+        
         _logger = logger;
         
         // Ensure directory exists
@@ -23,7 +24,7 @@ public class FileSystemReceiptImageStorage : IReceiptImageStorage
         await File.WriteAllBytesAsync(fullPath, imageBytes);
         _logger.LogInformation("Saved receipt image to {FileName}", fileName);
         
-        return fileName;
+        return $"/uploads/receipts/{fileName}";
     }
 
     public async Task<string> SaveAsync(IFormFile file)
@@ -46,12 +47,16 @@ public class FileSystemReceiptImageStorage : IReceiptImageStorage
         
         _logger.LogInformation("Saved receipt image to {FileName}", fileName);
 
-        return fileName;
+        return $"/uploads/receipts/{fileName}";
     }
 
     public async Task<byte[]?> GetAsync(string imagePath)
     {
-        var fullPath = Path.Combine(_storagePath, imagePath);
+        if (string.IsNullOrWhiteSpace(imagePath))
+            return null;
+        
+        var fileName = Path.GetFileName(imagePath);
+        var fullPath = Path.Combine(_storagePath, fileName);
 
         if (!File.Exists(fullPath))
         {
@@ -64,7 +69,11 @@ public class FileSystemReceiptImageStorage : IReceiptImageStorage
 
     public Task DeleteAsync(string imagePath)
     {
-        var fullPath = Path.Combine(_storagePath, imagePath);
+        if (string.IsNullOrWhiteSpace(imagePath))
+            return Task.CompletedTask;
+
+        var fileName = Path.GetFileName(imagePath);
+        var fullPath = Path.Combine(_storagePath, fileName);
 
         if (File.Exists(fullPath))
         {
