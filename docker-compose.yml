@@ -9,10 +9,9 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+:8080
-      - AZUREDOCUMENTINTELLIGENCE__ENDPOINT=${AZURE_DOCUMENT_ENDPOINT}
-      - AZUREDOCUMENTINTELLIGENCE__APIKEY=${AZURE_DOCUMENT_APIKEY}
+      - AzureDocumentIntelligence__EndPoint=${AZURE_DOCUMENT_ENDPOINT}
+      - AzureDocumentIntelligence__ApiKey=${AZURE_DOCUMENT_APIKEY}
     volumes:
-      - ./logs:/app/logs
       - ./data:/app/data
     restart: unless-stopped
     
