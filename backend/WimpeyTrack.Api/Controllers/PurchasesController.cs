@@ -26,6 +26,14 @@ namespace WimpeyTrack.Api.Controllers
                 Id = p.Id,
                 Date = p.Date,
                 StoreName =  p.StoreName,
+                Items = p.Items.Select(i => new ItemDto
+                {
+                    Id = i.Id,
+                    Name = i.Name,
+                    Quantity = i.Quantity,
+                    Cost = i.Cost,
+                    Reason = i.Reason
+                }).ToList()
             }).ToListAsync();
         }
 
@@ -105,6 +113,14 @@ namespace WimpeyTrack.Api.Controllers
             {
                 Date = dto.Date,
                 StoreName = dto.StoreName,
+                ReceiptId = dto.ReceiptId,
+                Items = dto.Items.Select(i => new Item
+                {
+                    Name = i.Name,
+                    Quantity = i.Quantity,
+                    Cost = i.Cost,
+                    Reason = i.Reason
+                }).ToList()
             };
             
             _context.Purchases.Add(purchase);
@@ -115,6 +131,14 @@ namespace WimpeyTrack.Api.Controllers
                 Id = purchase.Id,
                 Date = purchase.Date,
                 StoreName = purchase.StoreName,
+                Items = purchase.Items.Select(i => new ItemDto
+                {
+                    Id = i.Id,
+                    Name = i.Name,
+                    Quantity = i.Quantity,
+                    Cost = i.Cost,
+                    Reason = i.Reason
+                }).ToList(),
             };
             
             return CreatedAtAction("GetPurchase", new { id = purchase.Id }, purchaseDto);
