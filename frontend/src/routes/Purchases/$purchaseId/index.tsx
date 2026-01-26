@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useGetApiPurchasesId } from "@/api-client.gen.ts";
+import { useGetPurchasesId } from "@/api-client.gen.ts";
 import { Loader, Stack, Text } from "@mantine/core";
 
 export const Route = createFileRoute("/Purchases/$purchaseId/")({
@@ -13,7 +13,7 @@ function RouteComponent() {
     isLoading,
     isError,
     error,
-  } = useGetApiPurchasesId(purchaseId);
+  } = useGetPurchasesId(purchaseId);
 
   if (isLoading) return <Loader size="xl" />;
   if (isError)

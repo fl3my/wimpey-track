@@ -1,6 +1,6 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useForm } from "@mantine/form";
-import { usePostApiReasons } from "@/api-client.gen.ts";
+import { usePostReasons } from "@/api-client.gen.ts";
 import { Button, TextInput } from "@mantine/core";
 
 export const Route = createFileRoute("/Reasons/new")({
@@ -16,7 +16,7 @@ function RouteComponent() {
       reasonName: "",
     },
   });
-  const createReason = usePostApiReasons();
+  const createReason = usePostReasons();
 
   const handleSubmit = async (values: typeof form.values) => {
     try {

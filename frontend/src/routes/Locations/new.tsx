@@ -1,6 +1,6 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useForm } from "@mantine/form";
-import { usePostApiLocations } from "@/api-client.gen.ts";
+import { usePostLocations } from "@/api-client.gen.ts";
 import { Button, NumberInput, TextInput } from "@mantine/core";
 
 export const Route = createFileRoute("/Locations/new")({
@@ -18,7 +18,7 @@ function RouteComponent() {
       longitude: 0,
     },
   });
-  const createLocation = usePostApiLocations();
+  const createLocation = usePostLocations();
 
   const handleSubmit = async (values: typeof form.values) => {
     try {

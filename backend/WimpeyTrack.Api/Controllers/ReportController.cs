@@ -10,7 +10,7 @@ using WimpeyTrack.Api.Services;
 
 namespace WimpeyTrack.Api.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     [ApiController]
     public class ReportController : ControllerBase
     {

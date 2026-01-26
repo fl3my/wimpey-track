@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useDeleteApiReasonsId, useGetApiReasons } from "@/api-client.gen.ts";
+import { useDeleteReasonsId, useGetReasons } from "@/api-client.gen.ts";
 import { Button, Loader, Table, Text } from "@mantine/core";
 
 export const Route = createFileRoute("/Reasons/")({
@@ -7,14 +7,8 @@ export const Route = createFileRoute("/Reasons/")({
 });
 
 function RouteComponent() {
-  const {
-    data: reasons,
-    isLoading,
-    isError,
-    error,
-    refetch,
-  } = useGetApiReasons();
-  const deleteReason = useDeleteApiReasonsId();
+  const { data: reasons, isLoading, isError, error, refetch } = useGetReasons();
+  const deleteReason = useDeleteReasonsId();
 
   if (isLoading) return <Loader />;
   if (isError)

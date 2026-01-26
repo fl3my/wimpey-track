@@ -1,8 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import {
-  useDeleteApiPurchasesId,
-  useGetApiPurchases,
-} from "@/api-client.gen.ts";
+import { useDeletePurchasesId, useGetPurchases } from "@/api-client.gen.ts";
 import { Button, Loader, Table, Text } from "@mantine/core";
 
 export const Route = createFileRoute("/Purchases/")({
@@ -16,8 +13,8 @@ function RouteComponent() {
     isError,
     error,
     refetch,
-  } = useGetApiPurchases();
-  const deletePurchase = useDeleteApiPurchasesId();
+  } = useGetPurchases();
+  const deletePurchase = useDeletePurchasesId();
 
   if (isLoading) return <Loader />;
   if (isError)

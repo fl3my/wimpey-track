@@ -1,12 +1,12 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import {
-  useDeleteApiJourneysId,
-  useDeleteApiJourneysJourneyIdTripsTripId,
-  useGetApiJourneys,
-  useGetApiLocations,
-  useGetApiReasons,
-  usePostApiJourneys,
-  usePostApiJourneysJourneyIdTrips,
+  useDeleteJourneysId,
+  useDeleteJourneysJourneyIdTripsTripId,
+  useGetJourneys,
+  useGetLocations,
+  useGetReasons,
+  usePostJourneys,
+  usePostJourneysJourneyIdTrips,
 } from "@/api-client.gen.ts";
 import { useState } from "react";
 import {
@@ -59,15 +59,15 @@ function RouteComponent() {
   const [showFormForDay, setShowFormForDay] = useState<number | null>(null);
 
   // Query the journeys
-  const journeys = useGetApiJourneys({
+  const journeys = useGetJourneys({
     weekStart: formatDate(weekStart),
   });
-  const createJourney = usePostApiJourneys();
-  const deleteJourney = useDeleteApiJourneysId();
-  const locations = useGetApiLocations();
-  const reasons = useGetApiReasons();
-  const createTrip = usePostApiJourneysJourneyIdTrips();
-  const deleteTrip = useDeleteApiJourneysJourneyIdTripsTripId();
+  const createJourney = usePostJourneys();
+  const deleteJourney = useDeleteJourneysId();
+  const locations = useGetLocations();
+  const reasons = useGetReasons();
+  const createTrip = usePostJourneysJourneyIdTrips();
+  const deleteTrip = useDeleteJourneysJourneyIdTripsTripId();
 
   const form = useForm<{ locationId: string | null; reasonId: string | null }>({
     initialValues: {

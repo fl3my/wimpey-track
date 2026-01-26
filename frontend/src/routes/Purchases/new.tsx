@@ -1,6 +1,6 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 
-import { usePostApiPurchases } from "@/api-client.gen.ts";
+import { usePostPurchases } from "@/api-client.gen.ts";
 import {
   PurchaseForm,
   type PurchaseFormValues,
@@ -12,7 +12,7 @@ export const Route = createFileRoute("/Purchases/new")({
 
 function RouteComponent() {
   const navigate = useNavigate();
-  const createPurchase = usePostApiPurchases();
+  const createPurchase = usePostPurchases();
 
   const handleSubmit = async (values: PurchaseFormValues) => {
     try {

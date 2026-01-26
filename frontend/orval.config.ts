@@ -12,6 +12,7 @@ export default defineConfig({
           includeHttpResponseReturnType: false,
         },
       },
+      baseUrl: "/api",
     },
   },
 });

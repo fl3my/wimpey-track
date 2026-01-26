@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useGetApiReceipts } from "@/api-client.gen.ts";
+import { useGetReceipts } from "@/api-client.gen.ts";
 import { Loader, Text } from "@mantine/core";
 
 export const Route = createFileRoute("/Receipts/")({
@@ -7,7 +7,7 @@ export const Route = createFileRoute("/Receipts/")({
 });
 
 function RouteComponent() {
-  const { data: receipts, isLoading, isError, error } = useGetApiReceipts();
+  const { data: receipts, isLoading, isError, error } = useGetReceipts();
 
   if (isLoading) return <Loader />;
   if (isError)
