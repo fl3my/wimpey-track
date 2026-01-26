@@ -29,6 +29,9 @@ builder.Services.AddScoped<IPdfConverterService, PdfConverterService>();
 // Add the Receipt Analysis endpoint
 builder.Services.AddScoped<IReceiptAnalysisService, ReceiptAnalysisService>();
 
+// Add the receipt imge storage service
+builder.Services.AddScoped<IReceiptImageStorage, FileSystemReceiptImageStorage>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -40,6 +43,8 @@ if (app.Environment.IsDevelopment())
 
 // Seed data
 await DatabaseInitializer.InitializeAsync(app.Services);
+
+app.UseStaticFiles();
 
 app.UseHttpsRedirection();
 

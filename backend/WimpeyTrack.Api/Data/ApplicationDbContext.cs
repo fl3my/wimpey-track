@@ -13,4 +13,5 @@ public class ApplicationDbContext : DbContext
     public DbSet<Reason> Reasons { get; set; }
     public DbSet<Purchase> Purchases { get; set; }
     public DbSet<Item> Items { get; set; }
+    public DbSet<Receipt> Receipts { get; set; }
 }

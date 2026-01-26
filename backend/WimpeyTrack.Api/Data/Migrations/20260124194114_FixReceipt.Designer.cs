@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WimpeyTrack.Api.Data;
 
@@ -10,9 +11,11 @@ using WimpeyTrack.Api.Data;
 namespace WimpeyTrack.Api.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260124194114_FixReceipt")]
+    partial class FixReceipt
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "10.0.2");
@@ -102,17 +105,11 @@ namespace WimpeyTrack.Api.Data.Migrations
                     b.Property<DateOnly>("Date")
                         .HasColumnType("TEXT");
 
-                    b.Property<int?>("ReceiptId")
-                        .HasColumnType("INTEGER");
-
                     b.Property<string>("StoreName")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("ReceiptId")
-                        .IsUnique();
 
                     b.ToTable("Purchases");
                 });
@@ -152,7 +149,13 @@ namespace WimpeyTrack.Api.Data.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
+                    b.Property<int?>("PurchaseId")
+                        .HasColumnType("INTEGER");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("PurchaseId")
+                        .IsUnique();
 
                     b.ToTable("Receipts");
                 });
@@ -205,13 +208,13 @@ namespace WimpeyTrack.Api.Data.Migrations
                     b.Navigation("HomeLocation");
                 });
 
-            modelBuilder.Entity("WimpeyTrack.Api.Models.Purchase", b =>
+            modelBuilder.Entity("WimpeyTrack.Api.Models.Receipt", b =>
                 {
-                    b.HasOne("WimpeyTrack.Api.Models.Receipt", "Receipt")
-                        .WithOne("Purchase")
-                        .HasForeignKey("WimpeyTrack.Api.Models.Purchase", "ReceiptId");
+                    b.HasOne("WimpeyTrack.Api.Models.Purchase", "Purchase")
+                        .WithOne("Receipt")
+                        .HasForeignKey("WimpeyTrack.Api.Models.Receipt", "PurchaseId");
 
-                    b.Navigation("Receipt");
+                    b.Navigation("Purchase");
                 });
 
             modelBuilder.Entity("WimpeyTrack.Api.Models.Trip", b =>
@@ -254,11 +257,8 @@ namespace WimpeyTrack.Api.Data.Migrations
             modelBuilder.Entity("WimpeyTrack.Api.Models.Purchase", b =>
                 {
                     b.Navigation("Items");
-                });
 
-            modelBuilder.Entity("WimpeyTrack.Api.Models.Receipt", b =>
-                {
-                    b.Navigation("Purchase");
+                    b.Navigation("Receipt");
                 });
 #pragma warning restore 612, 618
         }

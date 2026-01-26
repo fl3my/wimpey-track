@@ -1,6 +1,5 @@
 using Azure;
 using Azure.AI.DocumentIntelligence;
-using DocumentFormat.OpenXml.Spreadsheet;
 using WimpeyTrack.Api.Dtos;
 using WimpeyTrack.Api.Enums;
 
@@ -28,7 +27,7 @@ public class ReceiptAnalysisService : IReceiptAnalysisService
         _logger = logger;
     }
 
-    public async Task<List<ReceiptData>> AnalyseReceiptAsync(BinaryData receiptData)
+    public async Task<ReceiptData?> AnalyseReceiptAsync(BinaryData receiptData)
     {
         try
         {
@@ -41,72 +40,71 @@ public class ReceiptAnalysisService : IReceiptAnalysisService
             if (result.Documents.Count == 0)
             {
                 _logger.LogWarning("No receipts found for {Receipt}", receiptData);
-                return [];
+                return null;
             }
 
             // Create list 
-            var receipts = new List<ReceiptData>();
-
-            foreach (var document in result.Documents)
+            var receipt = new ReceiptData();
+            var document = result.Documents.First();
+            
+            if (document.Fields.TryGetValue("MerchantName", out var merchantNameField))
             {
-                var receipt = new ReceiptData();
-
-                if (document.Fields.TryGetValue("MerchantName", out var merchantNameField))
+                if (merchantNameField.FieldType == DocumentFieldType.String)
                 {
-                    if (merchantNameField.FieldType == DocumentFieldType.String)
-                    {
-                        receipt.StoreName = merchantNameField.ValueString;
-                    }
+                    var merchantName = merchantNameField.ValueString;
+                    var storeName = merchantName.Split('\n', StringSplitOptions.RemoveEmptyEntries)[0];
+                    receipt.StoreName = storeName;
                 }
-
-                if (document.Fields.TryGetValue("TransactionDate", out DocumentField transactionDateField))
-                {
-                    if (transactionDateField.FieldType == DocumentFieldType.Date)
-                    {
-                        if (transactionDateField.ValueDate != null)
-                            receipt.TransactionDate = DateOnly.FromDateTime(transactionDateField.ValueDate.Value.DateTime);
-                    }
-                }
-                
-                if (document.Fields.TryGetValue("ReceiptType", out DocumentField receiptTypeField))
-                {
-                    if (receiptTypeField.FieldType == DocumentFieldType.String)
-                    {
-                        receipt.ReceiptCategory = receiptTypeField.ValueString == "Fuel&Energy.Gas" ? ReceiptCategory.Fuel : ReceiptCategory.Supplies;
-                    }
-                }
-
-                if (document.Fields.TryGetValue("Items", out var itemsField))
-                {
-                    foreach (var itemField in itemsField.ValueList)
-                    {
-                        var receiptItem = new ReceiptItem();
-                        var itemFields = itemField.ValueDictionary;
-
-                        if (itemFields.TryGetValue("Description", out var itemDescriptionField))
-                        {
-                            receiptItem.Description = itemDescriptionField.ValueString;
-                        }
-
-                        if (itemFields.TryGetValue("TotalPrice", out var totalPriceField))
-                        {
-                            receiptItem.Price = totalPriceField.ValueCurrency.Amount;
-                        }
-
-                        if (itemFields.TryGetValue("Quantity", out var quantityField))
-                        {
-                            receiptItem.Quantity = quantityField.ValueDouble;
-                        }
-
-                        receipt.ReceiptItems.Add(receiptItem);
-                    }
-                }
-
-                receipts.Add(receipt);
             }
 
-            _logger.LogInformation("Successfully analysed {Count} receipt", receipts.Count);
-            return receipts;
+            if (document.Fields.TryGetValue("TransactionDate", out DocumentField transactionDateField))
+            {
+                if (transactionDateField.FieldType == DocumentFieldType.Date)
+                {
+                    if (transactionDateField.ValueDate != null)
+                        receipt.TransactionDate = DateOnly.FromDateTime(transactionDateField.ValueDate.Value.DateTime);
+                }
+            }
+            
+            if (document.Fields.TryGetValue("ReceiptType", out DocumentField receiptTypeField))
+            {
+                if (receiptTypeField.FieldType == DocumentFieldType.String)
+                {
+                    receipt.ReceiptCategory = receiptTypeField.ValueString == "Fuel&Energy.Gas" ? ReceiptCategory.Fuel : ReceiptCategory.Supplies;
+                }
+            }
+
+            if (document.Fields.TryGetValue("Items", out var itemsField))
+            {
+                foreach (var itemField in itemsField.ValueList)
+                {
+                    var receiptItem = new ReceiptItem();
+                    var itemFields = itemField.ValueDictionary;
+
+                    if (itemFields.TryGetValue("Description", out var itemDescriptionField))
+                    {
+                        receiptItem.Description = itemDescriptionField.ValueString;
+                    }
+
+                    if (itemFields.TryGetValue("TotalPrice", out var totalPriceField))
+                    {
+                        receiptItem.Price = totalPriceField.ValueCurrency.Amount;
+                    }
+
+                    // Set the default quantity to 1
+                    receiptItem.Quantity = 1;
+
+                    if (itemFields.TryGetValue("Quantity", out var quantityField))
+                    {
+                        receiptItem.Quantity = quantityField.ValueDouble;
+                    }
+
+                    receipt.ReceiptItems.Add(receiptItem);
+                }
+            }
+
+            _logger.LogInformation("Successfully analysed receipt");
+            return receipt;
         }
         catch (RequestFailedException ex)
         {
