@@ -34,6 +34,9 @@ builder.Services.AddScoped<IReceiptAnalysisService, ReceiptAnalysisService>();
 // Add the receipt imge storage service
 builder.Services.AddScoped<IReceiptImageStorage, FileSystemReceiptImageStorage>();
 
+// Add the image processing service
+builder.Services.AddScoped<IImageProcessingService, ImageProcessingService>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

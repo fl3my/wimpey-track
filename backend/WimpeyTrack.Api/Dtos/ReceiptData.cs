@@ -8,4 +8,5 @@ public class ReceiptData
     public DateOnly? TransactionDate { get; set; }
     public ReceiptCategory ReceiptCategory { get; set; }
     public List<ReceiptItem> ReceiptItems { get; set; } = new();
+    public BoundingBox? BoundingBox { get; set; }
 }

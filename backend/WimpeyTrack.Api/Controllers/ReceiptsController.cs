@@ -19,12 +19,14 @@ public class ReceiptsController : ControllerBase
     private readonly ApplicationDbContext _context;
     private readonly IReceiptAnalysisService _analysisService;
     private readonly IReceiptImageStorage _imageStorage;
+    private readonly IImageProcessingService _imageProcessingService;
 
-    public ReceiptsController(ApplicationDbContext context, IReceiptAnalysisService analysisService, IReceiptImageStorage imageStorage)
+    public ReceiptsController(ApplicationDbContext context, IReceiptAnalysisService analysisService, IReceiptImageStorage imageStorage, IImageProcessingService imageProcessingService)
     {
         _context = context;
         _analysisService = analysisService;
         _imageStorage = imageStorage;
+        _imageProcessingService = imageProcessingService;
     }
 
     // GET: api/Receipts
@@ -109,9 +111,21 @@ public class ReceiptsController : ControllerBase
         
         // If no results return
         if (result == null) return BadRequest("No receipts found.");
+        
+        var imageBytes = binaryData.ToArray();
 
+        string imageBase64;
+        
+        if (result.BoundingBox == null)
+        {
+            imageBase64 = Convert.ToBase64String(binaryData);
+        }
+        else
+        {
+            imageBase64 = _imageProcessingService.CropImageToBase64(imageBytes, result.BoundingBox, 0.2f);
+        }
+        
         // Convert the image to base 64 so can be returned
-        var imageBase64 = Convert.ToBase64String(binaryData);
         
         var receiptResultDto = new ReceiptOcrResultDto()
         {

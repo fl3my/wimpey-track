@@ -35,7 +35,7 @@ public class ReceiptAnalysisService : IReceiptAnalysisService
             var operation =
                 await _documentClient.AnalyzeDocumentAsync(WaitUntil.Completed, "prebuilt-receipt", receiptData);
             var result = operation.Value;
-
+            
             // If no documents, return empty
             if (result.Documents.Count == 0)
             {
@@ -47,6 +47,9 @@ public class ReceiptAnalysisService : IReceiptAnalysisService
             var receipt = new ReceiptData();
             var document = result.Documents.First();
             
+            // Get the bounding box
+            receipt.BoundingBox = GetOverallBoundingBox(document);
+            
             if (document.Fields.TryGetValue("MerchantName", out var merchantNameField))
             {
                 if (merchantNameField.FieldType == DocumentFieldType.String)
@@ -56,7 +59,7 @@ public class ReceiptAnalysisService : IReceiptAnalysisService
                     receipt.StoreName = storeName;
                 }
             }
-
+            
             if (document.Fields.TryGetValue("TransactionDate", out DocumentField transactionDateField))
             {
                 if (transactionDateField.FieldType == DocumentFieldType.Date)
@@ -116,5 +119,42 @@ public class ReceiptAnalysisService : IReceiptAnalysisService
             _logger.LogError(ex, "Error analysing receipt");
             throw;
         }
+    }
+    
+    private BoundingBox? GetOverallBoundingBox(AnalyzedDocument document)
+    {
+        int? minX = null, minY = null, maxX = null, maxY = null;
+
+        foreach (var field in document.Fields.Values)
+        {
+            if (field.BoundingRegions == null) continue;
+
+            foreach (var region in field.BoundingRegions)
+            {
+                if (region.Polygon == null || region.Polygon.Count != 8) continue;
+
+                for (int i = 0; i < 8; i += 2)
+                {
+                    int x = (int)Math.Round(region.Polygon[i]);
+                    int y = (int)Math.Round(region.Polygon[i + 1]);
+
+                    minX = minX.HasValue ? Math.Min(minX.Value, x) : x;
+                    minY = minY.HasValue ? Math.Min(minY.Value, y) : y;
+                    maxX = maxX.HasValue ? Math.Max(maxX.Value, x) : x;
+                    maxY = maxY.HasValue ? Math.Max(maxY.Value, y) : y;
+                }
+            }
+        }
+
+        if (!minX.HasValue || !minY.HasValue || !maxX.HasValue || !maxY.HasValue)
+            return null;
+
+        return new BoundingBox
+        {
+            X = minX.Value,
+            Y = minY.Value,
+            Width = maxX.Value - minX.Value,
+            Height = maxY.Value - minY.Value
+        };
     }
 }
