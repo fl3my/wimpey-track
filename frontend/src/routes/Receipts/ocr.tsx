@@ -40,6 +40,7 @@ function RouteComponent() {
   const onHandleUpload = () => {
     const file = uploadField.getValue();
     if (!file) return;
+
     mutate({ data: { File: file } });
   };
 

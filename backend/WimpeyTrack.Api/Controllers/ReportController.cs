@@ -17,12 +17,14 @@ namespace WimpeyTrack.Api.Controllers
         private readonly ApplicationDbContext _context;
         private readonly IPdfConverterService _pdfConverterService;
         private readonly IReceiptImageStorage _imageStorage;
+        private readonly IImageProcessingService _imageProcessingService;
         
-        public ReportController(ApplicationDbContext context, IPdfConverterService pdfConverterService, IReceiptImageStorage imageStorage)
+        public ReportController(ApplicationDbContext context, IPdfConverterService pdfConverterService, IReceiptImageStorage imageStorage, IImageProcessingService imageProcessingService)
         {
             _context = context;
             _pdfConverterService = pdfConverterService;
             _imageStorage = imageStorage;
+            _imageProcessingService = imageProcessingService;
         }
         
         [HttpGet]
@@ -126,7 +128,7 @@ namespace WimpeyTrack.Api.Controllers
                     // Split pdf pages
                     using var inputPdfStream = new MemoryStream(pdfBytes);
                     var inputPdf = PdfReader.Open(inputPdfStream, PdfDocumentOpenMode.Import);
-
+                    
                     for (var pageIndex = 0; pageIndex < inputPdf.PageCount; pageIndex++)
                     {
                         using var singlePageDoc = new PdfDocument();
@@ -144,26 +146,42 @@ namespace WimpeyTrack.Api.Controllers
                     }
                 }
                 
-                // Add receipt images to the archive
-                for (var receiptIndex = 0; receiptIndex < receipts.Count; receiptIndex++)
-                {
-                    // Get the full path starting at wwwroot
-                    var receipt = receipts[receiptIndex];
-                    var imageBytes = await _imageStorage.GetAsync(receipt.ImagePath);
+                // Calculate the pages required
+                const int receiptsPerRow = 5;
+                var totalPages =  (int)Math.Ceiling(receipts.Count / (double)receiptsPerRow);
 
-                    if (imageBytes is { Length: > 0 })
+                // For each page
+                for (var pageIndex = 0; pageIndex < totalPages; pageIndex++)
+                {
+                    // Get receipts
+                    var receiptsForThisPage = receipts
+                        .Skip(pageIndex * receiptsPerRow)
+                        .Take(receiptsPerRow)
+                        .ToList();
+                    
+                    // Convert receipts to list of byte arrays
+                    var receiptImageBytes = new List<byte[]>();
+                    foreach (var receiptRow in receiptsForThisPage)
                     {
-                        // Construct the file name
-                        var fileExtension = Path.GetExtension(receipt.ImagePath) ?? ".jpg";
-                        var entryName = $"Receipt_{receiptIndex + 1}{fileExtension}";
-                        
-                        // Save to the archive
-                        var entry = archive.CreateEntry(entryName, CompressionLevel.Fastest);
-                        await using var entryStream = await entry.OpenAsync();
-                        await entryStream.WriteAsync(imageBytes);
+                        var imageBytes = await _imageStorage.GetAsync(receiptRow.ImagePath);
+                        if (imageBytes is { Length: > 0 })
+                        {
+                            receiptImageBytes.Add(imageBytes);
+                        }
                     }
+
+                    // If no receipts continue
+                    if (receiptsForThisPage.Count <= 0) continue;
+                    
+                    // Combine the receipts into one image
+                    var combinedImage = await _imageProcessingService.CombineReceiptsAsync(receiptImageBytes, receiptsPerRow);
+                    
+                    // Save the receipts images
+                    var entryName = $"Receipts_Page_{pageIndex + 1}.jpeg";
+                    var entry = archive.CreateEntry(entryName, CompressionLevel.Fastest);
+                    await using var entryStream = await entry.OpenAsync();
+                    await entryStream.WriteAsync(combinedImage);
                 }
-                
             }
             
             zipStream.Position = 0;

@@ -12,7 +12,7 @@ namespace WimpeyTrack.Api.Controllers;
 [ApiController]
 public class ReceiptsController : ControllerBase
 {
-    private const long MaxFileSize = 2 * 1024 * 1024; // 2 MB
+    private const long MaxFileSize = 5 * 1024 * 1024; // 2 MB
     private static readonly string[] AllowedTypes =
         { "image/jpeg" };
 
@@ -102,9 +102,8 @@ public class ReceiptsController : ControllerBase
         if (!AllowedTypes.Contains(dto.File.ContentType))
             return BadRequest("File type not supported.");
         
-        // Convert the image to binary data
-        await using var stream = dto.File.OpenReadStream();
-        var binaryData = await BinaryData.FromStreamAsync(stream);
+        var resizedStream = await _imageProcessingService.ResizeForOcrAsync(dto.File, maxWidth: 2000, maxHeight: 2000);
+        var binaryData = await BinaryData.FromStreamAsync(resizedStream);
         
         // Make request to the receipt service
         var result = await _analysisService.AnalyseReceiptAsync(binaryData);
