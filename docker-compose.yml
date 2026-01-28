@@ -15,6 +15,13 @@ services:
       - ./data:/app/data
     restart: unless-stopped
     
+  document-vision-service:
+    build:
+      context: ./document-vision-service
+    container_name: document-vision-service
+    ports:
+      - "5003:80"
+
   osrm-backend:
     image: ghcr.io/project-osrm/osrm-backend:latest
     volumes:
