@@ -90,7 +90,7 @@ public class ReceiptsController : ControllerBase
         var cropped = await _imageProcessingService
             .CropAsync(stream, firstBox, cancellationToken);
 
-        var resizedAndCropped = await _imageProcessingService.ResizeForOcrAsync(cropped);
+        var resizedAndCropped = await _imageProcessingService.ResizeAsync(cropped);
         
         // Save cropped image
         var imagePath = await _imageStorage.SaveAsync(resizedAndCropped);
@@ -162,7 +162,7 @@ public class ReceiptsController : ControllerBase
         var cropped = await _imageProcessingService
             .CropAsync(stream, firstBox);
         
-        var resizedStream = await _imageProcessingService.ResizeForOcrAsync(cropped);
+        var resizedStream = await _imageProcessingService.ResizeAsync(cropped);
         var binaryData = BinaryData.FromBytes(resizedStream);
         
         // Make request to the receipt service
@@ -171,7 +171,7 @@ public class ReceiptsController : ControllerBase
         // If no results return
         if (result == null) return BadRequest("No receipts found.");
         
-        var imageBase64 = Convert.ToBase64String(binaryData);
+        var imageBase64 = Convert.ToBase64String(binaryData.ToArray());
         
         var receiptResultDto = new ReceiptOcrResultDto()
         {

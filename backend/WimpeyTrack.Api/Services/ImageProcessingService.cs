@@ -122,7 +122,7 @@ public class ImageProcessingService : IImageProcessingService
         }
     }
     
-    public async Task<Stream> ResizeForOcrAsync(IFormFile file, long maxBytes = 4 * 1024 * 1024)
+    public async Task<Stream> ResizeAsync(IFormFile file, long maxBytes = 4 * 1024 * 1024)
     {
         // Check if file size is below
         if (file.Length <= maxBytes)
@@ -154,7 +154,7 @@ public class ImageProcessingService : IImageProcessingService
         throw new InvalidOperationException("Unable to reduce image size.");
     }
     
-    public async Task<byte[]> ResizeForOcrAsync(byte[] imageBytes, long maxBytes = 4 * 1024 * 1024)
+    public async Task<byte[]> ResizeAsync(byte[] imageBytes, long maxBytes = 4 * 1024 * 1024)
     {
         if (imageBytes.Length <= maxBytes)
         {

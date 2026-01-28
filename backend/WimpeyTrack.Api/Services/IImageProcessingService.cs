@@ -7,7 +7,7 @@ public interface IImageProcessingService
     public Task<byte[]> CropAsync(Stream imageStream, BoundingBox box, CancellationToken cancellationToken = default);
     string CropImageToBase64(byte[] image, BoundingBox box, float paddingPercent);
     Task<byte[]> CombineReceiptsAsync(List<byte[]> imageBytesList, int receiptsPerRow = 5);
-    Task<Stream> ResizeForOcrAsync(IFormFile file, long maxBytes = 4 * 1024 * 1024);
-    Task<byte[]> ResizeForOcrAsync(byte[] imageBytes, long maxBytes = 4 * 1024 * 1024);
+    Task<Stream> ResizeAsync(IFormFile file, long maxBytes = 4 * 1024 * 1024);
+    Task<byte[]> ResizeAsync(byte[] imageBytes, long maxBytes = 4 * 1024 * 1024);
     
 }
