@@ -37,6 +37,15 @@ builder.Services.AddScoped<IReceiptImageStorage, FileSystemReceiptImageStorage>(
 // Add the image processing service
 builder.Services.AddScoped<IImageProcessingService, ImageProcessingService>();
 
+// Add custom vision service
+builder.Services.AddHttpClient<IVisionService, VisionService>(client =>
+{
+    client.BaseAddress = new Uri(
+        builder.Configuration["VisionService:BaseUrl"] ?? throw new InvalidOperationException()
+    );
+    client.Timeout = TimeSpan.FromSeconds(30);
+});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

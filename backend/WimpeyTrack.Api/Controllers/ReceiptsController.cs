@@ -12,7 +12,6 @@ namespace WimpeyTrack.Api.Controllers;
 [ApiController]
 public class ReceiptsController : ControllerBase
 {
-    private const long MaxFileSize = 5 * 1024 * 1024; // 2 MB
     private static readonly string[] AllowedTypes =
         { "image/jpeg" };
 
@@ -20,13 +19,15 @@ public class ReceiptsController : ControllerBase
     private readonly IReceiptAnalysisService _analysisService;
     private readonly IReceiptImageStorage _imageStorage;
     private readonly IImageProcessingService _imageProcessingService;
+    private readonly IVisionService _visionService;
 
-    public ReceiptsController(ApplicationDbContext context, IReceiptAnalysisService analysisService, IReceiptImageStorage imageStorage, IImageProcessingService imageProcessingService)
+    public ReceiptsController(ApplicationDbContext context, IReceiptAnalysisService analysisService, IReceiptImageStorage imageStorage, IImageProcessingService imageProcessingService, IVisionService visionService)
     {
         _context = context;
         _analysisService = analysisService;
         _imageStorage = imageStorage;
         _imageProcessingService = imageProcessingService;
+        _visionService = visionService;
     }
 
     // GET: api/Receipts
@@ -59,10 +60,41 @@ public class ReceiptsController : ControllerBase
     // POST: api/Receipts
     [HttpPost()]
     [Consumes("multipart/form-data")]
-    public async Task<ActionResult<ReceiptDto>> PostReceipt([FromForm] CreateReceiptDto dto)
+    public async Task<ActionResult<ReceiptDto>> PostReceipt([FromForm] CreateReceiptDto dto, CancellationToken cancellationToken)
     { 
-        var imagePath = await _imageStorage.SaveAsync(dto.File);
+        // Detect the receipts
+        var visionResult = await _visionService.DetectReceiptsAsync(dto.File, cancellationToken);
+        
+        // Map bounding boxes to domain model
+        var firstBox = visionResult.Receipts
+            .Select(r => new BoundingBox()
+            {
+                X = r.X,
+                Y = r.Y,
+                Width = r.Width,
+                Height = r.Height
+            })
+            .FirstOrDefault();
 
+        // 3. Reject if no receipt has been detected
+        if (firstBox == null)
+        {
+            return BadRequest(new
+            {
+                error = "No receipt detected in image"
+            });
+        }
+        
+        // Crop the detected receipt
+        await using var stream = dto.File.OpenReadStream();
+        var cropped = await _imageProcessingService
+            .CropAsync(stream, firstBox, cancellationToken);
+
+        var resizedAndCropped = await _imageProcessingService.ResizeForOcrAsync(cropped);
+        
+        // Save cropped image
+        var imagePath = await _imageStorage.SaveAsync(resizedAndCropped);
+        
         return await CreateReceiptAsync(dto.Name, dto.Date, dto.Category, imagePath);
     }
 
@@ -95,15 +127,43 @@ public class ReceiptsController : ControllerBase
         // Validation
         if (dto.File == null || dto.File.Length == 0)
             return BadRequest("No file uploaded.");
-
-        if (dto.File.Length > MaxFileSize)
-            return BadRequest("File too large.");
-    
+        
         if (!AllowedTypes.Contains(dto.File.ContentType))
             return BadRequest("File type not supported.");
         
-        var resizedStream = await _imageProcessingService.ResizeForOcrAsync(dto.File, maxWidth: 2000, maxHeight: 2000);
-        var binaryData = await BinaryData.FromStreamAsync(resizedStream);
+        // Crop to receipt
+        var visionResult = await _visionService.DetectReceiptsAsync(dto.File);
+        if (visionResult.Receipts.Count == 0)
+        {
+            return BadRequest("No receipts found.");
+        }
+        
+        // Map bounding boxes to domain model
+        var firstBox = visionResult.Receipts
+            .Select(r => new BoundingBox()
+            {
+                X = r.X,
+                Y = r.Y,
+                Width = r.Width,
+                Height = r.Height
+            })
+            .FirstOrDefault();
+
+        // 3. Reject if no receipt has been detected
+        if (firstBox == null)
+        {
+            return BadRequest(new
+            {
+                error = "No receipt detected in image"
+            });
+        }
+        
+        await using var stream = dto.File.OpenReadStream();
+        var cropped = await _imageProcessingService
+            .CropAsync(stream, firstBox);
+        
+        var resizedStream = await _imageProcessingService.ResizeForOcrAsync(cropped);
+        var binaryData = BinaryData.FromBytes(resizedStream);
         
         // Make request to the receipt service
         var result = await _analysisService.AnalyseReceiptAsync(binaryData);
@@ -111,20 +171,7 @@ public class ReceiptsController : ControllerBase
         // If no results return
         if (result == null) return BadRequest("No receipts found.");
         
-        var imageBytes = binaryData.ToArray();
-
-        string imageBase64;
-        
-        if (result.BoundingBox == null)
-        {
-            imageBase64 = Convert.ToBase64String(binaryData);
-        }
-        else
-        {
-            imageBase64 = _imageProcessingService.CropImageToBase64(imageBytes, result.BoundingBox, 0.2f);
-        }
-        
-        // Convert the image to base 64 so can be returned
+        var imageBase64 = Convert.ToBase64String(binaryData);
         
         var receiptResultDto = new ReceiptOcrResultDto()
         {

@@ -5,7 +5,7 @@ router = APIRouter(prefix="/v1/receipts", tags=["receipts"])
 
 
 @router.post("/detect")
-async def detect_receipts_endpoint(image: UploadFile = File(...)):
-    image_bytes = await image.read()
+async def detect_receipts_endpoint(file: UploadFile = File(...)):
+    image_bytes = await file.read()
     receipts = detect_receipts(image_bytes)
     return {"receipts": receipts}
