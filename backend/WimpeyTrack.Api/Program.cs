@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using Scalar.AspNetCore;
 using WimpeyTrack.Api.Data;
 using WimpeyTrack.Api.Data.Seed;
+using WimpeyTrack.Api.Domain;
 using WimpeyTrack.Api.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -25,17 +26,15 @@ builder.Services.AddHttpClient<IRouteService, RouteService>(client =>
     client.BaseAddress = new Uri(osrmBaseUrl);
 });
 
-// Add the PDF conversion service
 builder.Services.AddScoped<IPdfConverterService, PdfConverterService>();
-
-// Add the Receipt Analysis endpoint
 builder.Services.AddScoped<IReceiptAnalysisService, ReceiptAnalysisService>();
-
-// Add the receipt imge storage service
 builder.Services.AddScoped<IReceiptImageStorage, FileSystemReceiptImageStorage>();
-
-// Add the image processing service
 builder.Services.AddScoped<IImageProcessingService, ImageProcessingService>();
+builder.Services.AddScoped<IReportGenerationService, ReportGenerationService>();
+builder.Services.AddScoped<IReceiptProvider, ReceiptProvider>();
+builder.Services.AddScoped<IExpenseWorkbookBuilder, ExpenseWorkbookBuilder>();
+builder.Services.AddScoped<IBookBuilder, BookBuilder>();
+builder.Services.AddScoped<IReportZipBuilder, ReportZipBuilder>();
 
 // Add custom vision service
 builder.Services.AddHttpClient<IVisionService, VisionService>(client =>

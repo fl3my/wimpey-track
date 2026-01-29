@@ -94,12 +94,6 @@ namespace WimpeyTrack.Api.Controllers
             {
                 return NotFound();
             }
-
-            // Do not allow journeys with the same date
-            if (await _context.Journeys.AnyAsync(j => j.Date == dto.Date))
-            {
-                return BadRequest();
-            }
             
             if (! await _context.Locations.AnyAsync(l => l.Id == dto.HomeLocationId))
                 return BadRequest();

@@ -33,6 +33,7 @@
       <Folder Include="Controllers\" />
       <Folder Include="wwwroot\" />
       <Folder Include="wwwroot\uploads\" />
+      <Folder Include="wwwroot\uploads\receipts\" />
     </ItemGroup>
 
     <ItemGroup>
@@ -48,9 +49,9 @@
     </ItemGroup>
 
     <ItemGroup>
-        <None Update="Templates/**">
+        <Content Include="Templates/**">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-        </None>
+        </Content>
     </ItemGroup>
 
     <ItemGroup>
