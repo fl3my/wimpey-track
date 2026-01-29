@@ -1,131 +1,71 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useForm } from "@mantine/form";
-import { MonthPickerInput } from "@mantine/dates";
-import { Button, Group } from "@mantine/core";
-import { Alert } from "@mantine/core";
-import { useState } from "react";
+import { CustomButtonLink } from "@/components/custom-button-link.tsx";
+import { Button, Group, Table, Text } from "@mantine/core";
+import { useDeleteReportId, useGetReport } from "@/api-client.gen.ts";
 
 export const Route = createFileRoute("/Reports/")({
   component: RouteComponent,
 });
 
 function RouteComponent() {
-  const [downloading, setDownloading] = useState(false);
-  const [success, setSuccess] = useState<string | null>(null);
+  const { data: reports, refetch } = useGetReport();
+  const deleteReport = useDeleteReportId();
 
-  const today = new Date();
-
-  const form = useForm({
-    mode: "uncontrolled",
-    initialValues: {
-      startMonth: new Date(today.getFullYear(), today.getMonth() - 1, 1),
-    },
-    validate: {
-      startMonth: (value) => (value ? null : "Start month is required"),
-    },
-  });
-
-  const handleSubmit = async (values: typeof form.values) => {
-    if (!values.startMonth) return;
-
-    const startMonthDate = new Date(values.startMonth);
-
-    const startDate = new Date(
-      startMonthDate.getFullYear(),
-      startMonthDate.getMonth(),
-      20,
-    );
-
-    const endDate = new Date(
-      startMonthDate.getFullYear(),
-      startMonthDate.getMonth() + 1,
-      19,
-    );
-
-    const getMonthName = (date: Date) => {
-      return date.toLocaleDateString("default", { month: "short" });
-    };
-
-    const fileName = `${getMonthName(startDate)}${getMonthName(endDate)}${startDate.getFullYear()}_Expenses.zip`;
-
-    const startDateString = formatDateLocal(startDate);
-    const endDateString = formatDateLocal(endDate);
-
+  const handleDelete = async (id: string) => {
     try {
-      setDownloading(true);
-      setSuccess(null);
-      form.clearErrors();
-
-      const response = await fetch(
-        `/api/report?startDate=${startDateString}&endDate=${endDateString}`,
-        {
-          method: "POST",
-        },
-      );
-
-      if (!response.ok) {
-        try {
-          // Try to parse JSON from the response
-          const errorData = await response.json();
-          const message = errorData?.message || "Failed to download report";
-          form.setErrors({ _form: message });
-        } catch {
-          // Fallback if response is not JSON
-          form.setErrors({ _form: "Failed to download report" });
-        }
-        return;
-      }
-
-      const blob = await response.blob();
-      const url = window.URL.createObjectURL(blob);
-
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = fileName;
-      a.click();
-      window.URL.revokeObjectURL(url);
-
-      setSuccess("Report downloaded successfully");
-    } catch {
-      form.setErrors({
-        _form: "Network error while downloading report",
-      });
-    } finally {
-      setDownloading(false);
+      await deleteReport.mutateAsync({ id });
+      await refetch();
+    } catch (err) {
+      console.error("Failed to delete report:", err);
     }
   };
 
   return (
-    <form onSubmit={form.onSubmit(handleSubmit)}>
-      {form.errors._form && (
-        <Alert color="red" mb="md">
-          {form.errors._form}
-        </Alert>
-      )}
-      {success && (
-        <Alert color="green" mb="md">
-          {success}
-        </Alert>
-      )}
-      <Group align={"flex-end"}>
-        <MonthPickerInput
-          label={"Expenses start month"}
-          placeholder={"Expenses start month"}
-          key={form.key("startMonth")}
-          {...form.getInputProps("startMonth")}
-        />
-        <Button type="submit" loading={downloading}>
-          Download
-        </Button>
+    <>
+      <Group>
+        <CustomButtonLink to={"/Reports/new"}>Generate Report</CustomButtonLink>
       </Group>
-    </form>
+      {reports?.length === 0 ? (
+        <Text>No Receipts found</Text>
+      ) : (
+        <Table>
+          <Table.Thead>
+            <Table.Tr>
+              <Table.Th>Start Date</Table.Th>
+              <Table.Th>End Date</Table.Th>
+              <Table.Th>Created Date</Table.Th>
+              <Table.Th>Actions</Table.Th>
+            </Table.Tr>
+          </Table.Thead>
+          <Table.Tbody>
+            {reports?.map((report) => (
+              <Table.Tr key={report.id}>
+                <Table.Td>{report.startDate}</Table.Td>
+                <Table.Td>{report.endDate}</Table.Td>
+                <Table.Td>{report.generatedAtUtc}</Table.Td>
+                <Table.Td>
+                  <CustomButtonLink
+                    size={"xs"}
+                    variant={"light"}
+                    to={"/Reports/$reportId"}
+                    params={{ reportId: report.id!.toString() }}
+                  >
+                    View
+                  </CustomButtonLink>
+                  <Button
+                    color={"red"}
+                    size={"xs"}
+                    onClick={() => handleDelete(report.id!.toString())}
+                    loading={deleteReport.isPending}
+                  >
+                    Delete
+                  </Button>
+                </Table.Td>
+              </Table.Tr>
+            ))}
+          </Table.Tbody>
+        </Table>
+      )}
+    </>
   );
-}
-
-// Time zone issues
-function formatDateLocal(date: Date) {
-  const year = date.getFullYear();
-  const month = String(date.getMonth() + 1).padStart(2, "0"); // months are 0-indexed
-  const day = String(date.getDate()).padStart(2, "0");
-  return `${year}-${month}-${day}`;
 }

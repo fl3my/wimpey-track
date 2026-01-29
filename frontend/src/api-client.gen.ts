@@ -159,6 +159,11 @@ export interface CreateTripDto {
   reasonId?: CreateTripDtoReasonId;
 }
 
+export interface FileLinkDto {
+  fileName?: string;
+  url?: string;
+}
+
 export type IFormFile = Blob;
 
 /**
@@ -411,6 +416,20 @@ export interface ReceiptItem {
 export interface ReceiptOcrResultDto {
   imageBase64?: string;
   receiptData?: ReceiptData[];
+}
+
+export interface ReportDto {
+  id?: string;
+  startDate?: string;
+  endDate?: string;
+  generatedAtUtc?: string;
+  folderPath?: string;
+}
+
+export interface ReportPreviewDto {
+  reportId?: string;
+  expenseDocuments?: FileLinkDto[];
+  receiptPages?: FileLinkDto[];
 }
 
 /**
@@ -3205,6 +3224,107 @@ const {mutation: mutationOptions, fetch: fetchOptions} = options ?
       return useMutation(mutationOptions, queryClient);
     }
     
+export const getGetReportUrl = () => {
+
+
+  
+
+  return `/api/Report`
+}
+
+export const getReport = async ( options?: RequestInit): Promise<ReportDto[]> => {
+  
+  const res = await fetch(getGetReportUrl(),
+  {      
+    ...options,
+    method: 'GET'
+    
+    
+  }
+)
+
+  const body = [204, 205, 304].includes(res.status) ? null : await res.text();
+  
+  const data: ReportDto[] = body ? JSON.parse(body) : {}
+  return data
+}
+
+
+
+
+
+export const getGetReportQueryKey = () => {
+    return [
+    `/api/Report`
+    ] as const;
+    }
+
+    
+export const getGetReportQueryOptions = <TData = Awaited<ReturnType<typeof getReport>>, TError = unknown>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getReport>>, TError, TData>>, fetch?: RequestInit}
+) => {
+
+const {query: queryOptions, fetch: fetchOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetReportQueryKey();
+
+  
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getReport>>> = ({ signal }) => getReport({ signal, ...fetchOptions });
+
+      
+
+      
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getReport>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type GetReportQueryResult = NonNullable<Awaited<ReturnType<typeof getReport>>>
+export type GetReportQueryError = unknown
+
+
+export function useGetReport<TData = Awaited<ReturnType<typeof getReport>>, TError = unknown>(
+  options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getReport>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getReport>>,
+          TError,
+          Awaited<ReturnType<typeof getReport>>
+        > , 'initialData'
+      >, fetch?: RequestInit}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetReport<TData = Awaited<ReturnType<typeof getReport>>, TError = unknown>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getReport>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getReport>>,
+          TError,
+          Awaited<ReturnType<typeof getReport>>
+        > , 'initialData'
+      >, fetch?: RequestInit}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetReport<TData = Awaited<ReturnType<typeof getReport>>, TError = unknown>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getReport>>, TError, TData>>, fetch?: RequestInit}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+
+export function useGetReport<TData = Awaited<ReturnType<typeof getReport>>, TError = unknown>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getReport>>, TError, TData>>, fetch?: RequestInit}
+ , queryClient?: QueryClient 
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getGetReportQueryOptions(options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  query.queryKey = queryOptions.queryKey ;
+
+  return query;
+}
+
+
+
+
+
 export const getPostReportUrl = (params?: PostReportParams,) => {
   const normalizedParams = new URLSearchParams();
 
@@ -3283,6 +3403,178 @@ const {mutation: mutationOptions, fetch: fetchOptions} = options ?
       return useMutation(mutationOptions, queryClient);
     }
     
+export const getDeleteReportIdUrl = (id: string,) => {
+
+
+  
+
+  return `/api/Report/${id}`
+}
+
+export const deleteReportId = async (id: string, options?: RequestInit): Promise<void> => {
+  
+  const res = await fetch(getDeleteReportIdUrl(id),
+  {      
+    ...options,
+    method: 'DELETE'
+    
+    
+  }
+)
+
+  const body = [204, 205, 304].includes(res.status) ? null : await res.text();
+  
+  const data: void = body ? JSON.parse(body) : {}
+  return data
+}
+
+
+
+
+export const getDeleteReportIdMutationOptions = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteReportId>>, TError,{id: string}, TContext>, fetch?: RequestInit}
+): UseMutationOptions<Awaited<ReturnType<typeof deleteReportId>>, TError,{id: string}, TContext> => {
+
+const mutationKey = ['deleteReportId'];
+const {mutation: mutationOptions, fetch: fetchOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, fetch: undefined};
+
+      
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof deleteReportId>>, {id: string}> = (props) => {
+          const {id} = props ?? {};
+
+          return  deleteReportId(id,fetchOptions)
+        }
+
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type DeleteReportIdMutationResult = NonNullable<Awaited<ReturnType<typeof deleteReportId>>>
+    
+    export type DeleteReportIdMutationError = unknown
+
+    export const useDeleteReportId = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteReportId>>, TError,{id: string}, TContext>, fetch?: RequestInit}
+ , queryClient?: QueryClient): UseMutationResult<
+        Awaited<ReturnType<typeof deleteReportId>>,
+        TError,
+        {id: string},
+        TContext
+      > => {
+
+      const mutationOptions = getDeleteReportIdMutationOptions(options);
+
+      return useMutation(mutationOptions, queryClient);
+    }
+    
+export const getGetReportIdUrl = (id: string,) => {
+
+
+  
+
+  return `/api/Report/${id}`
+}
+
+export const getReportId = async (id: string, options?: RequestInit): Promise<ReportPreviewDto> => {
+  
+  const res = await fetch(getGetReportIdUrl(id),
+  {      
+    ...options,
+    method: 'GET'
+    
+    
+  }
+)
+
+  const body = [204, 205, 304].includes(res.status) ? null : await res.text();
+  
+  const data: ReportPreviewDto = body ? JSON.parse(body) : {}
+  return data
+}
+
+
+
+
+
+export const getGetReportIdQueryKey = (id?: string,) => {
+    return [
+    `/api/Report/${id}`
+    ] as const;
+    }
+
+    
+export const getGetReportIdQueryOptions = <TData = Awaited<ReturnType<typeof getReportId>>, TError = unknown>(id: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getReportId>>, TError, TData>>, fetch?: RequestInit}
+) => {
+
+const {query: queryOptions, fetch: fetchOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetReportIdQueryKey(id);
+
+  
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getReportId>>> = ({ signal }) => getReportId(id, { signal, ...fetchOptions });
+
+      
+
+      
+
+   return  { queryKey, queryFn, enabled: !!(id), ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getReportId>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type GetReportIdQueryResult = NonNullable<Awaited<ReturnType<typeof getReportId>>>
+export type GetReportIdQueryError = unknown
+
+
+export function useGetReportId<TData = Awaited<ReturnType<typeof getReportId>>, TError = unknown>(
+ id: string, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getReportId>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getReportId>>,
+          TError,
+          Awaited<ReturnType<typeof getReportId>>
+        > , 'initialData'
+      >, fetch?: RequestInit}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetReportId<TData = Awaited<ReturnType<typeof getReportId>>, TError = unknown>(
+ id: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getReportId>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getReportId>>,
+          TError,
+          Awaited<ReturnType<typeof getReportId>>
+        > , 'initialData'
+      >, fetch?: RequestInit}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetReportId<TData = Awaited<ReturnType<typeof getReportId>>, TError = unknown>(
+ id: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getReportId>>, TError, TData>>, fetch?: RequestInit}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+
+export function useGetReportId<TData = Awaited<ReturnType<typeof getReportId>>, TError = unknown>(
+ id: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getReportId>>, TError, TData>>, fetch?: RequestInit}
+ , queryClient?: QueryClient 
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getGetReportIdQueryOptions(id,options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  query.queryKey = queryOptions.queryKey ;
+
+  return query;
+}
+
+
+
+
+
 export const getGetJourneysJourneyIdTripsUrl = (journeyId: number | string,) => {
 
 

@@ -16,11 +16,13 @@ import { Route as ReasonsIndexRouteImport } from './routes/Reasons/index'
 import { Route as PurchasesIndexRouteImport } from './routes/Purchases/index'
 import { Route as LocationsIndexRouteImport } from './routes/Locations/index'
 import { Route as JourneysIndexRouteImport } from './routes/Journeys/index'
+import { Route as ReportsNewRouteImport } from './routes/Reports/new'
 import { Route as ReceiptsOcrRouteImport } from './routes/Receipts/ocr'
 import { Route as ReceiptsNewRouteImport } from './routes/Receipts/new'
 import { Route as ReasonsNewRouteImport } from './routes/Reasons/new'
 import { Route as PurchasesNewRouteImport } from './routes/Purchases/new'
 import { Route as LocationsNewRouteImport } from './routes/Locations/new'
+import { Route as ReportsReportIdIndexRouteImport } from './routes/Reports/$reportId/index'
 import { Route as ReceiptsReceiptIdIndexRouteImport } from './routes/Receipts/$receiptId/index'
 import { Route as PurchasesPurchaseIdIndexRouteImport } from './routes/Purchases/$purchaseId/index'
 import { Route as LocationsLocationIdIndexRouteImport } from './routes/Locations/$locationId/index'
@@ -62,6 +64,11 @@ const JourneysIndexRoute = JourneysIndexRouteImport.update({
   path: '/Journeys/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ReportsNewRoute = ReportsNewRouteImport.update({
+  id: '/Reports/new',
+  path: '/Reports/new',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ReceiptsOcrRoute = ReceiptsOcrRouteImport.update({
   id: '/Receipts/ocr',
   path: '/Receipts/ocr',
@@ -85,6 +92,11 @@ const PurchasesNewRoute = PurchasesNewRouteImport.update({
 const LocationsNewRoute = LocationsNewRouteImport.update({
   id: '/Locations/new',
   path: '/Locations/new',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ReportsReportIdIndexRoute = ReportsReportIdIndexRouteImport.update({
+  id: '/Reports/$reportId/',
+  path: '/Reports/$reportId/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ReceiptsReceiptIdIndexRoute = ReceiptsReceiptIdIndexRouteImport.update({
@@ -122,6 +134,7 @@ export interface FileRoutesByFullPath {
   '/Reasons/new': typeof ReasonsNewRoute
   '/Receipts/new': typeof ReceiptsNewRoute
   '/Receipts/ocr': typeof ReceiptsOcrRoute
+  '/Reports/new': typeof ReportsNewRoute
   '/Journeys': typeof JourneysIndexRoute
   '/Locations': typeof LocationsIndexRoute
   '/Purchases': typeof PurchasesIndexRoute
@@ -133,6 +146,7 @@ export interface FileRoutesByFullPath {
   '/Locations/$locationId': typeof LocationsLocationIdIndexRoute
   '/Purchases/$purchaseId': typeof PurchasesPurchaseIdIndexRoute
   '/Receipts/$receiptId': typeof ReceiptsReceiptIdIndexRoute
+  '/Reports/$reportId': typeof ReportsReportIdIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -141,6 +155,7 @@ export interface FileRoutesByTo {
   '/Reasons/new': typeof ReasonsNewRoute
   '/Receipts/new': typeof ReceiptsNewRoute
   '/Receipts/ocr': typeof ReceiptsOcrRoute
+  '/Reports/new': typeof ReportsNewRoute
   '/Journeys': typeof JourneysIndexRoute
   '/Locations': typeof LocationsIndexRoute
   '/Purchases': typeof PurchasesIndexRoute
@@ -152,6 +167,7 @@ export interface FileRoutesByTo {
   '/Locations/$locationId': typeof LocationsLocationIdIndexRoute
   '/Purchases/$purchaseId': typeof PurchasesPurchaseIdIndexRoute
   '/Receipts/$receiptId': typeof ReceiptsReceiptIdIndexRoute
+  '/Reports/$reportId': typeof ReportsReportIdIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -161,6 +177,7 @@ export interface FileRoutesById {
   '/Reasons/new': typeof ReasonsNewRoute
   '/Receipts/new': typeof ReceiptsNewRoute
   '/Receipts/ocr': typeof ReceiptsOcrRoute
+  '/Reports/new': typeof ReportsNewRoute
   '/Journeys/': typeof JourneysIndexRoute
   '/Locations/': typeof LocationsIndexRoute
   '/Purchases/': typeof PurchasesIndexRoute
@@ -172,6 +189,7 @@ export interface FileRoutesById {
   '/Locations/$locationId/': typeof LocationsLocationIdIndexRoute
   '/Purchases/$purchaseId/': typeof PurchasesPurchaseIdIndexRoute
   '/Receipts/$receiptId/': typeof ReceiptsReceiptIdIndexRoute
+  '/Reports/$reportId/': typeof ReportsReportIdIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -182,6 +200,7 @@ export interface FileRouteTypes {
     | '/Reasons/new'
     | '/Receipts/new'
     | '/Receipts/ocr'
+    | '/Reports/new'
     | '/Journeys'
     | '/Locations'
     | '/Purchases'
@@ -193,6 +212,7 @@ export interface FileRouteTypes {
     | '/Locations/$locationId'
     | '/Purchases/$purchaseId'
     | '/Receipts/$receiptId'
+    | '/Reports/$reportId'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -201,6 +221,7 @@ export interface FileRouteTypes {
     | '/Reasons/new'
     | '/Receipts/new'
     | '/Receipts/ocr'
+    | '/Reports/new'
     | '/Journeys'
     | '/Locations'
     | '/Purchases'
@@ -212,6 +233,7 @@ export interface FileRouteTypes {
     | '/Locations/$locationId'
     | '/Purchases/$purchaseId'
     | '/Receipts/$receiptId'
+    | '/Reports/$reportId'
   id:
     | '__root__'
     | '/'
@@ -220,6 +242,7 @@ export interface FileRouteTypes {
     | '/Reasons/new'
     | '/Receipts/new'
     | '/Receipts/ocr'
+    | '/Reports/new'
     | '/Journeys/'
     | '/Locations/'
     | '/Purchases/'
@@ -231,6 +254,7 @@ export interface FileRouteTypes {
     | '/Locations/$locationId/'
     | '/Purchases/$purchaseId/'
     | '/Receipts/$receiptId/'
+    | '/Reports/$reportId/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -240,6 +264,7 @@ export interface RootRouteChildren {
   ReasonsNewRoute: typeof ReasonsNewRoute
   ReceiptsNewRoute: typeof ReceiptsNewRoute
   ReceiptsOcrRoute: typeof ReceiptsOcrRoute
+  ReportsNewRoute: typeof ReportsNewRoute
   JourneysIndexRoute: typeof JourneysIndexRoute
   LocationsIndexRoute: typeof LocationsIndexRoute
   PurchasesIndexRoute: typeof PurchasesIndexRoute
@@ -251,6 +276,7 @@ export interface RootRouteChildren {
   LocationsLocationIdIndexRoute: typeof LocationsLocationIdIndexRoute
   PurchasesPurchaseIdIndexRoute: typeof PurchasesPurchaseIdIndexRoute
   ReceiptsReceiptIdIndexRoute: typeof ReceiptsReceiptIdIndexRoute
+  ReportsReportIdIndexRoute: typeof ReportsReportIdIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -304,6 +330,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof JourneysIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/Reports/new': {
+      id: '/Reports/new'
+      path: '/Reports/new'
+      fullPath: '/Reports/new'
+      preLoaderRoute: typeof ReportsNewRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/Receipts/ocr': {
       id: '/Receipts/ocr'
       path: '/Receipts/ocr'
@@ -337,6 +370,13 @@ declare module '@tanstack/react-router' {
       path: '/Locations/new'
       fullPath: '/Locations/new'
       preLoaderRoute: typeof LocationsNewRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/Reports/$reportId/': {
+      id: '/Reports/$reportId/'
+      path: '/Reports/$reportId'
+      fullPath: '/Reports/$reportId'
+      preLoaderRoute: typeof ReportsReportIdIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/Receipts/$receiptId/': {
@@ -384,6 +424,7 @@ const rootRouteChildren: RootRouteChildren = {
   ReasonsNewRoute: ReasonsNewRoute,
   ReceiptsNewRoute: ReceiptsNewRoute,
   ReceiptsOcrRoute: ReceiptsOcrRoute,
+  ReportsNewRoute: ReportsNewRoute,
   JourneysIndexRoute: JourneysIndexRoute,
   LocationsIndexRoute: LocationsIndexRoute,
   PurchasesIndexRoute: PurchasesIndexRoute,
@@ -395,6 +436,7 @@ const rootRouteChildren: RootRouteChildren = {
   LocationsLocationIdIndexRoute: LocationsLocationIdIndexRoute,
   PurchasesPurchaseIdIndexRoute: PurchasesPurchaseIdIndexRoute,
   ReceiptsReceiptIdIndexRoute: ReceiptsReceiptIdIndexRoute,
+  ReportsReportIdIndexRoute: ReportsReportIdIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
