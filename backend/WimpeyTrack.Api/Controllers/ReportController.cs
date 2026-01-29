@@ -26,15 +26,15 @@ namespace WimpeyTrack.Api.Controllers
             }
             
             // Generate the report
-            var report = await _reportService.GenerateAsync(startDate, endDate);
+            var reportArtifacts = await _reportService.GenerateAsync(startDate, endDate);
             
             // Return bad request if nothing is found
-            if (!report.ExpenseDocuments.Any() && !report.ReceiptPages.Any())
+            if (!reportArtifacts.Files.Any())
             {
                 return BadRequest("No expense documents found.");
             }
             
-            var zipBytes = _zipBuilder.BuildZip(report, startDate, endDate);
+            var zipBytes = _zipBuilder.BuildZip(reportArtifacts.Files);
             
             // Return a zip file
             return File(

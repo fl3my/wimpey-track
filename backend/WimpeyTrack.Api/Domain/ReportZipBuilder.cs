@@ -8,12 +8,12 @@ namespace WimpeyTrack.Api.Domain;
 /// </summary>
 public interface IReportZipBuilder
 {
-    byte[] BuildZip(ReportResult report, DateOnly startDate, DateOnly endDate);
+    byte[] BuildZip(IReadOnlyList<ReportFile> files);
 }
 
 public class ReportZipBuilder : IReportZipBuilder
 {
-    public byte[] BuildZip(ReportResult report, DateOnly startDate, DateOnly endDate)
+    public byte[] BuildZip(IReadOnlyList<ReportFile> files)
     {
         // This memory stream will contain the zip file
         using var zipStream = new MemoryStream();
@@ -21,30 +21,17 @@ public class ReportZipBuilder : IReportZipBuilder
         // Create the zip archive in memory
         using (var archive = new ZipArchive(zipStream, ZipArchiveMode.Create, true))
         {
-            // Add the PDF files
-            foreach (var doc in report.ExpenseDocuments)
+            foreach (var file in files)
             {
-                var entryName =
-                    $"Expenses_{doc.BookIndex}_Page_{doc.PageIndex}_" +
-                    $"{startDate:yyyy-MM-dd}_to_{endDate:yyyy-MM-dd}.pdf";
-                
-                var entry = archive.CreateEntry(entryName, CompressionLevel.Fastest);
-                
+                var entry = archive.CreateEntry(
+                    file.FileName,
+                    CompressionLevel.Fastest);
+
                 using var entryStream = entry.Open();
-                entryStream.Write(doc.PdfBytes);
-            }
-            
-            // Add the receipt images
-            foreach (var receipt in report.ReceiptPages)
-            {
-                var entryName = $"Receipts_Page_{receipt.PageIndex}.jpeg";
-                
-                var entry = archive.CreateEntry(entryName, CompressionLevel.Fastest);
-                
-                using var entryStream = entry.Open();
-                entryStream.Write(receipt.ImageBytes);
+                entryStream.Write(file.Content);
             }
         }
+        
         return zipStream.ToArray();
     }
 }

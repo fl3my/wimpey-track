@@ -1,3 +1,4 @@
+using DocumentFormat.OpenXml.Presentation;
 using PdfSharp.Pdf;
 using PdfSharp.Pdf.IO;
 using WimpeyTrack.Api.Controllers;
@@ -13,7 +14,7 @@ namespace WimpeyTrack.Api.Services;
 /// </summary>
 public interface IReportGenerationService
 {
-    Task<ReportResult> GenerateAsync(DateOnly startDate, DateOnly endDate);
+    Task<ReportArtifacts> GenerateAsync(DateOnly startDate, DateOnly endDate);
 }
 
 public class ReportGenerationService : IReportGenerationService
@@ -33,17 +34,22 @@ public class ReportGenerationService : IReportGenerationService
         _receiptProvider = receiptProvider;
     }
 
-    public async Task<ReportResult> GenerateAsync(DateOnly startDate, DateOnly endDate)
+    public async Task<ReportArtifacts> GenerateAsync(DateOnly startDate, DateOnly endDate)
     {
         var books = await _bookBuilder.BuildAsync(startDate, endDate);
         
         var expenseDocs = await GenerateExpenseDocumentsAsync(books, startDate, endDate);
         var receiptPages = await GenerateReceiptPagesAsync(startDate, endDate);
 
-        return new ReportResult()
+        var files = new List<ReportFile>();
+        
+        files.AddRange(expenseDocs.Select(d => new ReportFile()));
+        files.AddRange(receiptPages.Select(d => new ReportFile()));
+        
+        return new ReportArtifacts()
         {
-            ExpenseDocuments = expenseDocs,
-            ReceiptPages = receiptPages
+            ReportId = Guid.NewGuid(),
+            Files = files,
         };
     }
 
@@ -81,7 +87,7 @@ public class ReportGenerationService : IReportGenerationService
         return pages;
     }
 
-    private async Task<List<ExpenseDocument>> GenerateExpenseDocumentsAsync(IReadOnlyList<Book> books, DateOnly startDate, DateOnly endDate)
+    private async Task<IReadOnlyList<ExpenseDocument>> GenerateExpenseDocumentsAsync(IReadOnlyList<Book> books, DateOnly startDate, DateOnly endDate)
     {
         var result = new List<ExpenseDocument>();
         
