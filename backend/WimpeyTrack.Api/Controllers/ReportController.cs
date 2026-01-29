@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
-using WimpeyTrack.Api.Domain;
+using WimpeyTrack.Api.Dtos;
+using WimpeyTrack.Api.Models;
 using WimpeyTrack.Api.Services;
 
 namespace WimpeyTrack.Api.Controllers
@@ -15,8 +16,16 @@ namespace WimpeyTrack.Api.Controllers
             _reportService = reportService;
         }
         
+        // GET: api/Reasons
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<ReportDto>>> GetReports()
+        {
+            var reports = await _reportService.GetReportsAsync();
+            return Ok(reports);
+        }
+        
         [HttpPost]
-        public async Task<IActionResult> Generate(DateOnly startDate, DateOnly endDate)
+        public async Task<ActionResult<Guid>> Generate(DateOnly startDate, DateOnly endDate)
         {
             if (startDate > endDate)
             {
@@ -25,7 +34,26 @@ namespace WimpeyTrack.Api.Controllers
             
             // Generate the report
             var reportId = await _reportService.GenerateAndSaveAsync(startDate, endDate);
+            
             return Ok(new {reportId});
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(Guid id)
+        {
+            await _reportService.DeleteAsync(id);
+            return Ok();
+        }
+
+        [HttpGet("{id}")]
+        public async Task<ActionResult<ReportPreviewDto>> GetReportPreview(Guid id)
+        {
+            var preview = await _reportService.GetReportPreview(id);
+            
+            if (preview is null)
+                return NotFound();
+            
+            return Ok(preview);
         }
     }
 }

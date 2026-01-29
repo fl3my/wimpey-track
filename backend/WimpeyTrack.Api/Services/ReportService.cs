@@ -1,5 +1,6 @@
+using Microsoft.EntityFrameworkCore;
 using WimpeyTrack.Api.Data;
-using WimpeyTrack.Api.Dtos.ReportGeneration;
+using WimpeyTrack.Api.Dtos;
 using WimpeyTrack.Api.Models;
 
 namespace WimpeyTrack.Api.Services;
@@ -7,6 +8,10 @@ namespace WimpeyTrack.Api.Services;
 public interface IReportService
 {
     Task<Guid> GenerateAndSaveAsync(DateOnly start, DateOnly end);
+    Task<IEnumerable<ReportDto>> GetReportsAsync();
+    Task<ReportPreviewDto?> GetReportPreview(Guid reportId);
+    Task DeleteAsync(Guid id);
+    
 }
 
 public class ReportService : IReportService
@@ -40,5 +45,62 @@ public class ReportService : IReportService
         
         await _context.SaveChangesAsync();
         return reportId;
+    }
+
+    public async Task<IEnumerable<ReportDto>> GetReportsAsync()
+    {
+        return await _context.Reports
+            .Select(r => new ReportDto
+        {
+            Id = r.Id,
+            StartDate = r.StartDate,
+            EndDate = r.EndDate,
+            GeneratedAtUtc = r.GeneratedAtUtc,
+            FolderPath = r.FolderPath
+        }).ToListAsync();
+    }
+
+    public async Task<ReportPreviewDto?> GetReportPreview(Guid reportId)
+    {
+        // If the folder does not exist return
+        if (!await _storageService.ExistsAsync(reportId))
+            return null;
+        
+        // Get files from storage
+        var expenseFiles =  _storageService.GetExpenseFiles(reportId);
+        var receiptFiles = _storageService.GetReceiptFiles(reportId);
+        
+        // Generate preview
+        var preview = new ReportPreviewDto()
+        {
+            ReportId = reportId,
+            ExpenseDocuments = expenseFiles.Select(f => new FileLinkDto
+            {
+                FileName = Path.GetFileName(f),
+                Url = $"/reports/{reportId}/expenses/{Path.GetFileName(f)}"
+            }).ToList(),
+            ReceiptPages = receiptFiles.Select(f => new FileLinkDto()
+            {
+                FileName = Path.GetFileName(f),
+                Url = $"/reports/{reportId}/expenses/{Path.GetFileName(f)}"
+            }).ToList()
+        };
+        
+        return preview;
+    }
+
+    public async Task DeleteAsync(Guid reportId)
+    {
+        var report = await _context.Reports.FindAsync(reportId);
+
+        // If no report, return
+        if (report is null)
+            return;
+        
+        // Delete the files 
+        await _storageService.DeleteAsync(report.Id);
+        
+        _context.Reports.Remove(report);
+        await _context.SaveChangesAsync();
     }
 }

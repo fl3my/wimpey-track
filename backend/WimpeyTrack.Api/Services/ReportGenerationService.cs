@@ -3,7 +3,6 @@ using PdfSharp.Pdf.IO;
 using WimpeyTrack.Api.Domain;
 using WimpeyTrack.Api.Dtos.Book;
 using WimpeyTrack.Api.Dtos.ReportGeneration;
-using WimpeyTrack.Api.Mappings;
 
 namespace WimpeyTrack.Api.Services;
 
@@ -39,16 +38,12 @@ public class ReportGenerationService : IReportGenerationService
         
         var expenseDocs = await GenerateExpenseDocumentsAsync(books, startDate, endDate);
         var receiptPages = await GenerateReceiptPagesAsync(startDate, endDate);
-
-        var files = new List<ReportFile>();
-        
-        files.AddRange(expenseDocs.Select(d => d.ToReportFile()));
-        files.AddRange(receiptPages.Select(r => r.ToReportFile()));
         
         return new ReportArtifacts()
         {
             ReportId = Guid.NewGuid(),
-            Files = files,
+            ExpenseDocuments = expenseDocs,
+            ReceiptPages = receiptPages,
         };
     }
 
@@ -117,7 +112,7 @@ public class ReportGenerationService : IReportGenerationService
                 result.Add(new ExpenseDocument()
                 {
                     BookIndex = i + 1,
-                    PageIndex = p,
+                    PageIndex = p + 1,
                     PdfBytes = stream.ToArray()
                 });
             }
