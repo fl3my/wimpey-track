@@ -59,7 +59,7 @@ function RouteComponent() {
       const response = await fetch(
         `/api/report?startDate=${startDateString}&endDate=${endDateString}`,
         {
-          method: "GET",
+          method: "POST",
         },
       );
 

@@ -26,6 +26,37 @@ import type {
 /**
  * @pattern ^-?(?:0|[1-9]\d*)$
  */
+export type BoundingBoxX = number | string;
+
+/**
+ * @pattern ^-?(?:0|[1-9]\d*)$
+ */
+export type BoundingBoxY = number | string;
+
+/**
+ * @pattern ^-?(?:0|[1-9]\d*)$
+ */
+export type BoundingBoxWidth = number | string;
+
+/**
+ * @pattern ^-?(?:0|[1-9]\d*)$
+ */
+export type BoundingBoxHeight = number | string;
+
+export interface BoundingBox {
+  /** @pattern ^-?(?:0|[1-9]\d*)$ */
+  x?: BoundingBoxX;
+  /** @pattern ^-?(?:0|[1-9]\d*)$ */
+  y?: BoundingBoxY;
+  /** @pattern ^-?(?:0|[1-9]\d*)$ */
+  width?: BoundingBoxWidth;
+  /** @pattern ^-?(?:0|[1-9]\d*)$ */
+  height?: BoundingBoxHeight;
+}
+
+/**
+ * @pattern ^-?(?:0|[1-9]\d*)$
+ */
 export type CreateItemDtoQuantity = number | string;
 
 /**
@@ -328,11 +359,14 @@ export type ReceiptCategory = number;
 
 export type ReceiptDataTransactionDate = null | string;
 
+export type ReceiptDataBoundingBox = null | BoundingBox;
+
 export interface ReceiptData {
   storeName?: string;
   transactionDate?: ReceiptDataTransactionDate;
   receiptCategory?: ReceiptCategory;
   receiptItems?: ReceiptItem[];
+  boundingBox?: ReceiptDataBoundingBox;
 }
 
 /**
@@ -550,7 +584,7 @@ export type PostReceiptsOcrBody = {
   File?: IFormFile;
 };
 
-export type GetReportParams = {
+export type PostReportParams = {
 startDate?: string;
 endDate?: string;
 };
@@ -3171,7 +3205,7 @@ const {mutation: mutationOptions, fetch: fetchOptions} = options ?
       return useMutation(mutationOptions, queryClient);
     }
     
-export const getGetReportUrl = (params?: GetReportParams,) => {
+export const getPostReportUrl = (params?: PostReportParams,) => {
   const normalizedParams = new URLSearchParams();
 
   Object.entries(params || {}).forEach(([key, value]) => {
@@ -3186,12 +3220,12 @@ export const getGetReportUrl = (params?: GetReportParams,) => {
   return stringifiedParams.length > 0 ? `/api/Report?${stringifiedParams}` : `/api/Report`
 }
 
-export const getReport = async (params?: GetReportParams, options?: RequestInit): Promise<void> => {
+export const postReport = async (params?: PostReportParams, options?: RequestInit): Promise<void> => {
   
-  const res = await fetch(getGetReportUrl(params),
+  const res = await fetch(getPostReportUrl(params),
   {      
     ...options,
-    method: 'GET'
+    method: 'POST'
     
     
   }
@@ -3206,79 +3240,49 @@ export const getReport = async (params?: GetReportParams, options?: RequestInit)
 
 
 
+export const getPostReportMutationOptions = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postReport>>, TError,{params?: PostReportParams}, TContext>, fetch?: RequestInit}
+): UseMutationOptions<Awaited<ReturnType<typeof postReport>>, TError,{params?: PostReportParams}, TContext> => {
 
-export const getGetReportQueryKey = (params?: GetReportParams,) => {
-    return [
-    `/api/Report`, ...(params ? [params]: [])
-    ] as const;
-    }
+const mutationKey = ['postReport'];
+const {mutation: mutationOptions, fetch: fetchOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, fetch: undefined};
 
+      
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof postReport>>, {params?: PostReportParams}> = (props) => {
+          const {params} = props ?? {};
+
+          return  postReport(params,fetchOptions)
+        }
+
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type PostReportMutationResult = NonNullable<Awaited<ReturnType<typeof postReport>>>
     
-export const getGetReportQueryOptions = <TData = Awaited<ReturnType<typeof getReport>>, TError = unknown>(params?: GetReportParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getReport>>, TError, TData>>, fetch?: RequestInit}
-) => {
+    export type PostReportMutationError = unknown
 
-const {query: queryOptions, fetch: fetchOptions} = options ?? {};
+    export const usePostReport = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postReport>>, TError,{params?: PostReportParams}, TContext>, fetch?: RequestInit}
+ , queryClient?: QueryClient): UseMutationResult<
+        Awaited<ReturnType<typeof postReport>>,
+        TError,
+        {params?: PostReportParams},
+        TContext
+      > => {
 
-  const queryKey =  queryOptions?.queryKey ?? getGetReportQueryKey(params);
+      const mutationOptions = getPostReportMutationOptions(options);
 
-  
-
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getReport>>> = ({ signal }) => getReport(params, { signal, ...fetchOptions });
-
-      
-
-      
-
-   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getReport>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
-}
-
-export type GetReportQueryResult = NonNullable<Awaited<ReturnType<typeof getReport>>>
-export type GetReportQueryError = unknown
-
-
-export function useGetReport<TData = Awaited<ReturnType<typeof getReport>>, TError = unknown>(
- params: undefined |  GetReportParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getReport>>, TError, TData>> & Pick<
-        DefinedInitialDataOptions<
-          Awaited<ReturnType<typeof getReport>>,
-          TError,
-          Awaited<ReturnType<typeof getReport>>
-        > , 'initialData'
-      >, fetch?: RequestInit}
- , queryClient?: QueryClient
-  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useGetReport<TData = Awaited<ReturnType<typeof getReport>>, TError = unknown>(
- params?: GetReportParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getReport>>, TError, TData>> & Pick<
-        UndefinedInitialDataOptions<
-          Awaited<ReturnType<typeof getReport>>,
-          TError,
-          Awaited<ReturnType<typeof getReport>>
-        > , 'initialData'
-      >, fetch?: RequestInit}
- , queryClient?: QueryClient
-  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useGetReport<TData = Awaited<ReturnType<typeof getReport>>, TError = unknown>(
- params?: GetReportParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getReport>>, TError, TData>>, fetch?: RequestInit}
- , queryClient?: QueryClient
-  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-
-export function useGetReport<TData = Awaited<ReturnType<typeof getReport>>, TError = unknown>(
- params?: GetReportParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getReport>>, TError, TData>>, fetch?: RequestInit}
- , queryClient?: QueryClient 
- ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
-
-  const queryOptions = getGetReportQueryOptions(params,options)
-
-  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
-
-  query.queryKey = queryOptions.queryKey ;
-
-  return query;
-}
-
-
-
-
-
+      return useMutation(mutationOptions, queryClient);
+    }
+    
 export const getGetJourneysJourneyIdTripsUrl = (journeyId: number | string,) => {
 
 

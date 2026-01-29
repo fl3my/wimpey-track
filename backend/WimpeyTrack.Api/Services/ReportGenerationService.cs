@@ -1,10 +1,9 @@
-using DocumentFormat.OpenXml.Presentation;
 using PdfSharp.Pdf;
 using PdfSharp.Pdf.IO;
-using WimpeyTrack.Api.Controllers;
 using WimpeyTrack.Api.Domain;
 using WimpeyTrack.Api.Dtos.Book;
 using WimpeyTrack.Api.Dtos.ReportGeneration;
+using WimpeyTrack.Api.Mappings;
 
 namespace WimpeyTrack.Api.Services;
 
@@ -43,8 +42,8 @@ public class ReportGenerationService : IReportGenerationService
 
         var files = new List<ReportFile>();
         
-        files.AddRange(expenseDocs.Select(d => new ReportFile()));
-        files.AddRange(receiptPages.Select(d => new ReportFile()));
+        files.AddRange(expenseDocs.Select(d => d.ToReportFile()));
+        files.AddRange(receiptPages.Select(r => r.ToReportFile()));
         
         return new ReportArtifacts()
         {
