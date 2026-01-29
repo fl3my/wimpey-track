@@ -1,7 +1,6 @@
 using ClosedXML.Excel;
 using Microsoft.Extensions.Options;
 using WimpeyTrack.Api.Dtos.Book;
-using WimpeyTrack.Api.Options;
 
 namespace WimpeyTrack.Api.Domain;
 
@@ -15,11 +14,26 @@ public interface IExpenseWorkbookBuilder
 
 public class ExpenseWorkbookBuilder : IExpenseWorkbookBuilder
 {
-    private readonly ExpenseWorkbookOptions _options;
+    private readonly IWebHostEnvironment _env;
     
-    public ExpenseWorkbookBuilder(IOptions<ExpenseWorkbookOptions> options)
+    private const int PurchaseStartRow = 12;
+
+    private const int ClaimRateRow = 53;
+    private const int ClaimRateColumn = 2;
+
+    private const int OverThresholdRow = 49;
+    private const int OverThresholdColumn = 2;
+
+    private const int MileageStartRow = 6;
+
+    private const int ExpenseSheetIndex = 1;
+    private const int FirstMileageSheetIndex = 3;
+    
+    private const string TemplateRelativePath = "Templates/template.xlsx";
+    
+    public ExpenseWorkbookBuilder(IWebHostEnvironment env)
     {
-        _options = options.Value;
+        _env = env;
     }
     
     public Stream Build(Book book)
@@ -34,12 +48,13 @@ public class ExpenseWorkbookBuilder : IExpenseWorkbookBuilder
 
     private XLWorkbook LoadTemplate()
     {
-        if (!File.Exists(_options.TemplatePath))
+        var templatePath = Path.Combine(_env.ContentRootPath, TemplateRelativePath);
+        if (!File.Exists(templatePath))
         {
-            throw new FileNotFoundException($"Template file {_options.TemplatePath} does not exist");
+            throw new FileNotFoundException($"Template file {templatePath} does not exist");
         }
 
-        return new XLWorkbook(_options.TemplatePath);
+        return new XLWorkbook(templatePath);
     }
     
     private static Stream SaveToStream(XLWorkbook workbook)
@@ -52,7 +67,7 @@ public class ExpenseWorkbookBuilder : IExpenseWorkbookBuilder
 
     private void PopulateExpenseSheets(XLWorkbook workbook, Book book)
     {
-        var sheet = workbook.Worksheet(_options.ExpenseSheetIndex);
+        var sheet = workbook.Worksheet(ExpenseSheetIndex);
         
         PopulateClaimRate(sheet, book);
         PopulatePurchaseRows(sheet, book);
@@ -60,16 +75,16 @@ public class ExpenseWorkbookBuilder : IExpenseWorkbookBuilder
 
     private void PopulateClaimRate(IXLWorksheet sheet, Book book)
     {
-        sheet.Cell(_options.ClaimRateRow, _options.ClaimRateColumn)
+        sheet.Cell(ClaimRateRow, ClaimRateColumn)
             .Value = book.IsOverThreshold ? 0.25 : 0.45;
 
-        sheet.Cell(_options.OverThresholdRow, _options.OverThresholdColumn)
+        sheet.Cell(OverThresholdRow, OverThresholdColumn)
             .Value = book.IsOverThreshold ? "YES" : "NO";
     }
     
     private void PopulatePurchaseRows(IXLWorksheet sheet, Book book)
     {
-        var currentRow = _options.PurchaseStartRow;
+        var currentRow = PurchaseStartRow;
         
         foreach (var row in book.PurchaseRows)
         {
@@ -87,7 +102,7 @@ public class ExpenseWorkbookBuilder : IExpenseWorkbookBuilder
 
     private void PopulateMileageSheets(XLWorkbook workbook, Book book)
     {
-        var sheetIndex = _options.FirstMileageSheetIndex;
+        var sheetIndex = FirstMileageSheetIndex;
 
         foreach (var sheet in book.Sheets)
         {
@@ -99,7 +114,7 @@ public class ExpenseWorkbookBuilder : IExpenseWorkbookBuilder
 
     private void PopulateMileageSheet(IXLWorksheet worksheet, Sheet sheet)
     {
-        var currentRow = _options.MileageStartRow;
+        var currentRow = MileageStartRow;
 
         foreach (var row in sheet.Rows)
         {

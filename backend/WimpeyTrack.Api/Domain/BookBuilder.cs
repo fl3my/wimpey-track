@@ -19,6 +19,10 @@ public class BookBuilder : IBookBuilder
 {
     private readonly ApplicationDbContext _context;
 
+    private const int Threshold = 10000;
+    private const int MaxLineLength = 60;
+    private const int MaxRowLines = 30;
+        
     public BookBuilder(ApplicationDbContext context)
     {
         _context = context;
@@ -122,7 +126,7 @@ public class BookBuilder : IBookBuilder
 
             // Construct the line, If over line limit split
             var description = $"{homeLocationName} > {tripsCombined} > {homeLocationName}";
-            var descriptionLines = SplitIntoLinesByCharacter(description, 60);
+            var descriptionLines = SplitIntoLinesByCharacter(description, MaxLineLength);
 
             // Construct a row
             var row = new Row()
@@ -134,7 +138,7 @@ public class BookBuilder : IBookBuilder
             
             // Create a new sheet if line count goes over max rows
             var lineCount = currentSheet.Rows.Sum(r => r.Description.Count);
-            if (lineCount + descriptionLines.Count > 30 && sheets.Count == 0)
+            if (lineCount + descriptionLines.Count > MaxRowLines && sheets.Count == 0)
             {
                 sheets.Add(currentSheet);
                 currentSheet = new Sheet();
@@ -273,6 +277,6 @@ public class BookBuilder : IBookBuilder
             .SumAsync(j => j.TotalMiles);
 
         // Return true if over threshold
-        return miles > 10000;
+        return miles > Threshold;
     }
 }
