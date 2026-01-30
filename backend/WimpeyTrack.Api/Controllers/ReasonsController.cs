@@ -61,12 +61,17 @@ namespace WimpeyTrack.Api.Controllers
             }
 
             var reason = await _context.Reasons.FindAsync(id);
-
+            
             if (reason == null)
                 return NotFound();
             
+            // Check if name already exists
+            var nameAlreadyExists = await _context.Reasons.AnyAsync(r => r.Name == dto.Name);
+            if (nameAlreadyExists)
+                return BadRequest("Reason with same name already exists");;
+            
             reason.Name = dto.Name;
-
+            
             try
             {
                 await _context.SaveChangesAsync();
@@ -94,6 +99,13 @@ namespace WimpeyTrack.Api.Controllers
             {
                 Name = dto.Name
             };
+
+            // Check if name already exists
+            var nameAlreadyExists = await _context.Reasons.AnyAsync(r => r.Name == dto.Name);
+            if (nameAlreadyExists)
+            {
+                return Conflict(new { message = "Reason with same name already exists" });
+            }
 
             _context.Reasons.Add(reason);
             

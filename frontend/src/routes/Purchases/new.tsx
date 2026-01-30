@@ -1,6 +1,6 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 
-import { usePostPurchases } from "@/api-client.gen.ts";
+import { usePostPurchases } from "@/api/api-client.gen.ts";
 import {
   PurchaseForm,
   type PurchaseFormValues,
@@ -18,7 +18,7 @@ function RouteComponent() {
     try {
       await createPurchase.mutateAsync({
         data: {
-          date: values.date?.toString(),
+          date: values.date!.toString(),
           storeName: values.storeName,
           items: values.items,
         },

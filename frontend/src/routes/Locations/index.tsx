@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useDeleteLocationsId, useGetLocations } from "@/api-client.gen.ts";
+import { useDeleteLocationsId, useGetLocations } from "@/api/api-client.gen.ts";
 import { Button, Loader, Table, Text } from "@mantine/core";
 
 export const Route = createFileRoute("/Locations/")({

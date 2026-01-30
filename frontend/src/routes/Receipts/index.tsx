@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useDeleteReceiptsId, useGetReceipts } from "@/api-client.gen.ts";
+import { useDeleteReceiptsId, useGetReceipts } from "@/api/api-client.gen.ts";
 import { Button, Group, Loader, Table, Text } from "@mantine/core";
 import { CustomButtonLink } from "@/components/custom-button-link.tsx";
 

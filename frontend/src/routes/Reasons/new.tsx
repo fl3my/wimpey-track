@@ -1,7 +1,11 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useForm } from "@mantine/form";
-import { usePostReasons } from "@/api-client.gen.ts";
 import { Button, TextInput } from "@mantine/core";
+import { zod4Resolver } from "mantine-form-zod-resolver";
+import { postReasonsBody } from "@/api/zod.gen.ts";
+import { usePostReasons } from "@/api/api-client.gen.ts";
+import { ServerErrorAlert } from "@/components/server-error-alert.tsx";
+import { useServerErrors } from "@/hooks/use-server-errors.ts";
 
 export const Route = createFileRoute("/Reasons/new")({
   component: RouteComponent,
@@ -10,39 +14,50 @@ export const Route = createFileRoute("/Reasons/new")({
 function RouteComponent() {
   const navigate = useNavigate();
 
+  const serverErrors = useServerErrors();
+
   const form = useForm({
-    mode: "uncontrolled",
     initialValues: {
-      reasonName: "",
+      name: "",
+    },
+    validate: zod4Resolver(postReasonsBody),
+  });
+
+  const mutation = usePostReasons({
+    mutation: {
+      onError: (error) => {
+        serverErrors.setFromApiError(error);
+      },
+      onSuccess: async () => {
+        serverErrors.clear();
+        form.reset();
+        await navigate({ to: "/Reasons" });
+      },
     },
   });
-  const createReason = usePostReasons();
 
-  const handleSubmit = async (values: typeof form.values) => {
-    try {
-      console.log(values);
-      await createReason.mutateAsync({
-        data: {
-          name: values.reasonName,
-        },
-      });
-
-      form.reset();
-
-      await navigate({ to: "/Reasons" });
-    } catch (error) {
-      console.error(error);
-    }
+  const handleSubmit = (values: typeof form.values) => {
+    form.clearErrors();
+    mutation.mutate({
+      data: {
+        name: values.name,
+      },
+    });
   };
   return (
     <form onSubmit={form.onSubmit(handleSubmit)}>
+      <ServerErrorAlert errors={serverErrors.errors} />
       <TextInput
-        label={"Reason Name"}
-        placeholder={"Reason Name"}
-        key={form.key("reasonName")}
-        {...form.getInputProps("reasonName")}
+        label={"Name"}
+        placeholder={"Name"}
+        key={form.key("name")}
+        {...form.getInputProps("name")}
       />
-      <Button type="submit" loading={createReason.isPending}>
+      <Button
+        type="submit"
+        loading={mutation.isPending}
+        disabled={mutation.isPending}
+      >
         Submit
       </Button>
     </form>

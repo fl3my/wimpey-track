@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useDeleteReasonsId, useGetReasons } from "@/api-client.gen.ts";
+import { useDeleteReasonsId, useGetReasons } from "@/api/api-client.gen.ts";
 import { Button, Loader, Table, Text } from "@mantine/core";
 
 export const Route = createFileRoute("/Reasons/")({

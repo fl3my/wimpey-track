@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useGetReportId } from "@/api-client.gen.ts";
+import { useGetReportId } from "@/api/api-client.gen.ts";
 import { Anchor, Group, Stack, Text } from "@mantine/core";
 import { CustomButtonLink } from "@/components/custom-button-link.tsx";
 

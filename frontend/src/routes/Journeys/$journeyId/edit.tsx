@@ -1,5 +1,5 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { useGetJourneysId, usePutJourneysId } from "@/api-client.gen.ts";
+import { useGetJourneysId, usePutJourneysId } from "@/api/api-client.gen.ts";
 import { useForm } from "@mantine/form";
 import {
   Alert,
@@ -61,7 +61,7 @@ function RouteComponent() {
       await updateJourney.mutateAsync({
         id: Number(journeyId),
         data: {
-          id: journeyId,
+          id: Number(journeyId),
           date: values.date!,
           totalMiles: values.totalMiles,
           isManualMiles: values.isManualMiles,

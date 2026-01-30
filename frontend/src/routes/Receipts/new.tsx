@@ -1,5 +1,5 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { usePostReceipts } from "@/api-client.gen.ts";
+import { usePostReceipts } from "@/api/api-client.gen.ts";
 import { CustomButtonLink } from "@/components/custom-button-link.tsx";
 import {
   ReceiptForm,

@@ -7,7 +7,7 @@ import {
   useGetReasons,
   usePostJourneys,
   usePostJourneysJourneyIdTrips,
-} from "@/api-client.gen.ts";
+} from "@/api/api-client.gen.ts";
 import { useState } from "react";
 import {
   Button,
@@ -130,6 +130,7 @@ function RouteComponent() {
         data: {
           date: dateStr,
           isManualMiles: false,
+          totalMiles: 0,
           homeLocationId: 11, // TODO DO NOT KEEP THIS BAD
         },
       },
@@ -148,8 +149,8 @@ function RouteComponent() {
         {
           journeyId: journeyId,
           data: {
-            locationId: values.locationId!,
-            reasonId: values.reasonId!,
+            locationId: Number(values.locationId),
+            reasonId: Number(values.reasonId),
           },
         },
         {

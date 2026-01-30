@@ -3,7 +3,7 @@ import { useForm } from "@mantine/form";
 import { MonthPickerInput } from "@mantine/dates";
 import { Button, Group } from "@mantine/core";
 import { Alert } from "@mantine/core";
-import { usePostReport } from "@/api-client.gen.ts";
+import { usePostReport } from "@/api/api-client.gen.ts";
 
 export const Route = createFileRoute("/Reports/new")({
   component: RouteComponent,

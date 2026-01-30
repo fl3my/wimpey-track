@@ -15,7 +15,7 @@ import {
   usePostReceiptsOcr,
   usePostReceiptsUploadBase64,
   usePostPurchases,
-} from "@/api-client.gen.ts";
+} from "@/api/api-client.gen.ts";
 import {
   PurchaseForm,
   type PurchaseFormValues,

@@ -1,3 +1,4 @@
+using System.Text.Json.Serialization;
 using Microsoft.EntityFrameworkCore;
 using Scalar.AspNetCore;
 using WimpeyTrack.Api.Data;
@@ -48,6 +49,11 @@ builder.Services.AddHttpClient<IVisionService, VisionService>(client =>
         builder.Configuration["VisionService:BaseUrl"] ?? throw new InvalidOperationException()
     );
     client.Timeout = TimeSpan.FromSeconds(30);
+});
+
+builder.Services.Configure<Microsoft.AspNetCore.Http.Json.JsonOptions>(options =>
+{
+    options.SerializerOptions.NumberHandling = JsonNumberHandling.Strict;
 });
 
 var app = builder.Build();

@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { CustomButtonLink } from "@/components/custom-button-link.tsx";
 import { Button, Group, Table, Text } from "@mantine/core";
-import { useDeleteReportId, useGetReport } from "@/api-client.gen.ts";
+import { useDeleteReportId, useGetReport } from "@/api/api-client.gen.ts";
 
 export const Route = createFileRoute("/Reports/")({
   component: RouteComponent,

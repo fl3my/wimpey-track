@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Card, SimpleGrid, Text, Title } from "@mantine/core";
 import { LineChart, BarChart } from "@mantine/charts";
-import { useGetDashboard } from "@/api-client.gen.ts";
+import { useGetDashboard } from "@/api/api-client.gen.ts";
 
 export const Route = createFileRoute("/")({
   component: Home,
