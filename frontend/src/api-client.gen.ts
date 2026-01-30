@@ -335,10 +335,17 @@ export interface LocationDto {
  */
 export type MonthlyMilesDtoMiles = number | string;
 
+/**
+ * @pattern ^-?(?:0|[1-9]\d*)(?:\.\d+)?$
+ */
+export type MonthlyMilesDtoClaim = number | string;
+
 export interface MonthlyMilesDto {
   month?: string;
   /** @pattern ^-?(?:0|[1-9]\d*)$ */
   miles?: MonthlyMilesDtoMiles;
+  /** @pattern ^-?(?:0|[1-9]\d*)(?:\.\d+)?$ */
+  claim?: MonthlyMilesDtoClaim;
 }
 
 /**

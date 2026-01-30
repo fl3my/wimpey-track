@@ -65,10 +65,16 @@ public class DashboardService : IDashboardService
 
         // Get list for full year
         var reportingMonths = taxYear.GetReportingMonthsUpToToday();
-        var monthlyMiles = reportingMonths.Select(m => new MonthlyMilesDto()
+        var monthlyMiles = reportingMonths.Select(m =>
         {
-            Month = MonthLabel(m),
-            Miles = monthlyData.FirstOrDefault(d => d.MonthNumber == m)?.Miles ?? 0
+            var miles = monthlyData.FirstOrDefault(d => d.MonthNumber == m)?.Miles ?? 0;
+            
+            return new MonthlyMilesDto()
+            {
+                Month = MonthLabel(m),
+                Miles = miles,
+                Claim = CalculateClaim(miles)
+            };
         }).ToList();
         
         return monthlyMiles;

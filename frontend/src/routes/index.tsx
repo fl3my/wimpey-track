@@ -45,6 +45,22 @@ function Home() {
       <SimpleGrid cols={1} spacing="md">
         <Card shadow="sm" p="md">
           <Text w={500} mb={"sm"}>
+            Total Miles per Month
+          </Text>
+          <BarChart
+            h={300}
+            data={monthlyMiles!}
+            dataKey={"month"}
+            xAxisLabel="Month"
+            yAxisLabel="Miles Travelled"
+            series={[
+              { name: "miles", color: "indigo.6" },
+              { name: "claim", label: "Claim (£)", color: "green.6" },
+            ]}
+          />
+        </Card>
+        <Card shadow="sm" p="md">
+          <Text w={500} mb={"sm"}>
             Cumulative Miles this Year
           </Text>
           <LineChart
@@ -58,19 +74,6 @@ function Home() {
             referenceLines={[
               { y: 10000, label: "Change of Mileage rate", color: "red.6" },
             ]}
-          />
-        </Card>
-        <Card shadow="sm" p="md">
-          <Text w={500} mb={"sm"}>
-            Total Miles per Month
-          </Text>
-          <BarChart
-            h={300}
-            data={monthlyMiles!}
-            dataKey={"month"}
-            xAxisLabel="Month"
-            yAxisLabel="Miles Travelled"
-            series={[{ name: "miles", color: "indigo.6" }]}
           />
         </Card>
       </SimpleGrid>
