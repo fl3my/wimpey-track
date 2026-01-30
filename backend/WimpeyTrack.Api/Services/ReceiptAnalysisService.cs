@@ -1,6 +1,5 @@
 using Azure;
 using Azure.AI.DocumentIntelligence;
-using WimpeyTrack.Api.Dtos;
 using WimpeyTrack.Api.Dtos.Receipt;
 using WimpeyTrack.Api.Dtos.Shared;
 using WimpeyTrack.Api.Enums;

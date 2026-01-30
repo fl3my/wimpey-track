@@ -1,5 +1,3 @@
-using WimpeyTrack.Api.Dtos;
-
 namespace WimpeyTrack.Api.Services;
 
 public interface IReceiptImageStorage

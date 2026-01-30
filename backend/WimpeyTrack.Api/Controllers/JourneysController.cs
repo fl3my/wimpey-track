@@ -2,7 +2,6 @@ using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WimpeyTrack.Api.Data;
-using WimpeyTrack.Api.Dtos;
 using WimpeyTrack.Api.Dtos.Journey;
 using WimpeyTrack.Api.Models;
 
@@ -105,7 +104,7 @@ namespace WimpeyTrack.Api.Controllers
             if (dto.IsManualMiles)
             {
                 journey.IsManualMiles = true;
-                journey.TotalMiles = dto.TotalMiles ?? 0;
+                journey.TotalMiles = dto.TotalMiles;
             }
             else
             {
@@ -154,7 +153,7 @@ namespace WimpeyTrack.Api.Controllers
             if (dto.IsManualMiles)
             {
                 journey.IsManualMiles = true;
-                journey.TotalMiles = dto.TotalMiles ?? 0;
+                journey.TotalMiles = dto.TotalMiles;
             }
             
             _context.Journeys.Add(journey);

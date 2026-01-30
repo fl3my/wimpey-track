@@ -1,6 +1,5 @@
 using Microsoft.EntityFrameworkCore;
 using WimpeyTrack.Api.Data;
-using WimpeyTrack.Api.Dtos;
 using WimpeyTrack.Api.Dtos.Report;
 using WimpeyTrack.Api.Models;
 

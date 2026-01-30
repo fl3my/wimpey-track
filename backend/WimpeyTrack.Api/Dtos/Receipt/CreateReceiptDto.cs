@@ -6,11 +6,14 @@ namespace WimpeyTrack.Api.Dtos.Receipt;
 public class CreateReceiptDto
 {
     [Required]
+    [StringLength(50, MinimumLength = 2, ErrorMessage = "Name must be between 2 and 50 characters")]
     public string Name { get; set; } = string.Empty;
     [Required]
+    [Range(typeof(DateOnly), "2024-04-06", "2034-04-06")]
     public DateOnly Date { get; set; }
     [Required]
+    [EnumDataType(typeof(ReceiptCategory), ErrorMessage = "Category is invalid")]
     public ReceiptCategory Category { get; set; }
-
-    [Required] public IFormFile File { get; set; } = null!;
+    [Required]
+    public IFormFile File { get; set; } = null!;
 }

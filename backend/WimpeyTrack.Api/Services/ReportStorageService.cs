@@ -1,5 +1,4 @@
 using WimpeyTrack.Api.Dtos.ReportGeneration;
-using WimpeyTrack.Api.Models;
 
 namespace WimpeyTrack.Api.Services;
 
