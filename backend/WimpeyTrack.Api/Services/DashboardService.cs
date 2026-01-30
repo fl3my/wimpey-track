@@ -65,15 +65,26 @@ public class DashboardService : IDashboardService
 
         // Get list for full year
         var reportingMonths = taxYear.GetReportingMonthsUpToToday();
+        
+        var remainingHighRateMiles = MileageRateThreshold;
+        
         var monthlyMiles = reportingMonths.Select(m =>
         {
             var miles = monthlyData.FirstOrDefault(d => d.MonthNumber == m)?.Miles ?? 0;
-            
+
+            var highRateMiles = Math.Min(miles, remainingHighRateMiles);
+            var lowRateMiles = miles - highRateMiles;
+
+            var claim =
+                (highRateMiles * 0.45m) +
+                (lowRateMiles * 0.25m);
+
+            remainingHighRateMiles -= highRateMiles;
             return new MonthlyMilesDto()
             {
                 Month = MonthLabel(m),
                 Miles = miles,
-                Claim = CalculateClaim(miles)
+                Claim = claim
             };
         }).ToList();
         
