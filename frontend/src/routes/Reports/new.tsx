@@ -46,15 +46,17 @@ function RouteComponent() {
     const endDateString = formatDateLocal(endDate);
 
     try {
-      console.log(values);
-      await mutateAsync({
+      const result = await mutateAsync({
         params: {
           startDate: startDateString,
           endDate: endDateString,
         },
       });
 
-      await navigate({ to: "/Reports" });
+      await navigate({
+        to: "/Reports/$reportId",
+        params: { reportId: result.reportId! },
+      });
     } catch (error) {
       console.error(error);
     }

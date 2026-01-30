@@ -23,19 +23,26 @@ namespace WimpeyTrack.Api.Controllers
             var reports = await _reportService.GetReportsAsync();
             return Ok(reports);
         }
-        
+
         [HttpPost]
-        public async Task<ActionResult<Guid>> Generate(DateOnly startDate, DateOnly endDate)
+        public async Task<ActionResult<GenerateReportDto>> Generate(DateOnly startDate, DateOnly endDate)
         {
             if (startDate > endDate)
             {
                 return BadRequest("Start date cannot be after end date.");
             }
-            
+
             // Generate the report
             var reportId = await _reportService.GenerateAndSaveAsync(startDate, endDate);
+            if (reportId == null)
+                return BadRequest("No journeys in the date range.");
+
+            var dto = new GenerateReportDto()
+            {
+                reportId = reportId.Value.ToString()
+            };
             
-            return Ok(new {reportId});
+            return Ok(dto);
         }
 
         [HttpDelete("{id}")]

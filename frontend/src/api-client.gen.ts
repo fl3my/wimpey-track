@@ -164,6 +164,10 @@ export interface FileLinkDto {
   url?: string;
 }
 
+export interface GenerateReportDto {
+  reportId?: string;
+}
+
 export type IFormFile = Blob;
 
 /**
@@ -3340,7 +3344,7 @@ export const getPostReportUrl = (params?: PostReportParams,) => {
   return stringifiedParams.length > 0 ? `/api/Report?${stringifiedParams}` : `/api/Report`
 }
 
-export const postReport = async (params?: PostReportParams, options?: RequestInit): Promise<void> => {
+export const postReport = async (params?: PostReportParams, options?: RequestInit): Promise<GenerateReportDto> => {
   
   const res = await fetch(getPostReportUrl(params),
   {      
@@ -3353,7 +3357,7 @@ export const postReport = async (params?: PostReportParams, options?: RequestIni
 
   const body = [204, 205, 304].includes(res.status) ? null : await res.text();
   
-  const data: void = body ? JSON.parse(body) : {}
+  const data: GenerateReportDto = body ? JSON.parse(body) : {}
   return data
 }
 

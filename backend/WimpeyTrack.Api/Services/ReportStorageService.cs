@@ -77,9 +77,9 @@ public class ReportStorageService  : IReportStorageService
 
     public IReadOnlyList<string> GetReceiptFiles(Guid reportId)
     {
-        var path = Path.Combine(_wwwroot, "reports", reportId.ToString(), "expenses");
+        var path = Path.Combine(_wwwroot, "reports", reportId.ToString(), "receipts");
 
-        if (Directory.Exists(path))
+        if (!Directory.Exists(path))
             return [];
         
         return Directory

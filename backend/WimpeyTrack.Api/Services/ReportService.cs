@@ -7,7 +7,7 @@ namespace WimpeyTrack.Api.Services;
 
 public interface IReportService
 {
-    Task<Guid> GenerateAndSaveAsync(DateOnly start, DateOnly end);
+    Task<Guid?> GenerateAndSaveAsync(DateOnly start, DateOnly end);
     Task<IEnumerable<ReportDto>> GetReportsAsync();
     Task<ReportPreviewDto?> GetReportPreview(Guid reportId);
     Task DeleteAsync(Guid id);
@@ -27,9 +27,12 @@ public class ReportService : IReportService
         _context = context;
     }
 
-    public async Task<Guid> GenerateAndSaveAsync(DateOnly start, DateOnly end)
+    public async Task<Guid?> GenerateAndSaveAsync(DateOnly start, DateOnly end)
     {
         var artifacts = await _generationService.GenerateAsync(start, end);
+        
+        if  (artifacts is null)
+            return null;
         
         var reportId = Guid.NewGuid();
         var folderPath = await _storageService.SaveAsync(reportId, artifacts);
@@ -82,7 +85,7 @@ public class ReportService : IReportService
             ReceiptPages = receiptFiles.Select(f => new FileLinkDto()
             {
                 FileName = Path.GetFileName(f),
-                Url = $"/reports/{reportId}/expenses/{Path.GetFileName(f)}"
+                Url = $"/reports/{reportId}/receipts/{Path.GetFileName(f)}"
             }).ToList()
         };
         

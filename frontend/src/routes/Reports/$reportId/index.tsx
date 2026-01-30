@@ -11,13 +11,11 @@ function RouteComponent() {
   const { reportId } = Route.useParams();
   const { data: preview } = useGetReportId(reportId);
 
-  if (preview) {
-    console.log(preview);
-  }
   return (
     <>
       <CustomButtonLink to={"/Reports"}>Back</CustomButtonLink>
       <Stack>
+        <Text>Expense Sheets</Text>
         {preview &&
           preview.expenseDocuments?.map((doc) => (
             <Group key={doc.fileName}>
@@ -28,11 +26,16 @@ function RouteComponent() {
               </Anchor>
             </Group>
           ))}
+        <Text>Receipts</Text>
         {preview &&
           preview.receiptPages?.map((doc) => (
-            <Anchor key={doc.fileName} href={doc.url}>
-              {doc.fileName}
-            </Anchor>
+            <Group key={doc.fileName}>
+              <Text>{doc.fileName}</Text>
+              <Anchor href={doc.url}>Preview</Anchor>
+              <Anchor href={doc.url} download>
+                Download
+              </Anchor>
+            </Group>
           ))}
       </Stack>
     </>

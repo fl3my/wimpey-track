@@ -12,7 +12,7 @@ namespace WimpeyTrack.Api.Services;
 /// </summary>
 public interface IReportGenerationService
 {
-    Task<ReportArtifacts> GenerateAsync(DateOnly startDate, DateOnly endDate);
+    Task<ReportArtifacts?> GenerateAsync(DateOnly startDate, DateOnly endDate);
 }
 
 public class ReportGenerationService : IReportGenerationService
@@ -32,9 +32,11 @@ public class ReportGenerationService : IReportGenerationService
         _receiptProvider = receiptProvider;
     }
 
-    public async Task<ReportArtifacts> GenerateAsync(DateOnly startDate, DateOnly endDate)
+    public async Task<ReportArtifacts?> GenerateAsync(DateOnly startDate, DateOnly endDate)
     {
         var books = await _bookBuilder.BuildAsync(startDate, endDate);
+        
+        if (books.Count == 0) return null;
         
         var expenseDocs = await GenerateExpenseDocumentsAsync(books, startDate, endDate);
         var receiptPages = await GenerateReceiptPagesAsync(startDate, endDate);
