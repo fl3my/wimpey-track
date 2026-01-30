@@ -1,4 +1,5 @@
 using WimpeyTrack.Api.Dtos;
+using WimpeyTrack.Api.Dtos.Shared;
 
 namespace WimpeyTrack.Api.Services;
 

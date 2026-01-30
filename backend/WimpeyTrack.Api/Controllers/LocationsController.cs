@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WimpeyTrack.Api.Data;
 using WimpeyTrack.Api.Dtos;
+using WimpeyTrack.Api.Dtos.Location;
 using WimpeyTrack.Api.Models;
 
 namespace WimpeyTrack.Api.Controllers

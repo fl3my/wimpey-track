@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using WimpeyTrack.Api.Dtos;
+using WimpeyTrack.Api.Dtos.Report;
 using WimpeyTrack.Api.Models;
 using WimpeyTrack.Api.Services;
 

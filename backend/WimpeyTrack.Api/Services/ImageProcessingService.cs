@@ -3,6 +3,7 @@ using SixLabors.ImageSharp.Formats.Jpeg;
 using SixLabors.ImageSharp.PixelFormats;
 using SixLabors.ImageSharp.Processing;
 using WimpeyTrack.Api.Dtos;
+using WimpeyTrack.Api.Dtos.Shared;
 
 namespace WimpeyTrack.Api.Services;
 

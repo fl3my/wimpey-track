@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using WimpeyTrack.Api.Data;
 using WimpeyTrack.Api.Dtos;
+using WimpeyTrack.Api.Dtos.Receipt;
 
 namespace WimpeyTrack.Api.Services;
 
