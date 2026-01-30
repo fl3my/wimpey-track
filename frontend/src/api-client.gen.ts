@@ -159,6 +159,36 @@ export interface CreateTripDto {
   reasonId?: CreateTripDtoReasonId;
 }
 
+export interface DashboardResponse {
+  summary?: DashboardSummary;
+  cumulativeMiles?: MonthlyMilesDto[];
+  monthlyMiles?: MonthlyMilesDto[];
+}
+
+/**
+ * @pattern ^-?(?:0|[1-9]\d*)(?:\.\d+)?$
+ */
+export type DashboardSummaryTotalClaimedThisTaxYear = number | string;
+
+/**
+ * @pattern ^-?(?:0|[1-9]\d*)(?:\.\d+)?$
+ */
+export type DashboardSummaryTotalClaimedThisMonth = number | string;
+
+/**
+ * @pattern ^-?(?:0|[1-9]\d*)$
+ */
+export type DashboardSummaryTotalMileageThisTaxYear = number | string;
+
+export interface DashboardSummary {
+  /** @pattern ^-?(?:0|[1-9]\d*)(?:\.\d+)?$ */
+  totalClaimedThisTaxYear?: DashboardSummaryTotalClaimedThisTaxYear;
+  /** @pattern ^-?(?:0|[1-9]\d*)(?:\.\d+)?$ */
+  totalClaimedThisMonth?: DashboardSummaryTotalClaimedThisMonth;
+  /** @pattern ^-?(?:0|[1-9]\d*)$ */
+  totalMileageThisTaxYear?: DashboardSummaryTotalMileageThisTaxYear;
+}
+
 export interface FileLinkDto {
   fileName?: string;
   url?: string;
@@ -298,6 +328,17 @@ export interface LocationDto {
   latitude?: LocationDtoLatitude;
   /** @pattern ^-?(?:0|[1-9]\d*)(?:\.\d+)?(?:[eE][+-]?\d+)?$ */
   longitude?: LocationDtoLongitude;
+}
+
+/**
+ * @pattern ^-?(?:0|[1-9]\d*)$
+ */
+export type MonthlyMilesDtoMiles = number | string;
+
+export interface MonthlyMilesDto {
+  month?: string;
+  /** @pattern ^-?(?:0|[1-9]\d*)$ */
+  miles?: MonthlyMilesDtoMiles;
 }
 
 /**
@@ -611,6 +652,107 @@ export type PostReportParams = {
 startDate?: string;
 endDate?: string;
 };
+
+export const getGetDashboardUrl = () => {
+
+
+  
+
+  return `/api/Dashboard`
+}
+
+export const getDashboard = async ( options?: RequestInit): Promise<DashboardResponse> => {
+  
+  const res = await fetch(getGetDashboardUrl(),
+  {      
+    ...options,
+    method: 'GET'
+    
+    
+  }
+)
+
+  const body = [204, 205, 304].includes(res.status) ? null : await res.text();
+  
+  const data: DashboardResponse = body ? JSON.parse(body) : {}
+  return data
+}
+
+
+
+
+
+export const getGetDashboardQueryKey = () => {
+    return [
+    `/api/Dashboard`
+    ] as const;
+    }
+
+    
+export const getGetDashboardQueryOptions = <TData = Awaited<ReturnType<typeof getDashboard>>, TError = unknown>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDashboard>>, TError, TData>>, fetch?: RequestInit}
+) => {
+
+const {query: queryOptions, fetch: fetchOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetDashboardQueryKey();
+
+  
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getDashboard>>> = ({ signal }) => getDashboard({ signal, ...fetchOptions });
+
+      
+
+      
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getDashboard>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type GetDashboardQueryResult = NonNullable<Awaited<ReturnType<typeof getDashboard>>>
+export type GetDashboardQueryError = unknown
+
+
+export function useGetDashboard<TData = Awaited<ReturnType<typeof getDashboard>>, TError = unknown>(
+  options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDashboard>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getDashboard>>,
+          TError,
+          Awaited<ReturnType<typeof getDashboard>>
+        > , 'initialData'
+      >, fetch?: RequestInit}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetDashboard<TData = Awaited<ReturnType<typeof getDashboard>>, TError = unknown>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDashboard>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getDashboard>>,
+          TError,
+          Awaited<ReturnType<typeof getDashboard>>
+        > , 'initialData'
+      >, fetch?: RequestInit}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetDashboard<TData = Awaited<ReturnType<typeof getDashboard>>, TError = unknown>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDashboard>>, TError, TData>>, fetch?: RequestInit}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+
+export function useGetDashboard<TData = Awaited<ReturnType<typeof getDashboard>>, TError = unknown>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDashboard>>, TError, TData>>, fetch?: RequestInit}
+ , queryClient?: QueryClient 
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getGetDashboardQueryOptions(options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  query.queryKey = queryOptions.queryKey ;
+
+  return query;
+}
+
+
+
+
 
 export const getGetPurchasesPurchaseIdItemsUrl = (purchaseId: string,) => {
 

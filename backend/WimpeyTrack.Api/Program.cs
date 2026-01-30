@@ -38,6 +38,8 @@ builder.Services.AddScoped<IBookBuilder, BookBuilder>();
 builder.Services.AddScoped<IReportZipBuilder, ReportZipBuilder>();
 builder.Services.AddScoped<IReportService, ReportService>();
 builder.Services.AddScoped<IReportStorageService, ReportStorageService>();
+builder.Services.AddScoped<IDashboardService, DashboardService>();
+
 
 // Add custom vision service
 builder.Services.AddHttpClient<IVisionService, VisionService>(client =>

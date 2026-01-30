@@ -268,12 +268,11 @@ public class BookBuilder : IBookBuilder
     private async Task<bool> CalculateOverThresholdAsync(DateOnly claimDate)
     {
         // Calculate the tax year depending on the claim date
-        var taxYear = claimDate.Month >= 4 ? claimDate.Year : claimDate.Year - 1;
-        var taxYearStart = new DateOnly(taxYear, 4, 6);
+        var taxYear = TaxYear.FromDate(claimDate);
 
         // Sum the miles from the claim date to the tax year start
         var miles = await _context.Journeys
-            .Where(j => j.Date >= taxYearStart && j.Date <= claimDate)
+            .Where(j => j.Date >= taxYear.Start && j.Date <= claimDate)
             .SumAsync(j => j.TotalMiles);
 
         // Return true if over threshold
