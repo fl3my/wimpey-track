@@ -40,6 +40,7 @@ builder.Services.AddScoped<IReportZipBuilder, ReportZipBuilder>();
 builder.Services.AddScoped<IReportService, ReportService>();
 builder.Services.AddScoped<IReportStorageService, ReportStorageService>();
 builder.Services.AddScoped<IDashboardService, DashboardService>();
+builder.Services.AddScoped<IJourneyDistanceService, JourneyDistanceService>();
 
 
 // Add custom vision service

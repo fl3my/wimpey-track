@@ -121,11 +121,16 @@ export const deletePurchasesPurchaseIdItemsItemIdParams = zod.object({
 
 
 export const getJourneysQueryParams = zod.object({
-  "weekStart": zod.iso.date()
+  "weekStart": zod.iso.date().optional()
 })
 
 export const getJourneysResponse = zod.object({
-  "journeys": zod.array(zod.object({
+  "weekStart": zod.iso.date(),
+  "prevWeekStart": zod.iso.date(),
+  "nextWeekStart": zod.iso.date(),
+  "days": zod.array(zod.object({
+  "date": zod.iso.date(),
+  "journey": zod.union([zod.null(),zod.object({
   "id": zod.coerce.number().optional(),
   "date": zod.iso.date().optional(),
   "totalMiles": zod.coerce.number().optional(),
@@ -136,21 +141,21 @@ export const getJourneysResponse = zod.object({
   "locationName": zod.coerce.string().optional(),
   "reasonName": zod.coerce.string().optional()
 })).optional()
-})).optional(),
-  "startDate": zod.iso.date().optional(),
-  "endDate": zod.iso.date().optional()
+})])
+}))
 })
 
 
-export const postJourneysBodyTotalMilesMax = 300;
+export const postJourneysBodyTripsMax = 10;
 
 
 
 export const postJourneysBody = zod.object({
   "date": zod.iso.date(),
-  "totalMiles": zod.coerce.number().min(1).max(postJourneysBodyTotalMilesMax),
-  "isManualMiles": zod.coerce.boolean(),
-  "homeLocationId": zod.coerce.number()
+  "trips": zod.array(zod.object({
+  "locationId": zod.coerce.number(),
+  "reasonId": zod.coerce.number()
+})).min(1).max(postJourneysBodyTripsMax)
 })
 
 export const postJourneysResponse = zod.object({

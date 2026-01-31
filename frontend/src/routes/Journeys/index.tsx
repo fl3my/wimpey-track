@@ -1,29 +1,35 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import {
+  Alert,
+  Button,
+  Center,
+  Group,
+  Loader,
+  Paper,
+  Select,
+  Stack,
+  Text,
+} from "@mantine/core";
+import { useForm } from "@mantine/form";
+import {
   useDeleteJourneysId,
-  useDeleteJourneysJourneyIdTripsTripId,
   useGetJourneys,
   useGetLocations,
   useGetReasons,
   usePostJourneys,
-  usePostJourneysJourneyIdTrips,
 } from "@/api/api-client.gen.ts";
 import { useState } from "react";
-import {
-  Button,
-  Group,
-  Text,
-  Center,
-  Loader,
-  Alert,
-  Stack,
-  Paper,
-  Timeline,
-  Select,
-  Anchor,
-} from "@mantine/core";
-import { useForm } from "@mantine/form";
-import { CustomButtonLink } from "@/components/custom-button-link.tsx";
+import z from "zod";
+import { zod4Resolver } from "mantine-form-zod-resolver";
+
+const tripSchema = z.object({
+  locationId: z.coerce.number().int().positive(),
+  reasonId: z.coerce.number().int().positive(),
+});
+
+export const journeySchema = z.object({
+  trips: z.array(tripSchema).min(1),
+});
 
 export const Route = createFileRoute("/Journeys/")({
   component: RouteComponent,
@@ -35,349 +41,225 @@ export const Route = createFileRoute("/Journeys/")({
 });
 
 function RouteComponent() {
-  const { weekStart: weekStartParam } = Route.useSearch();
-
-  // Get the date of monday for any day of the week
-  const getMonday = (date: Date) => {
-    const d = new Date(date);
-    const day = d.getDay();
-    const diff = d.getDate() - day + (day === 0 ? -6 : 1);
-    return new Date(d.setDate(diff));
-  };
-
-  // Remove the time information from the date
-  const formatDate = (date: Date) => {
-    return date.toISOString().split("T")[0];
-  };
-
-  // Use state to keep track of which week
-  const [weekStart, setWeekStart] = useState(() => {
-    if (!weekStartParam) return getMonday(new Date());
-    return new Date(weekStartParam);
-  });
-
-  const [showFormForDay, setShowFormForDay] = useState<number | null>(null);
-
-  // Query the journeys
-  const journeys = useGetJourneys({
-    weekStart: formatDate(weekStart),
-  });
-  const createJourney = usePostJourneys();
-  const deleteJourney = useDeleteJourneysId();
-  const locations = useGetLocations();
-  const reasons = useGetReasons();
-  const createTrip = usePostJourneysJourneyIdTrips();
-  const deleteTrip = useDeleteJourneysJourneyIdTripsTripId();
-
-  const form = useForm<{ locationId: string | null; reasonId: string | null }>({
-    initialValues: {
-      locationId: null,
-      reasonId: null,
-    },
-    validate: {
-      locationId: (value) => (value ? null : "Please select a location"),
-      reasonId: (value) => (value ? null : "Please select a reason"),
-    },
-  });
-
+  const { weekStart } = Route.useSearch();
   const navigate = useNavigate();
 
-  // When button is pressed, go back 7 days
-  const goToPreviousWeek = () => {
-    const prev = new Date(weekStart);
-    prev.setDate(prev.getDate() - 7);
-    setWeekStart(prev);
+  const [addingForDate, setAddingForDate] = useState<string | null>(null);
 
-    navigate({ to: "/Journeys", search: { weekStart: formatDate(prev) } });
-  };
+  const form = useForm({
+    initialValues: {
+      trips: [
+        {
+          locationId: "",
+          reasonId: "",
+        },
+      ],
+    },
+    validate: zod4Resolver(journeySchema),
+  });
 
-  // When this button is pressed, go forward 7 days
-  const goToNextWeek = () => {
-    const next = new Date(weekStart);
-    next.setDate(next.getDate() + 7);
-    setWeekStart(next);
+  const journeysByWeek = useGetJourneys({ weekStart });
+  const locationsQuery = useGetLocations();
+  const reasonsQuery = useGetReasons();
+  const createJourney = usePostJourneys();
+  const deleteJourney = useDeleteJourneysId();
 
-    navigate({ to: "/Journeys", search: { weekStart: formatDate(next) } });
-  };
+  const locationOptions =
+    locationsQuery.data?.map((l) => ({
+      value: String(l.id)!,
+      label: l.name ?? "Unknown",
+    })) ?? [];
 
-  // Get the name of the day including, day month and year
-  const getDayName = (offset: number) => {
-    const date = new Date(weekStart);
-    date.setDate(date.getDate() + offset);
-    return date.toLocaleDateString("en-US", {
-      weekday: "short",
-      month: "short",
-      day: "numeric",
-    });
-  };
+  const reasonOptions =
+    reasonsQuery.data?.map((r) => ({
+      value: String(r.id)!,
+      label: r.name ?? "Unknown",
+    })) ?? [];
 
-  // Match the journey from the server to the day
-  const getJourneyForDay = (offset: number) => {
-    if (!journeys.data?.journeys) return null;
-    const date = new Date(weekStart);
-    date.setDate(date.getDate() + offset);
-    const dateStr = formatDate(date);
-    return journeys.data.journeys.find((journey) => journey.date === dateStr);
-  };
+  if (journeysByWeek.isLoading) {
+    return (
+      <Center py="xl">
+        <Loader />
+      </Center>
+    );
+  }
 
-  const handleAddJourney = (offset: number) => {
-    const date = new Date(weekStart);
-    date.setDate(date.getDate() + offset);
-    const dateStr = formatDate(date);
+  if (journeysByWeek.isError || !journeysByWeek.data) {
+    return <Alert color="red">Failed to load journeys</Alert>;
+  }
+
+  const handleSubmit = (values: typeof form.values) => {
+    if (!addingForDate) return;
+
+    // Convert select string values to numbers for id
+    const parsed = journeySchema.parse(values);
 
     createJourney.mutate(
       {
         data: {
-          date: dateStr,
-          isManualMiles: false,
-          totalMiles: 1,
-          homeLocationId: 8, // TODO DO NOT KEEP THIS BAD
+          date: addingForDate,
+          trips: parsed.trips,
         },
       },
       {
         onSuccess: async () => {
-          await journeys.refetch();
+          await journeysByWeek.refetch();
+          setAddingForDate(null);
+          form.reset();
         },
       },
     );
   };
 
-  const handleAddTrip = (journeyId: number, values: typeof form.values) => {
-    const validation = form.validate();
-    if (!validation.hasErrors) {
-      createTrip.mutate(
-        {
-          journeyId: journeyId,
-          data: {
-            locationId: Number(values.locationId),
-            reasonId: Number(values.reasonId),
-          },
-        },
-        {
-          onSuccess: async () => {
-            await journeys.refetch();
-            form.reset();
-          },
-        },
-      );
-    }
-  };
-
-  const handleDeleteJourney = (journeyId: number) => {
+  const handleDelete = (journeyId: number) => {
     deleteJourney.mutate(
-      {
-        id: journeyId,
-      },
+      { id: journeyId },
       {
         onSuccess: async () => {
-          await journeys.refetch();
+          await journeysByWeek.refetch();
         },
       },
     );
   };
 
-  const handleDeleteTrip = (journeyId: number, tripId: number) => {
-    deleteTrip.mutate(
-      {
-        journeyId: journeyId,
-        tripId: tripId,
-      },
-      {
-        onSuccess: async () => {
-          await journeys.refetch();
-        },
-      },
-    );
-  };
-
-  const populateLocations = () => {
-    if (!locations?.data) return [];
-
-    return locations.data.map((location) => ({
-      value: location.id?.toString() ?? "", // Select expects string values
-      label: location.name ?? "",
-    }));
-  };
-
-  const populateReasons = () => {
-    if (!reasons?.data) return [];
-
-    return reasons.data.map((reason) => ({
-      value: reason.id?.toString() ?? "", // Select expects string values
-      label: reason.name ?? "",
-    }));
-  };
-
-  const toggleForm = (offset: number) => {
-    if (showFormForDay === offset) {
-      setShowFormForDay(null);
-      form.reset();
-    } else {
-      setShowFormForDay(offset);
-    }
-  };
-
-  const isToday = (offset: number) => {
-    const date = new Date(weekStart);
-    date.setDate(date.getDate() + offset);
-
-    const today = new Date();
-    return formatDate(date) === formatDate(today);
-  };
+  const {
+    days,
+    weekStart: resolvedWeekStart,
+    prevWeekStart,
+    nextWeekStart,
+  } = journeysByWeek.data;
 
   return (
-    <>
-      <Stack gap={"lg"}>
-        <Group justify="space-between">
-          <Button onClick={goToPreviousWeek} disabled={journeys.isLoading}>
-            Previous
-          </Button>
+    <Stack gap="lg">
+      <Group justify="space-between">
+        <Button
+          onClick={() =>
+            navigate({
+              to: "/Journeys",
+              search: { weekStart: prevWeekStart },
+            })
+          }
+        >
+          Previous
+        </Button>
 
-          <Text fw={600} size="lg">
-            Week of {weekStart.toLocaleDateString()}
-          </Text>
+        <Text fw={600}>
+          Week of {new Date(resolvedWeekStart).toLocaleDateString("en-US")}
+        </Text>
 
-          <Button onClick={goToNextWeek} disabled={journeys.isLoading}>
-            Next
-          </Button>
-        </Group>
+        <Button
+          onClick={() =>
+            navigate({
+              to: "/Journeys",
+              search: { weekStart: nextWeekStart },
+            })
+          }
+        >
+          Next
+        </Button>
+      </Group>
 
-        {journeys.isLoading && (
-          <Center py="xl">
-            <Loader />
-          </Center>
-        )}
+      <Stack>
+        {days.map((day) => (
+          <Paper key={day.date} withBorder p="md">
+            <Text fw={500}>
+              {new Date(day.date).toLocaleDateString("en-US", {
+                weekday: "short",
+                month: "short",
+                day: "numeric",
+              })}
+            </Text>
+            {day.journey && (
+              <Text size="sm" c="dimmed">
+                Total miles: {day.journey.totalMiles}
+              </Text>
+            )}
+            {day.journey ? (
+              <Stack mt="sm">
+                {day.journey.trips?.map((trip) => (
+                  <Group key={trip.id}>
+                    <Text>{trip.locationName}</Text>
+                    <Text c="dimmed">{trip.reasonName}</Text>
+                  </Group>
+                ))}
 
-        {journeys.isError && (
-          <Alert color="red" title="Error">
-            Failed to load journeys
-          </Alert>
-        )}
-
-        {!journeys.isLoading && !journeys.isError && (
-          <Stack gap="sm">
-            {[0, 1, 2, 3, 4, 5, 6].map((offset) => {
-              const journey = getJourneyForDay(offset);
-
-              return (
-                <Paper key={offset} withBorder radius="md" p="md">
-                  <Text fw={500}>
-                    {getDayName(offset)} {isToday(offset) && "(Today)"}
-                  </Text>
-                  {journey ? (
-                    <Stack>
-                      <>Total Distance: {journey.totalMiles} miles</>
-                      <Timeline bulletSize={24} color={"blue"}>
-                        <Timeline.Item title={"Home"}>
-                          <Text c={"dimmed"} size={"sm"}>
-                            Largs
-                          </Text>
-                        </Timeline.Item>
-                        {journey.trips &&
-                          journey.trips.map((t) => (
-                            <Timeline.Item title={t.locationName} key={t.id}>
-                              <Text c={"dimmed"} size={"sm"}>
-                                {t.reasonName}{" "}
-                              </Text>
-                              {showFormForDay === offset && (
-                                <Anchor
-                                  c={"red"}
-                                  onClick={() =>
-                                    handleDeleteTrip(
-                                      Number(journey.id),
-                                      Number(t.id),
-                                    )
-                                  }
-                                >
-                                  Delete
-                                </Anchor>
-                              )}
-                            </Timeline.Item>
-                          ))}
-                        {showFormForDay === offset && (
-                          <Timeline.Item title={"Enter new trip"}>
-                            <Group mt="sm">
-                              <form
-                                onSubmit={form.onSubmit((values) =>
-                                  handleAddTrip(Number(journey.id), values),
-                                )}
-                              >
-                                <Select
-                                  searchable
-                                  placeholder={"Location"}
-                                  data={populateLocations()}
-                                  limit={5}
-                                  key={form.key("locationId")}
-                                  {...form.getInputProps("locationId")}
-                                />
-                                <Select
-                                  searchable
-                                  placeholder={"Reason"}
-                                  data={populateReasons()}
-                                  limit={5}
-                                  key={form.key("reasonId")}
-                                  {...form.getInputProps("reasonId")}
-                                />
-                                <Button
-                                  loading={createTrip.isPending}
-                                  type="submit"
-                                >
-                                  Add
-                                </Button>
-                              </form>
-                            </Group>
-                          </Timeline.Item>
+                <Button
+                  color="red"
+                  variant="light"
+                  onClick={() => handleDelete(Number(day?.journey?.id))}
+                >
+                  Delete journey
+                </Button>
+              </Stack>
+            ) : addingForDate === day.date ? (
+              <Paper mt="sm" p="sm" withBorder>
+                <form onSubmit={form.onSubmit(handleSubmit)}>
+                  <Stack>
+                    {form.values.trips.map((_, index) => (
+                      <Group key={index} grow>
+                        <Select
+                          searchable
+                          placeholder={"Location"}
+                          data={locationOptions}
+                          {...form.getInputProps(`trips.${index}.locationId`)}
+                        />
+                        <Select
+                          searchable
+                          placeholder={"Reason"}
+                          data={reasonOptions}
+                          {...form.getInputProps(`trips.${index}.reasonId`)}
+                        />
+                        {form.values.trips.length > 1 && (
+                          <Button
+                            color="red"
+                            variant="subtle"
+                            onClick={() => form.removeListItem("trips", index)}
+                          >
+                            Remove
+                          </Button>
                         )}
-                        {/* Dynamic trips */}
-                        <Timeline.Item title={"Home"}>
-                          <Text c={"dimmed"} size={"sm"}>
-                            Largs
-                          </Text>
-                        </Timeline.Item>
-                      </Timeline>
-                      <Button
-                        size="xs"
-                        variant="light"
-                        onClick={() => toggleForm(offset)}
-                      >
-                        {showFormForDay === offset ? "Exit" : "Edit Trips"}
-                      </Button>
-                      <Group grow>
-                        <CustomButtonLink
-                          to={"/Journeys/$journeyId/edit"}
-                          size={"xs"}
-                          params={{ journeyId: journey.id!.toString() }}
-                          search={{ weekStart: formatDate(weekStart) }}
-                        >
-                          Edit Journey Details
-                        </CustomButtonLink>
-                        <Button
-                          size={"xs"}
-                          loading={deleteJourney.isPending}
-                          color={"red"}
-                          onClick={() =>
-                            handleDeleteJourney(Number(journey.id))
-                          }
-                        >
-                          Delete
-                        </Button>
                       </Group>
-                    </Stack>
-                  ) : (
+                    ))}
+
                     <Button
-                      size={"xs"}
-                      onClick={() => handleAddJourney(offset)}
-                      loading={createJourney.isPending}
+                      variant="light"
+                      onClick={() =>
+                        form.insertListItem("trips", {
+                          locationId: "",
+                          reasonId: "",
+                        })
+                      }
                     >
-                      Add Journey
+                      + Add another trip
                     </Button>
-                  )}
-                </Paper>
-              );
-            })}
-          </Stack>
-        )}
+
+                    <Group justify="flex-end">
+                      <Button
+                        variant="subtle"
+                        onClick={() => setAddingForDate(null)}
+                      >
+                        Cancel
+                      </Button>
+
+                      <Button type="submit">Save journey</Button>
+                    </Group>
+                  </Stack>
+                </form>
+              </Paper>
+            ) : (
+              <Button
+                mt="sm"
+                onClick={() => {
+                  form.reset();
+                  setAddingForDate(day.date);
+                }}
+              >
+                Add journey
+              </Button>
+            )}
+          </Paper>
+        ))}
       </Stack>
-    </>
+    </Stack>
   );
 }

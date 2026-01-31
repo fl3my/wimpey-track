@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using WimpeyTrack.Api.Data;
 using WimpeyTrack.Api.Dtos.Journey;
 using WimpeyTrack.Api.Models;
+using WimpeyTrack.Api.Services;
 
 namespace WimpeyTrack.Api.Controllers
 {
@@ -12,17 +13,25 @@ namespace WimpeyTrack.Api.Controllers
     public class JourneysController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
+        private readonly IJourneyDistanceService _distanceService;
 
-        public JourneysController(ApplicationDbContext context)
+        public JourneysController(ApplicationDbContext context, IJourneyDistanceService distanceService)
         {
             _context = context;
+            _distanceService = distanceService;
         }
 
         // GET: api/Journeys
         [HttpGet]
-        public async Task<ActionResult<JourneyByWeekDto>> GetJourneysByWeek([Required] DateOnly weekStart)
+        public async Task<ActionResult<JourneyByWeekDto>> GetJourneysByWeek(DateOnly? weekStart)
         {
-            var weekEnd = weekStart.AddDays(7);
+            var resolvedWeekStart =
+                weekStart.HasValue
+                    ? GetWeekStartMonday(weekStart.Value)
+                    : GetWeekStartMonday(DateOnly.FromDateTime(DateTime.UtcNow));
+
+            
+            var weekEnd = resolvedWeekStart.AddDays(7);
             
             var journeys = await _context.Journeys
                 .Include(j => j.Trips)
@@ -49,12 +58,35 @@ namespace WimpeyTrack.Api.Controllers
                         .ToList()
                 }).ToListAsync();
             
+            var days = Enumerable.Range(0, 7).Select(offset =>
+            {
+                var date = resolvedWeekStart.AddDays(offset);
+                
+                var journeyForDay = journeys
+                    .FirstOrDefault(j => j.Date == date);
+
+
+                return new JourneyDayDto()
+                {
+                    Date = date,
+                    Journey = journeyForDay
+                };
+            }).ToList();
+           
             return new JourneyByWeekDto()
             {
-                Journeys = journeys,
-                StartDate = weekStart,
-                EndDate = weekEnd
+                WeekStart = resolvedWeekStart,
+                PrevWeekStart = resolvedWeekStart.AddDays(-7),
+                NextWeekStart = resolvedWeekStart.AddDays(7),
+                Days = days
             };
+        }
+
+        private static DateOnly GetWeekStartMonday(DateOnly date)
+        {
+            var dayOfWeek = (int)date.DayOfWeek;
+            var diff = dayOfWeek == 0 ? -6 : 1 -dayOfWeek;
+            return date.AddDays(diff);
         }
 
         // GET: api/Journeys/5
@@ -134,31 +166,71 @@ namespace WimpeyTrack.Api.Controllers
         [HttpPost]
         public async Task<ActionResult<JourneyDto>> PostJourney(CreateJourneyDto dto)
         {
+            var homeLocationId = 7;
+            
             // Do not allow journeys with the same date
             if (await _context.Journeys.AnyAsync(j => j.Date == dto.Date))
             {
-                return BadRequest();
+                return BadRequest(new {message = "Journey on same date exists"});
             }
             
             // Home location must be a valid location
-            if (! await _context.Locations.AnyAsync(l => l.Id == dto.HomeLocationId))
-                return BadRequest();
+            if (! await _context.Locations.AnyAsync(l => l.Id == homeLocationId))
+                return BadRequest(new { message = "Home Location not found" });
+            
+            // Get list of trips and reasons from request
+            var tripLocationIds = dto.Trips.Select(t => t.LocationId).Distinct().ToList();
+            var tripReasonIds = dto.Trips.Select(t => t.ReasonId).Distinct().ToList();
+           
+            // Validate that locations exist
+            var validLocationIds = await _context.Locations
+                .Where(l => tripLocationIds.Contains(l.Id))
+                .Select(l => l.Id)
+                .ToListAsync();
+
+            if (validLocationIds.Count != tripLocationIds.Count)
+            {
+                return BadRequest(new { message="One or more trip locations do not exist." });
+            }
+            
+            // Validate that reasons exist
+            var validReasonIds = await _context.Reasons
+                .Where(r => tripReasonIds.Contains(r.Id))
+                .Select(r => r.Id)
+                .ToListAsync();
+
+            if (validReasonIds.Count != tripReasonIds.Count)
+            {
+                return BadRequest(new {message = "One or more trip reasons do not exist."});
+            }
             
             var journey = new Journey()
             {
                 Date = dto.Date,
-                HomeLocationId = dto.HomeLocationId,
+                HomeLocationId = homeLocationId,
+                Trips = dto.Trips.Select(t => new Trip()
+                {
+                    LocationId = t.LocationId,
+                    ReasonId = t.ReasonId
+                }).ToList()
             };
-
-            if (dto.IsManualMiles)
-            {
-                journey.IsManualMiles = true;
-                journey.TotalMiles = dto.TotalMiles;
-            }
+            
+            journey.IsManualMiles = false;
             
             _context.Journeys.Add(journey);
             await _context.SaveChangesAsync();
 
+            // Recalculate the total mileage
+            await _distanceService.RecalculateMilesAsync(journey.Id);
+            
+            // Requery wth navigational properties
+            journey = await _context.Journeys
+                .Include(j => j.Trips)
+                .ThenInclude(t => t.Location)
+                .Include(j => j.Trips)
+                .ThenInclude(t => t.Reason)
+                .FirstAsync(j => j.Id == journey.Id);
+            
             var journeyDto = new JourneyDto()
             {
                 Id = journey.Id,
@@ -166,6 +238,12 @@ namespace WimpeyTrack.Api.Controllers
                 TotalMiles = journey.TotalMiles,
                 IsManualMiles = journey.IsManualMiles,
                 HomeLocationId = journey.HomeLocationId,
+                Trips = journey.Trips.Select(t => new JourneyTripDto()
+                {
+                    Id =  t.Id,
+                    LocationName = t.Location.Name,
+                    ReasonName = t.Reason.Name
+                }).ToList()
             };
             
             return CreatedAtAction("GetJourney", new { id = journeyDto.Id }, journeyDto);

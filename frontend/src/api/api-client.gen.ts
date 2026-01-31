@@ -67,12 +67,10 @@ export interface CreateItemDto {
 export interface CreateJourneyDto {
   date: string;
   /**
-   * @minimum 1
-   * @maximum 300
+   * @minItems 1
+   * @maxItems 10
    */
-  totalMiles: number;
-  isManualMiles: boolean;
-  homeLocationId: number;
+  trips: CreateTripDto[];
 }
 
 export interface CreateLocationDto {
@@ -173,9 +171,17 @@ export interface ItemDto {
 }
 
 export interface JourneyByWeekDto {
-  journeys?: JourneyDto[];
-  startDate?: string;
-  endDate?: string;
+  weekStart: string;
+  prevWeekStart: string;
+  nextWeekStart: string;
+  days: JourneyDayDto[];
+}
+
+export type JourneyDayDtoJourney = null | JourneyDto;
+
+export interface JourneyDayDto {
+  date: string;
+  journey: JourneyDayDtoJourney;
 }
 
 export interface JourneyDto {
@@ -385,7 +391,7 @@ export interface UpdateTripDto {
 }
 
 export type GetJourneysParams = {
-weekStart: string;
+weekStart?: string;
 };
 
 export type PostReceiptsBody = {
@@ -908,7 +914,7 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
       return useMutation(mutationOptions, queryClient);
     }
     
-export const getGetJourneysUrl = (params: GetJourneysParams,) => {
+export const getGetJourneysUrl = (params?: GetJourneysParams,) => {
   const normalizedParams = new URLSearchParams();
 
   Object.entries(params || {}).forEach(([key, value]) => {
@@ -923,7 +929,7 @@ export const getGetJourneysUrl = (params: GetJourneysParams,) => {
   return stringifiedParams.length > 0 ? `/api/Journeys?${stringifiedParams}` : `/api/Journeys`
 }
 
-export const getJourneys = async (params: GetJourneysParams, options?: RequestInit): Promise<JourneyByWeekDto> => {
+export const getJourneys = async (params?: GetJourneysParams, options?: RequestInit): Promise<JourneyByWeekDto> => {
   
   return fetcher<JourneyByWeekDto>(getGetJourneysUrl(params),
   {      
@@ -945,7 +951,7 @@ export const getGetJourneysQueryKey = (params?: GetJourneysParams,) => {
     }
 
     
-export const getGetJourneysQueryOptions = <TData = Awaited<ReturnType<typeof getJourneys>>, TError = unknown>(params: GetJourneysParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getJourneys>>, TError, TData>>, request?: SecondParameter<typeof fetcher>}
+export const getGetJourneysQueryOptions = <TData = Awaited<ReturnType<typeof getJourneys>>, TError = unknown>(params?: GetJourneysParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getJourneys>>, TError, TData>>, request?: SecondParameter<typeof fetcher>}
 ) => {
 
 const {query: queryOptions, request: requestOptions} = options ?? {};
@@ -968,7 +974,7 @@ export type GetJourneysQueryError = unknown
 
 
 export function useGetJourneys<TData = Awaited<ReturnType<typeof getJourneys>>, TError = unknown>(
- params: GetJourneysParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getJourneys>>, TError, TData>> & Pick<
+ params: undefined |  GetJourneysParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getJourneys>>, TError, TData>> & Pick<
         DefinedInitialDataOptions<
           Awaited<ReturnType<typeof getJourneys>>,
           TError,
@@ -978,7 +984,7 @@ export function useGetJourneys<TData = Awaited<ReturnType<typeof getJourneys>>, 
  , queryClient?: QueryClient
   ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 export function useGetJourneys<TData = Awaited<ReturnType<typeof getJourneys>>, TError = unknown>(
- params: GetJourneysParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getJourneys>>, TError, TData>> & Pick<
+ params?: GetJourneysParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getJourneys>>, TError, TData>> & Pick<
         UndefinedInitialDataOptions<
           Awaited<ReturnType<typeof getJourneys>>,
           TError,
@@ -988,12 +994,12 @@ export function useGetJourneys<TData = Awaited<ReturnType<typeof getJourneys>>, 
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 export function useGetJourneys<TData = Awaited<ReturnType<typeof getJourneys>>, TError = unknown>(
- params: GetJourneysParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getJourneys>>, TError, TData>>, request?: SecondParameter<typeof fetcher>}
+ params?: GetJourneysParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getJourneys>>, TError, TData>>, request?: SecondParameter<typeof fetcher>}
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 
 export function useGetJourneys<TData = Awaited<ReturnType<typeof getJourneys>>, TError = unknown>(
- params: GetJourneysParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getJourneys>>, TError, TData>>, request?: SecondParameter<typeof fetcher>}
+ params?: GetJourneysParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getJourneys>>, TError, TData>>, request?: SecondParameter<typeof fetcher>}
  , queryClient?: QueryClient 
  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 

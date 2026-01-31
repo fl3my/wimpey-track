@@ -12,10 +12,9 @@ namespace WimpeyTrack.Api.Controllers
     public class TripsController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
-        private readonly IRouteService _routeService;
-        private const double AdjustmentFactor = 1.2;
+        private readonly IJourneyDistanceService _routeService;
 
-        public TripsController(ApplicationDbContext context, IRouteService routeService)
+        public TripsController(ApplicationDbContext context, IJourneyDistanceService routeService)
         {
             _context = context;
             _routeService = routeService;
@@ -104,7 +103,7 @@ namespace WimpeyTrack.Api.Controllers
                 }
             }
 
-            await RecalculateJourneyDistanceAsync(journeyId);
+            await _routeService.RecalculateMilesAsync(journeyId);
             
             return NoContent();
         }
@@ -132,7 +131,7 @@ namespace WimpeyTrack.Api.Controllers
             _context.Trips.Add(trip);
             await _context.SaveChangesAsync();
             
-            await RecalculateJourneyDistanceAsync(journeyId);
+            await _routeService.RecalculateMilesAsync(journeyId);
                 
             var tripDto = new TripDto()
             {
@@ -157,7 +156,7 @@ namespace WimpeyTrack.Api.Controllers
             _context.Trips.Remove(trip);
             await _context.SaveChangesAsync();
 
-            await RecalculateJourneyDistanceAsync(journeyId);
+            await _routeService.RecalculateMilesAsync(journeyId);
             
             return NoContent();
         }
@@ -165,52 +164,6 @@ namespace WimpeyTrack.Api.Controllers
         private async Task<bool> TripExistsAsync(int id)
         {
             return await _context.Trips.AnyAsync(e => e.Id == id);
-        }
-        
-        private async Task RecalculateJourneyDistanceAsync(int journeyId)
-        {
-            var journey = await _context.Journeys
-                .Include(j => j.HomeLocation)
-                .FirstOrDefaultAsync(j => j.Id == journeyId);
-    
-            if (journey == null || journey.IsManualMiles)
-                return;
-    
-            // Get coordinates - use anonymous object first
-            var coordinates = await _context.Trips
-                .Where(t => t.JourneyId == journeyId)
-                .OrderBy(t => t.Id)
-                .Select(t => new 
-                {
-                    Latitude = t.Location.Latitude,
-                    Longitude = t.Location.Longitude
-                })
-                .ToListAsync();
-
-            if (coordinates.Count == 0)
-            {
-                journey.TotalMiles = 0;
-            }
-            else
-            {
-                // Add home location at the start and end
-                var homeCoord = (journey.HomeLocation.Latitude, journey.HomeLocation.Longitude);
-        
-                var coordList = new List<(double, double)> { homeCoord };
-        
-                // Convert anonymous objects to tuples
-                coordList.AddRange(coordinates.Select(c => (c.Latitude, c.Longitude)));
-        
-                coordList.Add(homeCoord);
-
-                var distance = await _routeService.CalculateAllTripsDistancesAsync(coordList);
-                
-                var adjustedDistance = (int) Math.Round(distance * AdjustmentFactor, 0);
-                
-                journey.TotalMiles = adjustedDistance;
-            }
-
-            await _context.SaveChangesAsync();
         }
     }
 }
