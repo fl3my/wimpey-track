@@ -82,7 +82,7 @@ public class ReceiptsController : ControllerBase
         {
             return BadRequest(new
             {
-                error = "No receipt detected in image"
+                message = "No receipt detected in image"
             });
         }
         
@@ -99,25 +99,55 @@ public class ReceiptsController : ControllerBase
         return await CreateReceiptAsync(dto.Name, dto.Date, dto.Category, imagePath);
     }
 
-    // POST: api/Receipts/UploadBase64
-    [HttpPost("UploadBase64")]
-    public async Task<ActionResult<ReceiptDto>> PostReceiptBase64(CreateReceiptBase64Dto dto)
+    // POST: api/Receipts/fuel
+    [HttpPost("fuel")]
+    public async Task<ActionResult<ReceiptDto>> PostReceiptFuel(CreateFuelReceiptDto dto)
     {
-        // Attempt to convert the base64 into a file
-        byte[] fileBytes;
-        try
+        return await CreateReceiptAsync(
+            dto.Name,
+            dto.Date, 
+            ReceiptCategory.Fuel, 
+            await SaveBase64Async(dto.Base64Content));
+    }
+    
+    // POST: api/Receipts/purchase
+    [HttpPost("purchase")]
+    public async Task<ActionResult<ReceiptDto>> PostReceiptPurchase(CreatePurchaseReceiptDto dto)
+    {
+        // Create the receipt
+        var receipt = new Receipt
         {
-            fileBytes = Convert.FromBase64String(dto.Base64Content);
-        }
-        catch
-        {
-            return BadRequest("Invalid base64 content.");
-        }
-        
-        // Save the file to the system
-        var imagePath = await _imageStorage.SaveAsync(fileBytes);
+            Name = dto.Name,
+            Category = ReceiptCategory.Supplies,
+            Date = dto.Date,
+            ImagePath = await SaveBase64Async(dto.Base64Content),
+            Purchase = new Purchase
+            {
+                Date = dto.Purchase.Date,
+                StoreName = dto.Purchase.StoreName,
+                Items = dto.Purchase.Items.Select(i => new Item
+                {
+                    Name = i.Name,
+                    Quantity = i.Quantity,
+                    Cost = i.Cost,
+                    Reason = i.Reason,
+                }).ToList(),
+            }
+        };
 
-        return await CreateReceiptAsync(dto.Name, dto.Date, dto.Category, imagePath);
+        // Save the receipt
+         _context.Receipts.Add(receipt);
+        await _context.SaveChangesAsync();
+        
+        var receiptDto = new ReceiptDto()
+        {
+            Id = receipt.Id,
+            Name = receipt.Name,
+            Date = receipt.Date,
+            Category = receipt.Category,
+        };
+        
+        return CreatedAtAction("GetReceipt", new { id = receipt.Id }, receiptDto);
     }
     
     // POST: api/Receipts/ocr
@@ -126,7 +156,7 @@ public class ReceiptsController : ControllerBase
     public async Task<ActionResult<ReceiptOcrResultDto>> PostReceiptOcr([FromForm] ImageUploadDto dto)
     {
         // Validation
-        if (dto.File == null || dto.File.Length == 0)
+        if (dto.File.Length == 0)
             return BadRequest("No file uploaded.");
         
         if (!AllowedTypes.Contains(dto.File.ContentType))
@@ -136,7 +166,7 @@ public class ReceiptsController : ControllerBase
         var visionResult = await _visionService.DetectReceiptsAsync(dto.File);
         if (visionResult.Receipts.Count == 0)
         {
-            return BadRequest("No receipts found.");
+            return BadRequest(new { message = "No receipts found."});
         }
         
         // Map bounding boxes to domain model
@@ -155,7 +185,7 @@ public class ReceiptsController : ControllerBase
         {
             return BadRequest(new
             {
-                error = "No receipt detected in image"
+                message = "No receipt detected in image"
             });
         }
         
@@ -170,7 +200,7 @@ public class ReceiptsController : ControllerBase
         var result = await _analysisService.AnalyseReceiptAsync(binaryData);
         
         // If no results return
-        if (result == null) return BadRequest("No receipts found.");
+        if (result == null) return BadRequest(new {message = "No receipts found."});
         
         var imageBase64 = Convert.ToBase64String(binaryData.ToArray());
         
@@ -234,5 +264,18 @@ public class ReceiptsController : ControllerBase
         };
 
         return CreatedAtAction("GetReceipt", new { id = receipt.Id }, receiptDto);
+    }
+    
+    private async Task<string> SaveBase64Async(string base64)
+    {
+        try
+        {
+            var fileBytes = Convert.FromBase64String(base64);
+            return await _imageStorage.SaveAsync(fileBytes);
+        }
+        catch (FormatException)
+        {
+            throw new ArgumentException("Invalid base64 content");
+        }
     }
 }

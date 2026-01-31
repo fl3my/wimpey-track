@@ -25,6 +25,17 @@ export default defineConfig({
       mode: "single",
       client: "zod",
       target: "./src/api/zod.gen.ts",
+      override: {
+        zod: {
+          coerce: {
+            param: true,
+            query: true,
+            header: true,
+            body: true,
+            response: true,
+          },
+        },
+      },
     },
   },
 });

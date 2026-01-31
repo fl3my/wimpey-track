@@ -12,26 +12,70 @@ import {
   Text,
 } from "@mantine/core";
 import {
+  type CreateFuelReceiptDto,
+  type CreatePurchaseReceiptDto,
+  usePostReceiptsFuel,
   usePostReceiptsOcr,
-  usePostReceiptsUploadBase64,
-  usePostPurchases,
+  usePostReceiptsPurchase,
 } from "@/api/api-client.gen.ts";
 import {
   PurchaseForm,
   type PurchaseFormValues,
 } from "@/components/purchase-form.tsx";
 import { FuelForm, type FuelFormValues } from "@/components/fuel-form.tsx";
+import { useServerErrors } from "@/hooks/use-server-errors.ts";
+import { ServerErrorAlert } from "@/components/server-error-alert.tsx";
+
+enum ReceiptCategory {
+  Purchase = 0,
+  Fuel = 1,
+}
 
 export const Route = createFileRoute("/Receipts/ocr")({
   component: RouteComponent,
 });
 
 function RouteComponent() {
-  const { mutate, isPending, data } = usePostReceiptsOcr();
-  const { mutateAsync: createReceipt } = usePostReceiptsUploadBase64();
-  const { mutateAsync: createPurchase } = usePostPurchases();
-
   const navigate = useNavigate();
+  const serverErrors = useServerErrors();
+
+  const ocr = usePostReceiptsOcr({
+    mutation: {
+      onError: (error) => {
+        serverErrors.setFromApiError(error);
+      },
+    },
+  });
+
+  const uploadFuelReceipt = usePostReceiptsFuel({
+    mutation: {
+      onError: (error) => {
+        serverErrors.setFromApiError(error);
+      },
+      onSuccess: async (values) => {
+        serverErrors.clear();
+        await navigate({
+          to: "/Receipts/$receiptId",
+          params: { receiptId: String(values.id) },
+        });
+      },
+    },
+  });
+
+  const uploadPurchaseReceipt = usePostReceiptsPurchase({
+    mutation: {
+      onError: (error) => {
+        serverErrors.setFromApiError(error);
+      },
+      onSuccess: async (values) => {
+        serverErrors.clear();
+        await navigate({
+          to: "/Receipts/$receiptId",
+          params: { receiptId: String(values.id) },
+        });
+      },
+    },
+  });
 
   const uploadField = useField({
     initialValue: undefined as File | undefined,
@@ -41,72 +85,47 @@ function RouteComponent() {
     const file = uploadField.getValue();
     if (!file) return;
 
-    mutate({ data: { File: file } });
+    ocr.mutate({ data: { File: file } });
   };
 
-  const onHandleSubmitPurchase = async (values: PurchaseFormValues) => {
-    console.log(values);
-    if (!data?.imageBase64) return;
-
-    const date = values.date!.toISOString().split("T")[0];
-
-    try {
-      const receipt = await createReceipt({
-        data: {
-          name: values.storeName,
-          date: date,
-          category: 0,
-          base64Content: data.imageBase64,
-        },
+  const onHandleSubmitPurchase = (values: PurchaseFormValues) => {
+    if (!ocr.data?.imageBase64) {
+      serverErrors.setFromApiError({
+        message: "Please process a receipt image first.",
       });
-
-      const purchase = await createPurchase({
-        data: {
-          date: date,
-          storeName: values.storeName,
-          items: values.items,
-          receiptId: receipt.id,
-        },
-      });
-
-      console.log(purchase);
-
-      await navigate({
-        to: "/Purchases/$purchaseId",
-        params: { purchaseId: purchase?.id!.toString() },
-      });
-    } catch (error) {
-      console.log(error);
+      return;
     }
+
+    const receipt: CreatePurchaseReceiptDto = {
+      base64Content: ocr.data.imageBase64,
+      date: values.date,
+      name: values.storeName,
+      purchase: { ...values },
+    };
+
+    uploadPurchaseReceipt.mutate({ data: receipt });
   };
 
-  const onHandleSubmitFuel = async (values: FuelFormValues) => {
-    console.log(values);
-
-    const date = values.date!.toISOString().split("T")[0];
-
-    try {
-      const receipt = await createReceipt({
-        data: {
-          name: values.name,
-          date: date,
-          category: 1,
-          base64Content: data?.imageBase64!,
-        },
+  const onHandleSubmitFuel = (values: FuelFormValues) => {
+    if (!ocr.data?.imageBase64) {
+      serverErrors.setFromApiError({
+        message: "Please process a receipt image first.",
       });
-
-      await navigate({
-        to: "/Receipts/$receiptId",
-        params: { receiptId: receipt.id!.toString() },
-      });
-    } catch (error) {
-      console.error(error);
+      return;
     }
+
+    const receipt: CreateFuelReceiptDto = {
+      name: values.name,
+      date: values.date,
+      base64Content: ocr.data?.imageBase64 ?? "",
+    };
+    uploadFuelReceipt.mutate({ data: receipt });
   };
 
   return (
     <Stack gap={"lg"}>
       <Paper p={"md"}>
+        <ServerErrorAlert errors={serverErrors.errors} />
         <Group align={"end"}>
           <FileInput
             label={"Receipt Image Upload"}
@@ -118,13 +137,13 @@ function RouteComponent() {
           />
           <Button
             onClick={onHandleUpload}
-            disabled={isPending}
-            loading={isPending}
+            disabled={!uploadField.getValue() || ocr.isPending}
+            loading={ocr.isPending}
           >
-            {isPending ? "Processing..." : "Process Receipt"}
+            {ocr.isPending ? "Processing..." : "Process Receipt"}
           </Button>
         </Group>
-        {isPending && (
+        {ocr.isPending && (
           <Stack align="center" gap="xs">
             <Loader size="sm" />
             <Text size="sm" c="dimmed">
@@ -134,45 +153,44 @@ function RouteComponent() {
         )}
       </Paper>
 
-      {data?.receiptData && data.receiptData.length === 0 && (
+      {ocr.data?.receiptData && ocr.data.receiptData.length === 0 && (
         <Alert color="blue" mt="md">
           No receipt data found. Please try uploading a clearer image.
         </Alert>
       )}
 
-      {data?.receiptData?.map((receipt, index) => {
-        const imageSrc = `data:image/jpeg;base64,${data.imageBase64}`;
+      {ocr.data?.receiptData?.map((receipt, index) => {
+        const imageSrc = `data:image/jpeg;base64,${ocr.data.imageBase64}`;
 
         switch (receipt.receiptCategory) {
-          case 0:
+          case ReceiptCategory.Purchase:
             return (
               <div key={index}>
                 <Image h={300} fit={"contain"} src={imageSrc} alt="Receipt" />
                 <PurchaseForm
                   initialValues={{
-                    date:
-                      new Date(receipt?.transactionDate!.toString()) ?? null,
-                    storeName: receipt.storeName,
-                    items: receipt?.receiptItems!.map((item) => ({
-                      cost: Number(item.price),
-                      name: item.description ?? "",
-                      quantity: Number(item.quantity),
-                      reason: "",
-                    })),
+                    date: receipt.transactionDate ?? "",
+                    storeName: receipt.storeName ?? "",
+                    items:
+                      receipt.receiptItems?.map((item) => ({
+                        cost: Number(item.price),
+                        name: item.description ?? "",
+                        quantity: Number(item.quantity),
+                        reason: "",
+                      })) ?? [],
                   }}
                   onSubmit={onHandleSubmitPurchase}
                 />
               </div>
             );
 
-          case 1:
+          case ReceiptCategory.Fuel:
             return (
               <div key={index}>
                 <Image h={300} fit={"contain"} src={imageSrc} alt="Receipt" />
                 <FuelForm
                   initialValues={{
-                    date:
-                      new Date(receipt?.transactionDate!.toString()) ?? null,
+                    date: receipt?.transactionDate?.toString() ?? "",
                     name: receipt.storeName ?? "",
                   }}
                   onSubmit={onHandleSubmitFuel}

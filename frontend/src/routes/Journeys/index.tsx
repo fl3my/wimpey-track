@@ -130,8 +130,8 @@ function RouteComponent() {
         data: {
           date: dateStr,
           isManualMiles: false,
-          totalMiles: 0,
-          homeLocationId: 11, // TODO DO NOT KEEP THIS BAD
+          totalMiles: 1,
+          homeLocationId: 8, // TODO DO NOT KEEP THIS BAD
         },
       },
       {

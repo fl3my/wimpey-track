@@ -4,7 +4,7 @@ import { DateInput } from "@mantine/dates";
 
 export type FuelFormValues = {
   name: string;
-  date: Date | null;
+  date: string;
 };
 
 type FuelFormProps = {
@@ -22,7 +22,7 @@ export function FuelForm({
     mode: "uncontrolled",
     initialValues: {
       name: initialValues?.name ?? "",
-      date: initialValues?.date ?? null,
+      date: initialValues?.date ?? "",
     },
   });
   return (

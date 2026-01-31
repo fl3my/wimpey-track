@@ -12,8 +12,5 @@ public class CreateReceiptBase64Dto
     [Range(typeof(DateOnly), "2024-04-06", "2034-04-06")]
     public DateOnly Date { get; set; }
     [Required]
-    [EnumDataType(typeof(ReceiptCategory), ErrorMessage = "Category is invalid")]
-    public ReceiptCategory Category { get; set; }
-    [Required]
     public string Base64Content { get; set; } = string.Empty;
 }

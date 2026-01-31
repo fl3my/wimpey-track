@@ -28,13 +28,13 @@ namespace WimpeyTrack.Api.Controllers
         {
             if (startDate > endDate)
             {
-                return BadRequest("Start date cannot be after end date.");
+                return BadRequest(new {message = "Start date cannot be after end date."});
             }
 
             // Generate the report
             var reportId = await _reportService.GenerateAndSaveAsync(startDate, endDate);
             if (reportId == null)
-                return BadRequest("No journeys in the date range.");
+                return BadRequest(new {message = "No journeys in the date range."});
 
             var dto = new GenerateReportDto()
             {

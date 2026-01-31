@@ -6,6 +6,7 @@ import { postReasonsBody } from "@/api/zod.gen.ts";
 import { usePostReasons } from "@/api/api-client.gen.ts";
 import { ServerErrorAlert } from "@/components/server-error-alert.tsx";
 import { useServerErrors } from "@/hooks/use-server-errors.ts";
+import z from "zod";
 
 export const Route = createFileRoute("/Reasons/new")({
   component: RouteComponent,
@@ -16,7 +17,7 @@ function RouteComponent() {
 
   const serverErrors = useServerErrors();
 
-  const form = useForm({
+  const form = useForm<z.infer<typeof postReasonsBody>>({
     initialValues: {
       name: "",
     },

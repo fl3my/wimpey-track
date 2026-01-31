@@ -2,16 +2,33 @@ import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useForm } from "@mantine/form";
 import { MonthPickerInput } from "@mantine/dates";
 import { Button, Group } from "@mantine/core";
-import { Alert } from "@mantine/core";
 import { usePostReport } from "@/api/api-client.gen.ts";
+import { useServerErrors } from "@/hooks/use-server-errors.ts";
+import { ServerErrorAlert } from "@/components/server-error-alert.tsx";
 
 export const Route = createFileRoute("/Reports/new")({
   component: RouteComponent,
 });
 
 function RouteComponent() {
-  const { mutateAsync, isPending } = usePostReport();
   const navigate = useNavigate();
+  const serverErrors = useServerErrors();
+
+  const mutation = usePostReport({
+    mutation: {
+      onError: (error) => {
+        serverErrors.setFromApiError(error);
+      },
+      onSuccess: async (values) => {
+        serverErrors.clear();
+        form.reset();
+        await navigate({
+          to: "/Reports/$reportId",
+          params: { reportId: String(values.reportId) },
+        });
+      },
+    },
+  });
 
   const today = new Date();
 
@@ -45,30 +62,17 @@ function RouteComponent() {
     const startDateString = formatDateLocal(startDate);
     const endDateString = formatDateLocal(endDate);
 
-    try {
-      const result = await mutateAsync({
-        params: {
-          startDate: startDateString,
-          endDate: endDateString,
-        },
-      });
-
-      await navigate({
-        to: "/Reports/$reportId",
-        params: { reportId: result.reportId! },
-      });
-    } catch (error) {
-      console.error(error);
-    }
+    mutation.mutate({
+      params: {
+        startDate: startDateString,
+        endDate: endDateString,
+      },
+    });
   };
 
   return (
     <form onSubmit={form.onSubmit(handleSubmit)}>
-      {form.errors._form && (
-        <Alert color="red" mb="md">
-          {form.errors._form}
-        </Alert>
-      )}
+      <ServerErrorAlert errors={serverErrors.errors} />
       <Group align={"flex-end"}>
         <MonthPickerInput
           label={"Expenses start month"}
@@ -76,7 +80,7 @@ function RouteComponent() {
           key={form.key("startMonth")}
           {...form.getInputProps("startMonth")}
         />
-        <Button type="submit" loading={isPending}>
+        <Button type="submit" loading={mutation.isPending}>
           Download
         </Button>
       </Group>

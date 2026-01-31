@@ -1,19 +1,11 @@
 import { useForm } from "@mantine/form";
 import { Button, Group, NumberInput, Stack, TextInput } from "@mantine/core";
 import { DateInput } from "@mantine/dates";
+import { zod4Resolver } from "mantine-form-zod-resolver";
+import { postPurchasesBody } from "@/api/zod.gen.ts";
+import z from "zod";
 
-export type ItemForm = {
-  name: string;
-  quantity: number;
-  cost: number;
-  reason: string;
-};
-
-export type PurchaseFormValues = {
-  date: Date | null;
-  storeName: string;
-  items: ItemForm[];
-};
+export type PurchaseFormValues = z.infer<typeof postPurchasesBody>;
 
 type PurchaseFormProps = {
   onSubmit: (values: PurchaseFormValues) => void | Promise<void>;
@@ -29,7 +21,7 @@ export function PurchaseForm({
   const form = useForm<PurchaseFormValues>({
     mode: "uncontrolled",
     initialValues: {
-      date: initialValues?.date ?? null,
+      date: initialValues?.date ?? "",
       storeName: initialValues?.storeName ?? "",
       items: initialValues?.items ?? [
         {
@@ -40,7 +32,9 @@ export function PurchaseForm({
         },
       ],
     },
+    validate: zod4Resolver(postPurchasesBody),
   });
+
   return (
     <form onSubmit={form.onSubmit(onSubmit)}>
       <Stack>
@@ -86,6 +80,7 @@ export function PurchaseForm({
             <Button
               color="red"
               variant="light"
+              disabled={form.values.items.length === 1}
               onClick={() => form.removeListItem("items", index)}
             >
               Remove

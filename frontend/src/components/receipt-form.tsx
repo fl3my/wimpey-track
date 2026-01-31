@@ -1,13 +1,11 @@
 import { useForm } from "@mantine/form";
 import { Button, FileInput, Select, TextInput } from "@mantine/core";
 import { DateInput } from "@mantine/dates";
+import { postReceiptsBody } from "@/api/zod.gen.ts";
+import z from "zod";
+import { zod4Resolver } from "mantine-form-zod-resolver";
 
-export type ReceiptFormValues = {
-  name: string;
-  date: Date | null;
-  category: number;
-  file: File | null;
-};
+export type ReceiptFormValues = z.infer<typeof postReceiptsBody>;
 
 type ReceiptFormProps = {
   onSubmit: (values: ReceiptFormValues) => void | Promise<void>;
@@ -21,13 +19,13 @@ export function ReceiptForm({
   initialValues,
 }: ReceiptFormProps) {
   const form = useForm<ReceiptFormValues>({
-    mode: "uncontrolled",
     initialValues: {
-      name: initialValues?.name ?? "",
-      date: initialValues?.date ?? null,
-      category: initialValues?.category ?? 0,
-      file: null as File | null,
+      Name: initialValues?.Name ?? "",
+      Date: initialValues?.Date ?? "",
+      Category: initialValues?.Category ?? 0,
+      File: undefined as File | undefined,
     },
+    validate: zod4Resolver(postReceiptsBody),
   });
   return (
     <form onSubmit={form.onSubmit(onSubmit)}>
@@ -35,13 +33,13 @@ export function ReceiptForm({
         label={"name"}
         placeholder={"Name"}
         key={form.key("Name")}
-        {...form.getInputProps("name")}
+        {...form.getInputProps("Name")}
       />
       <DateInput
         label={"date"}
         placeholder={"date"}
-        key={form.key("date")}
-        {...form.getInputProps("date")}
+        key={form.key("Date")}
+        {...form.getInputProps("Date")}
       />
       <Select
         label={"category"}
@@ -50,17 +48,17 @@ export function ReceiptForm({
           { value: "0", label: "Purchase" },
           { value: "1", label: "Fuel" },
         ]}
-        key={form.key("category")}
-        {...form.getInputProps("category")}
+        key={form.key("Category")}
+        {...form.getInputProps("Category")}
       />
       <FileInput
         label={"Receipt Image Upload"}
-        key={form.key("file")}
+        key={form.key("File")}
         accept={"image/jpeg"}
         capture={"environment"}
         placeholder={"Receipt Image Upload"}
         clearable
-        {...form.getInputProps("file")}
+        {...form.getInputProps("File")}
       />
       <Button type="submit" loading={isLoading}>
         Submit

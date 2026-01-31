@@ -5,6 +5,9 @@ import {
   ReceiptForm,
   type ReceiptFormValues,
 } from "@/components/receipt-form.tsx";
+import { useServerErrors } from "@/hooks/use-server-errors.ts";
+import { Stack } from "@mantine/core";
+import { ServerErrorAlert } from "@/components/server-error-alert.tsx";
 
 export const Route = createFileRoute("/Receipts/new")({
   component: RouteComponent,
@@ -12,29 +15,38 @@ export const Route = createFileRoute("/Receipts/new")({
 
 function RouteComponent() {
   const navigate = useNavigate();
-  const createReceipt = usePostReceipts();
-  const handleSubmit = async (values: ReceiptFormValues) => {
-    try {
-      console.log(values);
-      await createReceipt.mutateAsync({
-        data: {
-          Name: values.name,
-          Date: values.date?.toString(),
-          Category: values.category,
-          File: values.file!,
-        },
-      });
+  const serverErrors = useServerErrors();
 
-      await navigate({ to: "/Receipts" });
-    } catch (error) {
-      console.error(error);
-    }
+  const mutate = usePostReceipts({
+    mutation: {
+      onError: (error) => {
+        serverErrors.setFromApiError(error);
+      },
+      onSuccess: async () => {
+        serverErrors.clear();
+        await navigate({ to: "/Receipts" });
+      },
+    },
+  });
+
+  const handleSubmit = async (values: ReceiptFormValues) => {
+    mutate.mutate({
+      data: {
+        Name: values.Name,
+        Date: values.Date,
+        Category: values.Category,
+        File: values.File,
+      },
+    });
   };
 
   return (
     <>
       <CustomButtonLink to={"/Receipts"}>Back</CustomButtonLink>
-      <ReceiptForm onSubmit={handleSubmit} />
+      <Stack>
+        <ServerErrorAlert errors={serverErrors.errors} />
+        <ReceiptForm onSubmit={handleSubmit} />
+      </Stack>
     </>
   );
 }

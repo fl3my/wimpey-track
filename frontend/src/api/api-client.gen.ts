@@ -31,6 +31,16 @@ export interface BoundingBox {
   height?: number;
 }
 
+export interface CreateFuelReceiptDto {
+  /**
+   * @minLength 2
+   * @maxLength 50
+   */
+  name: string;
+  date: string;
+  base64Content: string;
+}
+
 export interface CreateItemDto {
   /**
    * @minLength 3
@@ -97,23 +107,23 @@ export interface CreatePurchaseDto {
   items: CreateItemDto[];
 }
 
-export interface CreateReasonDto {
-  /**
-   * @minLength 2
-   * @maxLength 50
-   */
-  name: string;
-}
-
-export interface CreateReceiptBase64Dto {
+export interface CreatePurchaseReceiptDto {
+  purchase?: CreatePurchaseDto;
   /**
    * @minLength 2
    * @maxLength 50
    */
   name: string;
   date: string;
-  category: ReceiptCategory;
   base64Content: string;
+}
+
+export interface CreateReasonDto {
+  /**
+   * @minLength 2
+   * @maxLength 50
+   */
+  name: string;
 }
 
 export interface CreateTripDto {
@@ -2791,34 +2801,34 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
       return useMutation(mutationOptions, queryClient);
     }
     
-export const getPostReceiptsUploadBase64Url = () => {
+export const getPostReceiptsFuelUrl = () => {
 
 
   
 
-  return `/api/Receipts/UploadBase64`
+  return `/api/Receipts/fuel`
 }
 
-export const postReceiptsUploadBase64 = async (createReceiptBase64Dto: CreateReceiptBase64Dto, options?: RequestInit): Promise<ReceiptDto> => {
+export const postReceiptsFuel = async (createFuelReceiptDto: CreateFuelReceiptDto, options?: RequestInit): Promise<ReceiptDto> => {
   
-  return fetcher<ReceiptDto>(getPostReceiptsUploadBase64Url(),
+  return fetcher<ReceiptDto>(getPostReceiptsFuelUrl(),
   {      
     ...options,
     method: 'POST',
     headers: { 'Content-Type': 'application/json', ...options?.headers },
     body: JSON.stringify(
-      createReceiptBase64Dto,)
+      createFuelReceiptDto,)
   }
 );}
 
 
 
 
-export const getPostReceiptsUploadBase64MutationOptions = <TError = unknown,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postReceiptsUploadBase64>>, TError,{data: CreateReceiptBase64Dto}, TContext>, request?: SecondParameter<typeof fetcher>}
-): UseMutationOptions<Awaited<ReturnType<typeof postReceiptsUploadBase64>>, TError,{data: CreateReceiptBase64Dto}, TContext> => {
+export const getPostReceiptsFuelMutationOptions = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postReceiptsFuel>>, TError,{data: CreateFuelReceiptDto}, TContext>, request?: SecondParameter<typeof fetcher>}
+): UseMutationOptions<Awaited<ReturnType<typeof postReceiptsFuel>>, TError,{data: CreateFuelReceiptDto}, TContext> => {
 
-const mutationKey = ['postReceiptsUploadBase64'];
+const mutationKey = ['postReceiptsFuel'];
 const {mutation: mutationOptions, request: requestOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
@@ -2828,10 +2838,10 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
       
 
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof postReceiptsUploadBase64>>, {data: CreateReceiptBase64Dto}> = (props) => {
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof postReceiptsFuel>>, {data: CreateFuelReceiptDto}> = (props) => {
           const {data} = props ?? {};
 
-          return  postReceiptsUploadBase64(data,requestOptions)
+          return  postReceiptsFuel(data,requestOptions)
         }
 
         
@@ -2839,20 +2849,86 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
 
   return  { mutationFn, ...mutationOptions }}
 
-    export type PostReceiptsUploadBase64MutationResult = NonNullable<Awaited<ReturnType<typeof postReceiptsUploadBase64>>>
-    export type PostReceiptsUploadBase64MutationBody = CreateReceiptBase64Dto
-    export type PostReceiptsUploadBase64MutationError = unknown
+    export type PostReceiptsFuelMutationResult = NonNullable<Awaited<ReturnType<typeof postReceiptsFuel>>>
+    export type PostReceiptsFuelMutationBody = CreateFuelReceiptDto
+    export type PostReceiptsFuelMutationError = unknown
 
-    export const usePostReceiptsUploadBase64 = <TError = unknown,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postReceiptsUploadBase64>>, TError,{data: CreateReceiptBase64Dto}, TContext>, request?: SecondParameter<typeof fetcher>}
+    export const usePostReceiptsFuel = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postReceiptsFuel>>, TError,{data: CreateFuelReceiptDto}, TContext>, request?: SecondParameter<typeof fetcher>}
  , queryClient?: QueryClient): UseMutationResult<
-        Awaited<ReturnType<typeof postReceiptsUploadBase64>>,
+        Awaited<ReturnType<typeof postReceiptsFuel>>,
         TError,
-        {data: CreateReceiptBase64Dto},
+        {data: CreateFuelReceiptDto},
         TContext
       > => {
 
-      const mutationOptions = getPostReceiptsUploadBase64MutationOptions(options);
+      const mutationOptions = getPostReceiptsFuelMutationOptions(options);
+
+      return useMutation(mutationOptions, queryClient);
+    }
+    
+export const getPostReceiptsPurchaseUrl = () => {
+
+
+  
+
+  return `/api/Receipts/purchase`
+}
+
+export const postReceiptsPurchase = async (createPurchaseReceiptDto: CreatePurchaseReceiptDto, options?: RequestInit): Promise<ReceiptDto> => {
+  
+  return fetcher<ReceiptDto>(getPostReceiptsPurchaseUrl(),
+  {      
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(
+      createPurchaseReceiptDto,)
+  }
+);}
+
+
+
+
+export const getPostReceiptsPurchaseMutationOptions = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postReceiptsPurchase>>, TError,{data: CreatePurchaseReceiptDto}, TContext>, request?: SecondParameter<typeof fetcher>}
+): UseMutationOptions<Awaited<ReturnType<typeof postReceiptsPurchase>>, TError,{data: CreatePurchaseReceiptDto}, TContext> => {
+
+const mutationKey = ['postReceiptsPurchase'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+      
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof postReceiptsPurchase>>, {data: CreatePurchaseReceiptDto}> = (props) => {
+          const {data} = props ?? {};
+
+          return  postReceiptsPurchase(data,requestOptions)
+        }
+
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type PostReceiptsPurchaseMutationResult = NonNullable<Awaited<ReturnType<typeof postReceiptsPurchase>>>
+    export type PostReceiptsPurchaseMutationBody = CreatePurchaseReceiptDto
+    export type PostReceiptsPurchaseMutationError = unknown
+
+    export const usePostReceiptsPurchase = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postReceiptsPurchase>>, TError,{data: CreatePurchaseReceiptDto}, TContext>, request?: SecondParameter<typeof fetcher>}
+ , queryClient?: QueryClient): UseMutationResult<
+        Awaited<ReturnType<typeof postReceiptsPurchase>>,
+        TError,
+        {data: CreatePurchaseReceiptDto},
+        TContext
+      > => {
+
+      const mutationOptions = getPostReceiptsPurchaseMutationOptions(options);
 
       return useMutation(mutationOptions, queryClient);
     }

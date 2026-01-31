@@ -1,10 +1,11 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
-
 import { usePostPurchases } from "@/api/api-client.gen.ts";
 import {
   PurchaseForm,
   type PurchaseFormValues,
 } from "@/components/purchase-form.tsx";
+import { useServerErrors } from "@/hooks/use-server-errors.ts";
+import { ServerErrorAlert } from "@/components/server-error-alert.tsx";
 
 export const Route = createFileRoute("/Purchases/new")({
   component: RouteComponent,
@@ -12,28 +13,35 @@ export const Route = createFileRoute("/Purchases/new")({
 
 function RouteComponent() {
   const navigate = useNavigate();
-  const createPurchase = usePostPurchases();
 
-  const handleSubmit = async (values: PurchaseFormValues) => {
-    try {
-      await createPurchase.mutateAsync({
-        data: {
-          date: values.date!.toString(),
-          storeName: values.storeName,
-          items: values.items,
-        },
-      });
+  const serverErrors = useServerErrors();
 
-      await navigate({ to: "/Purchases" });
-    } catch (error) {
-      console.error(error);
-    }
+  const mutate = usePostPurchases({
+    mutation: {
+      onError: (error) => {
+        serverErrors.setFromApiError(error);
+      },
+      onSuccess: async () => {
+        serverErrors.clear();
+        await navigate({ to: "/Purchases" });
+      },
+    },
+  });
+
+  const handleSubmit = (values: PurchaseFormValues) => {
+    mutate.mutate({
+      data: {
+        date: values.date!.toString(),
+        storeName: values.storeName,
+        items: values.items,
+      },
+    });
   };
 
   return (
-    <PurchaseForm
-      onSubmit={handleSubmit}
-      isLoading={createPurchase.isPending}
-    />
+    <>
+      <ServerErrorAlert errors={serverErrors.errors} />
+      <PurchaseForm onSubmit={handleSubmit} isLoading={mutate.isPending} />
+    </>
   );
 }
