@@ -11,7 +11,8 @@ services:
   wimpeytrack-frontend:
     image: ghcr.io/fl3my/wimpeytrack-frontend:latest
     depends_on:
-      - wimpeytrack-api
+      wimpeytrack-api:
+        condition: service_started
     restart: unless-stopped
     ports:
       - "80:80"
