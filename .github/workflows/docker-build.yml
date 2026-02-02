@@ -27,7 +27,7 @@ jobs:
         uses: docker/login-action@v3
         with:
           registry: ghcr.io
-          username: ${{github.action}}
+          username: ${{github.actor}}
           password: ${{secrets.GITHUB_TOKEN }}
       
       - name: Build and push API
@@ -35,6 +35,7 @@ jobs:
         with:
           context: ./backend/WimpeyTrack.Api
           push: true
+          platforms: linux/amd64,linux/arm64
           tags: ghcr.io/${{ github.repository_owner }}/wimpeytrack-api:latest
           
       - name: Build and push frontend
@@ -42,6 +43,7 @@ jobs:
         with:
           context: ./frontend
           push: true
+          platforms: linux/amd64,linux/arm64
           tags: ghcr.io/${{ github.repository_owner }}/wimpeytrack-frontend:latest
         
       - name: Build and push document vision service
@@ -49,6 +51,7 @@ jobs:
         with:
           context: ./document-vision-service
           push: true
+          platforms: linux/amd64,linux/arm64
           tags: ghcr.io/${{ github.repository_owner }}/document-vision-service:latest
 
 
