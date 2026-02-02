@@ -1,16 +1,15 @@
 services:
   wimpeytrack-api:
-    image: ghcr.io/yourname/wimpeytrack-api:latest
+    image: ghcr.io/fl3my/wimpeytrack-api:latest
     environment:
+      - ASPNETCORE_URLS=http://+:8080
       - ASPNETCORE_ENVIRONMENT=Production
       - AzureDocumentIntelligence__EndPoint=${AZURE_DOCUMENT_ENDPOINT}
       - AzureDocumentIntelligence__ApiKey=${AZURE_DOCUMENT_APIKEY}
     restart: unless-stopped
-    networks:
-      - proxy
   
   wimpeytrack-frontend:
-    image: ghcr.io/yourname/wimpeytrack-frontend:latest
+    image: ghcr.io/fl3my/wimpeytrack-frontend:latest
     depends_on:
       - wimpeytrack-api
     restart: unless-stopped
@@ -21,12 +20,49 @@ services:
       - proxy
   
   document-vision-service:
-    image: ghcr.io/yourname/document-vision-service:latest
+    image: ghcr.io/fl3my/document-vision-service:latest
     depends_on:
       - wimpeytrack-api
     restart: unless-stopped
-    networks:
-      - proxy
+
+  osrm-backend:
+    image: ghcr.io/project-osrm/osrm-backend:latest
+    volumes:
+      - osrm-data:/data
+    command: osrm-routed --algorithm mld /data/scotland-latest.osrm
+    restart: unless-stopped
+    depends_on:
+      osrm-data-prep:
+        condition: service_completed_successfully
+
+  # This runs once to prepare the map data
+  osrm-data-prep:
+    image: ghcr.io/project-osrm/osrm-backend:latest
+    entrypoint: /bin/sh
+    command: >
+      -c "
+        if [ ! -f /data/scotland-latest.osrm ]; then
+          echo 'Downloading Scotland map data'
+          wget -O /data/scotland-latest.osm.pbf https://download.geofabrik.de/europe/united-kingdom/scotland-latest.osm.pbf || exit 1
+          echo 'Extracting road network'
+          osrm-extract -p /opt/car.lua /data/scotland-latest.osm.pbf || exit 1
+          echo 'Partitioning graph'
+          osrm-partition /data/scotland-latest.osrm || exit 1
+          echo 'Customizing graph'
+          osrm-customize /data/scotland-latest.osrm || exit 1
+          echo 'OSRM data preparation complete!'
+        else
+          echo 'OSRM data already prepared, skipping download'
+        fi
+      "
+    volumes:
+      - osrm-data:/data
+
+volumes:
+  wimpeytrack-db:
+  wimpeytrack-uploads:
+  wimpeytrack-reports:
+  osrm-data:
     
 networks:
   proxy:
