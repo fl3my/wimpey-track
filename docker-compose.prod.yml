@@ -1,0 +1,30 @@
+services:
+  wimpeytrack-api:
+    image: ghcr.io/yourname/wimpeytrack-api:latest
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+      - AzureDocumentIntelligence__EndPoint=${AZURE_DOCUMENT_ENDPOINT}
+      - AzureDocumentIntelligence__ApiKey=${AZURE_DOCUMENT_APIKEY}
+    restart: unless-stopped
+    networks:
+      - proxy
+  
+  wimpeytrack-frontend:
+    image: ghcr.io/yourname/wimpeytrack-frontend:latest
+    depends_on:
+      - wimpeytrack-api
+    restart: unless-stopped
+    networks:
+      - proxy
+  
+  document-vision-service:
+    image: ghcr.io/yourname/document-vision-service:latest
+    depends_on:
+      - wimpeytrack-api
+    restart: unless-stopped
+    networks:
+      - proxy
+    
+networks:
+  proxy:
+    external: true

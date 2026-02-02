@@ -1,0 +1,19 @@
+services:
+  wimpeytrack-api:
+    container_name: wimpeytrack-api
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - AzureDocumentIntelligence__EndPoint=${AZURE_DOCUMENT_ENDPOINT}
+      - AzureDocumentIntelligence__ApiKey=${AZURE_DOCUMENT_APIKEY}
+    ports:
+      - "5002:8080"
+    volumes:
+      - ./data/db:/app/data
+      - ./data/uploads:/app/wwwroot/uploads
+      - ./data/reports:/app/wwwroot/reports
+    restart: unless-stopped
+  
+  document-vision-service:
+    container_name: document-vision-service
+    ports:
+      - "5003:80"
