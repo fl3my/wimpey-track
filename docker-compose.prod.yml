@@ -14,6 +14,9 @@ services:
     depends_on:
       - wimpeytrack-api
     restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
     networks:
       - proxy
   
