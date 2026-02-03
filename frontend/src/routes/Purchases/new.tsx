@@ -1,5 +1,5 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { usePostPurchases } from "@/api/api-client.gen.ts";
+import { usePostApiPurchases } from "@/api/api-client.gen.ts";
 import {
   PurchaseForm,
   type PurchaseFormValues,
@@ -16,7 +16,7 @@ function RouteComponent() {
 
   const serverErrors = useServerErrors();
 
-  const mutate = usePostPurchases({
+  const mutate = usePostApiPurchases({
     mutation: {
       onError: (error) => {
         serverErrors.setFromApiError(error);

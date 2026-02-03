@@ -16,7 +16,6 @@ export default defineConfig({
           name: "fetcher",
         },
       },
-      baseUrl: "/api",
     },
   },
   apiZod: {

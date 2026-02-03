@@ -14,9 +14,9 @@ import {
 import {
   type CreateFuelReceiptDto,
   type CreatePurchaseReceiptDto,
-  usePostReceiptsFuel,
-  usePostReceiptsOcr,
-  usePostReceiptsPurchase,
+  usePostApiReceiptsFuel,
+  usePostApiReceiptsOcr,
+  usePostApiReceiptsPurchase,
 } from "@/api/api-client.gen.ts";
 import {
   PurchaseForm,
@@ -39,7 +39,7 @@ function RouteComponent() {
   const navigate = useNavigate();
   const serverErrors = useServerErrors();
 
-  const ocr = usePostReceiptsOcr({
+  const ocr = usePostApiReceiptsOcr({
     mutation: {
       onError: (error) => {
         serverErrors.setFromApiError(error);
@@ -47,7 +47,7 @@ function RouteComponent() {
     },
   });
 
-  const uploadFuelReceipt = usePostReceiptsFuel({
+  const uploadFuelReceipt = usePostApiReceiptsFuel({
     mutation: {
       onError: (error) => {
         serverErrors.setFromApiError(error);
@@ -62,7 +62,7 @@ function RouteComponent() {
     },
   });
 
-  const uploadPurchaseReceipt = usePostReceiptsPurchase({
+  const uploadPurchaseReceipt = usePostApiReceiptsPurchase({
     mutation: {
       onError: (error) => {
         serverErrors.setFromApiError(error);

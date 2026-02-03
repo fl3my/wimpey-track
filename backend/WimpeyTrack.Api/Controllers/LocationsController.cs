@@ -6,7 +6,7 @@ using WimpeyTrack.Api.Models;
 
 namespace WimpeyTrack.Api.Controllers
 {
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     [ApiController]
     public class LocationsController : ControllerBase
     {

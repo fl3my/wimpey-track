@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useGetReportId } from "@/api/api-client.gen.ts";
+import { useGetApiReportId } from "@/api/api-client.gen.ts";
 import { Anchor, Group, Stack, Text } from "@mantine/core";
 import { CustomButtonLink } from "@/components/custom-button-link.tsx";
 
@@ -9,7 +9,7 @@ export const Route = createFileRoute("/Reports/$reportId/")({
 
 function RouteComponent() {
   const { reportId } = Route.useParams();
-  const { data: preview } = useGetReportId(reportId);
+  const { data: preview } = useGetApiReportId(reportId);
 
   return (
     <>

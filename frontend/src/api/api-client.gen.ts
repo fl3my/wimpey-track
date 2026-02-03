@@ -390,11 +390,11 @@ export interface UpdateTripDto {
   reasonId: number;
 }
 
-export type GetJourneysParams = {
+export type GetApiJourneysParams = {
 weekStart?: string;
 };
 
-export type PostReceiptsBody = {
+export type PostApiReceiptsBody = {
   /**
    * @minLength 2
    * @maxLength 50
@@ -405,11 +405,11 @@ export type PostReceiptsBody = {
   File?: IFormFile;
 };
 
-export type PostReceiptsOcrBody = {
+export type PostApiReceiptsOcrBody = {
   File?: IFormFile;
 };
 
-export type PostReportParams = {
+export type PostApiReportParams = {
 startDate?: string;
 endDate?: string;
 };
@@ -418,7 +418,7 @@ type SecondParameter<T extends (...args: never) => unknown> = Parameters<T>[1];
 
 
 
-export const getGetDashboardUrl = () => {
+export const getGetApiDashboardUrl = () => {
 
 
   
@@ -426,9 +426,9 @@ export const getGetDashboardUrl = () => {
   return `/api/Dashboard`
 }
 
-export const getDashboard = async ( options?: RequestInit): Promise<DashboardResponse> => {
+export const getApiDashboard = async ( options?: RequestInit): Promise<DashboardResponse> => {
   
-  return fetcher<DashboardResponse>(getGetDashboardUrl(),
+  return fetcher<DashboardResponse>(getGetApiDashboardUrl(),
   {      
     ...options,
     method: 'GET'
@@ -441,66 +441,66 @@ export const getDashboard = async ( options?: RequestInit): Promise<DashboardRes
 
 
 
-export const getGetDashboardQueryKey = () => {
+export const getGetApiDashboardQueryKey = () => {
     return [
     `/api/Dashboard`
     ] as const;
     }
 
     
-export const getGetDashboardQueryOptions = <TData = Awaited<ReturnType<typeof getDashboard>>, TError = unknown>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDashboard>>, TError, TData>>, request?: SecondParameter<typeof fetcher>}
+export const getGetApiDashboardQueryOptions = <TData = Awaited<ReturnType<typeof getApiDashboard>>, TError = unknown>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiDashboard>>, TError, TData>>, request?: SecondParameter<typeof fetcher>}
 ) => {
 
 const {query: queryOptions, request: requestOptions} = options ?? {};
 
-  const queryKey =  queryOptions?.queryKey ?? getGetDashboardQueryKey();
+  const queryKey =  queryOptions?.queryKey ?? getGetApiDashboardQueryKey();
 
   
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getDashboard>>> = ({ signal }) => getDashboard({ signal, ...requestOptions });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getApiDashboard>>> = ({ signal }) => getApiDashboard({ signal, ...requestOptions });
 
       
 
       
 
-   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getDashboard>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getApiDashboard>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
 }
 
-export type GetDashboardQueryResult = NonNullable<Awaited<ReturnType<typeof getDashboard>>>
-export type GetDashboardQueryError = unknown
+export type GetApiDashboardQueryResult = NonNullable<Awaited<ReturnType<typeof getApiDashboard>>>
+export type GetApiDashboardQueryError = unknown
 
 
-export function useGetDashboard<TData = Awaited<ReturnType<typeof getDashboard>>, TError = unknown>(
-  options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDashboard>>, TError, TData>> & Pick<
+export function useGetApiDashboard<TData = Awaited<ReturnType<typeof getApiDashboard>>, TError = unknown>(
+  options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiDashboard>>, TError, TData>> & Pick<
         DefinedInitialDataOptions<
-          Awaited<ReturnType<typeof getDashboard>>,
+          Awaited<ReturnType<typeof getApiDashboard>>,
           TError,
-          Awaited<ReturnType<typeof getDashboard>>
+          Awaited<ReturnType<typeof getApiDashboard>>
         > , 'initialData'
       >, request?: SecondParameter<typeof fetcher>}
  , queryClient?: QueryClient
   ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useGetDashboard<TData = Awaited<ReturnType<typeof getDashboard>>, TError = unknown>(
-  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDashboard>>, TError, TData>> & Pick<
+export function useGetApiDashboard<TData = Awaited<ReturnType<typeof getApiDashboard>>, TError = unknown>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiDashboard>>, TError, TData>> & Pick<
         UndefinedInitialDataOptions<
-          Awaited<ReturnType<typeof getDashboard>>,
+          Awaited<ReturnType<typeof getApiDashboard>>,
           TError,
-          Awaited<ReturnType<typeof getDashboard>>
+          Awaited<ReturnType<typeof getApiDashboard>>
         > , 'initialData'
       >, request?: SecondParameter<typeof fetcher>}
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useGetDashboard<TData = Awaited<ReturnType<typeof getDashboard>>, TError = unknown>(
-  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDashboard>>, TError, TData>>, request?: SecondParameter<typeof fetcher>}
+export function useGetApiDashboard<TData = Awaited<ReturnType<typeof getApiDashboard>>, TError = unknown>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiDashboard>>, TError, TData>>, request?: SecondParameter<typeof fetcher>}
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 
-export function useGetDashboard<TData = Awaited<ReturnType<typeof getDashboard>>, TError = unknown>(
-  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDashboard>>, TError, TData>>, request?: SecondParameter<typeof fetcher>}
+export function useGetApiDashboard<TData = Awaited<ReturnType<typeof getApiDashboard>>, TError = unknown>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiDashboard>>, TError, TData>>, request?: SecondParameter<typeof fetcher>}
  , queryClient?: QueryClient 
  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
-  const queryOptions = getGetDashboardQueryOptions(options)
+  const queryOptions = getGetApiDashboardQueryOptions(options)
 
   const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
@@ -513,7 +513,7 @@ export function useGetDashboard<TData = Awaited<ReturnType<typeof getDashboard>>
 
 
 
-export const getGetPurchasesPurchaseIdItemsUrl = (purchaseId: string,) => {
+export const getGetApiPurchasesPurchaseIdItemsUrl = (purchaseId: string,) => {
 
 
   
@@ -521,9 +521,9 @@ export const getGetPurchasesPurchaseIdItemsUrl = (purchaseId: string,) => {
   return `/api/Purchases/${purchaseId}/Items`
 }
 
-export const getPurchasesPurchaseIdItems = async (purchaseId: string, options?: RequestInit): Promise<ItemDto[]> => {
+export const getApiPurchasesPurchaseIdItems = async (purchaseId: string, options?: RequestInit): Promise<ItemDto[]> => {
   
-  return fetcher<ItemDto[]>(getGetPurchasesPurchaseIdItemsUrl(purchaseId),
+  return fetcher<ItemDto[]>(getGetApiPurchasesPurchaseIdItemsUrl(purchaseId),
   {      
     ...options,
     method: 'GET'
@@ -536,66 +536,66 @@ export const getPurchasesPurchaseIdItems = async (purchaseId: string, options?: 
 
 
 
-export const getGetPurchasesPurchaseIdItemsQueryKey = (purchaseId?: string,) => {
+export const getGetApiPurchasesPurchaseIdItemsQueryKey = (purchaseId?: string,) => {
     return [
     `/api/Purchases/${purchaseId}/Items`
     ] as const;
     }
 
     
-export const getGetPurchasesPurchaseIdItemsQueryOptions = <TData = Awaited<ReturnType<typeof getPurchasesPurchaseIdItems>>, TError = unknown>(purchaseId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getPurchasesPurchaseIdItems>>, TError, TData>>, request?: SecondParameter<typeof fetcher>}
+export const getGetApiPurchasesPurchaseIdItemsQueryOptions = <TData = Awaited<ReturnType<typeof getApiPurchasesPurchaseIdItems>>, TError = unknown>(purchaseId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiPurchasesPurchaseIdItems>>, TError, TData>>, request?: SecondParameter<typeof fetcher>}
 ) => {
 
 const {query: queryOptions, request: requestOptions} = options ?? {};
 
-  const queryKey =  queryOptions?.queryKey ?? getGetPurchasesPurchaseIdItemsQueryKey(purchaseId);
+  const queryKey =  queryOptions?.queryKey ?? getGetApiPurchasesPurchaseIdItemsQueryKey(purchaseId);
 
   
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getPurchasesPurchaseIdItems>>> = ({ signal }) => getPurchasesPurchaseIdItems(purchaseId, { signal, ...requestOptions });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getApiPurchasesPurchaseIdItems>>> = ({ signal }) => getApiPurchasesPurchaseIdItems(purchaseId, { signal, ...requestOptions });
 
       
 
       
 
-   return  { queryKey, queryFn, enabled: !!(purchaseId), ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getPurchasesPurchaseIdItems>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+   return  { queryKey, queryFn, enabled: !!(purchaseId), ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getApiPurchasesPurchaseIdItems>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
 }
 
-export type GetPurchasesPurchaseIdItemsQueryResult = NonNullable<Awaited<ReturnType<typeof getPurchasesPurchaseIdItems>>>
-export type GetPurchasesPurchaseIdItemsQueryError = unknown
+export type GetApiPurchasesPurchaseIdItemsQueryResult = NonNullable<Awaited<ReturnType<typeof getApiPurchasesPurchaseIdItems>>>
+export type GetApiPurchasesPurchaseIdItemsQueryError = unknown
 
 
-export function useGetPurchasesPurchaseIdItems<TData = Awaited<ReturnType<typeof getPurchasesPurchaseIdItems>>, TError = unknown>(
- purchaseId: string, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getPurchasesPurchaseIdItems>>, TError, TData>> & Pick<
+export function useGetApiPurchasesPurchaseIdItems<TData = Awaited<ReturnType<typeof getApiPurchasesPurchaseIdItems>>, TError = unknown>(
+ purchaseId: string, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiPurchasesPurchaseIdItems>>, TError, TData>> & Pick<
         DefinedInitialDataOptions<
-          Awaited<ReturnType<typeof getPurchasesPurchaseIdItems>>,
+          Awaited<ReturnType<typeof getApiPurchasesPurchaseIdItems>>,
           TError,
-          Awaited<ReturnType<typeof getPurchasesPurchaseIdItems>>
+          Awaited<ReturnType<typeof getApiPurchasesPurchaseIdItems>>
         > , 'initialData'
       >, request?: SecondParameter<typeof fetcher>}
  , queryClient?: QueryClient
   ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useGetPurchasesPurchaseIdItems<TData = Awaited<ReturnType<typeof getPurchasesPurchaseIdItems>>, TError = unknown>(
- purchaseId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getPurchasesPurchaseIdItems>>, TError, TData>> & Pick<
+export function useGetApiPurchasesPurchaseIdItems<TData = Awaited<ReturnType<typeof getApiPurchasesPurchaseIdItems>>, TError = unknown>(
+ purchaseId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiPurchasesPurchaseIdItems>>, TError, TData>> & Pick<
         UndefinedInitialDataOptions<
-          Awaited<ReturnType<typeof getPurchasesPurchaseIdItems>>,
+          Awaited<ReturnType<typeof getApiPurchasesPurchaseIdItems>>,
           TError,
-          Awaited<ReturnType<typeof getPurchasesPurchaseIdItems>>
+          Awaited<ReturnType<typeof getApiPurchasesPurchaseIdItems>>
         > , 'initialData'
       >, request?: SecondParameter<typeof fetcher>}
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useGetPurchasesPurchaseIdItems<TData = Awaited<ReturnType<typeof getPurchasesPurchaseIdItems>>, TError = unknown>(
- purchaseId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getPurchasesPurchaseIdItems>>, TError, TData>>, request?: SecondParameter<typeof fetcher>}
+export function useGetApiPurchasesPurchaseIdItems<TData = Awaited<ReturnType<typeof getApiPurchasesPurchaseIdItems>>, TError = unknown>(
+ purchaseId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiPurchasesPurchaseIdItems>>, TError, TData>>, request?: SecondParameter<typeof fetcher>}
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 
-export function useGetPurchasesPurchaseIdItems<TData = Awaited<ReturnType<typeof getPurchasesPurchaseIdItems>>, TError = unknown>(
- purchaseId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getPurchasesPurchaseIdItems>>, TError, TData>>, request?: SecondParameter<typeof fetcher>}
+export function useGetApiPurchasesPurchaseIdItems<TData = Awaited<ReturnType<typeof getApiPurchasesPurchaseIdItems>>, TError = unknown>(
+ purchaseId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiPurchasesPurchaseIdItems>>, TError, TData>>, request?: SecondParameter<typeof fetcher>}
  , queryClient?: QueryClient 
  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
-  const queryOptions = getGetPurchasesPurchaseIdItemsQueryOptions(purchaseId,options)
+  const queryOptions = getGetApiPurchasesPurchaseIdItemsQueryOptions(purchaseId,options)
 
   const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
@@ -608,7 +608,7 @@ export function useGetPurchasesPurchaseIdItems<TData = Awaited<ReturnType<typeof
 
 
 
-export const getPostPurchasesPurchaseIdItemsUrl = (purchaseId: number,) => {
+export const getPostApiPurchasesPurchaseIdItemsUrl = (purchaseId: number,) => {
 
 
   
@@ -616,10 +616,10 @@ export const getPostPurchasesPurchaseIdItemsUrl = (purchaseId: number,) => {
   return `/api/Purchases/${purchaseId}/Items`
 }
 
-export const postPurchasesPurchaseIdItems = async (purchaseId: number,
+export const postApiPurchasesPurchaseIdItems = async (purchaseId: number,
     createItemDto: CreateItemDto, options?: RequestInit): Promise<ItemDto> => {
   
-  return fetcher<ItemDto>(getPostPurchasesPurchaseIdItemsUrl(purchaseId),
+  return fetcher<ItemDto>(getPostApiPurchasesPurchaseIdItemsUrl(purchaseId),
   {      
     ...options,
     method: 'POST',
@@ -632,11 +632,11 @@ export const postPurchasesPurchaseIdItems = async (purchaseId: number,
 
 
 
-export const getPostPurchasesPurchaseIdItemsMutationOptions = <TError = unknown,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postPurchasesPurchaseIdItems>>, TError,{purchaseId: number;data: CreateItemDto}, TContext>, request?: SecondParameter<typeof fetcher>}
-): UseMutationOptions<Awaited<ReturnType<typeof postPurchasesPurchaseIdItems>>, TError,{purchaseId: number;data: CreateItemDto}, TContext> => {
+export const getPostApiPurchasesPurchaseIdItemsMutationOptions = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiPurchasesPurchaseIdItems>>, TError,{purchaseId: number;data: CreateItemDto}, TContext>, request?: SecondParameter<typeof fetcher>}
+): UseMutationOptions<Awaited<ReturnType<typeof postApiPurchasesPurchaseIdItems>>, TError,{purchaseId: number;data: CreateItemDto}, TContext> => {
 
-const mutationKey = ['postPurchasesPurchaseIdItems'];
+const mutationKey = ['postApiPurchasesPurchaseIdItems'];
 const {mutation: mutationOptions, request: requestOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
@@ -646,10 +646,10 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
       
 
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof postPurchasesPurchaseIdItems>>, {purchaseId: number;data: CreateItemDto}> = (props) => {
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof postApiPurchasesPurchaseIdItems>>, {purchaseId: number;data: CreateItemDto}> = (props) => {
           const {purchaseId,data} = props ?? {};
 
-          return  postPurchasesPurchaseIdItems(purchaseId,data,requestOptions)
+          return  postApiPurchasesPurchaseIdItems(purchaseId,data,requestOptions)
         }
 
         
@@ -657,25 +657,25 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
 
   return  { mutationFn, ...mutationOptions }}
 
-    export type PostPurchasesPurchaseIdItemsMutationResult = NonNullable<Awaited<ReturnType<typeof postPurchasesPurchaseIdItems>>>
-    export type PostPurchasesPurchaseIdItemsMutationBody = CreateItemDto
-    export type PostPurchasesPurchaseIdItemsMutationError = unknown
+    export type PostApiPurchasesPurchaseIdItemsMutationResult = NonNullable<Awaited<ReturnType<typeof postApiPurchasesPurchaseIdItems>>>
+    export type PostApiPurchasesPurchaseIdItemsMutationBody = CreateItemDto
+    export type PostApiPurchasesPurchaseIdItemsMutationError = unknown
 
-    export const usePostPurchasesPurchaseIdItems = <TError = unknown,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postPurchasesPurchaseIdItems>>, TError,{purchaseId: number;data: CreateItemDto}, TContext>, request?: SecondParameter<typeof fetcher>}
+    export const usePostApiPurchasesPurchaseIdItems = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiPurchasesPurchaseIdItems>>, TError,{purchaseId: number;data: CreateItemDto}, TContext>, request?: SecondParameter<typeof fetcher>}
  , queryClient?: QueryClient): UseMutationResult<
-        Awaited<ReturnType<typeof postPurchasesPurchaseIdItems>>,
+        Awaited<ReturnType<typeof postApiPurchasesPurchaseIdItems>>,
         TError,
         {purchaseId: number;data: CreateItemDto},
         TContext
       > => {
 
-      const mutationOptions = getPostPurchasesPurchaseIdItemsMutationOptions(options);
+      const mutationOptions = getPostApiPurchasesPurchaseIdItemsMutationOptions(options);
 
       return useMutation(mutationOptions, queryClient);
     }
     
-export const getGetPurchasesPurchaseIdItemsItemIdUrl = (purchaseId: number,
+export const getGetApiPurchasesPurchaseIdItemsItemIdUrl = (purchaseId: number,
     itemId: number,) => {
 
 
@@ -684,10 +684,10 @@ export const getGetPurchasesPurchaseIdItemsItemIdUrl = (purchaseId: number,
   return `/api/Purchases/${purchaseId}/Items/${itemId}`
 }
 
-export const getPurchasesPurchaseIdItemsItemId = async (purchaseId: number,
+export const getApiPurchasesPurchaseIdItemsItemId = async (purchaseId: number,
     itemId: number, options?: RequestInit): Promise<ItemDto> => {
   
-  return fetcher<ItemDto>(getGetPurchasesPurchaseIdItemsItemIdUrl(purchaseId,itemId),
+  return fetcher<ItemDto>(getGetApiPurchasesPurchaseIdItemsItemIdUrl(purchaseId,itemId),
   {      
     ...options,
     method: 'GET'
@@ -700,7 +700,7 @@ export const getPurchasesPurchaseIdItemsItemId = async (purchaseId: number,
 
 
 
-export const getGetPurchasesPurchaseIdItemsItemIdQueryKey = (purchaseId?: number,
+export const getGetApiPurchasesPurchaseIdItemsItemIdQueryKey = (purchaseId?: number,
     itemId?: number,) => {
     return [
     `/api/Purchases/${purchaseId}/Items/${itemId}`
@@ -708,64 +708,64 @@ export const getGetPurchasesPurchaseIdItemsItemIdQueryKey = (purchaseId?: number
     }
 
     
-export const getGetPurchasesPurchaseIdItemsItemIdQueryOptions = <TData = Awaited<ReturnType<typeof getPurchasesPurchaseIdItemsItemId>>, TError = unknown>(purchaseId: number,
-    itemId: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getPurchasesPurchaseIdItemsItemId>>, TError, TData>>, request?: SecondParameter<typeof fetcher>}
+export const getGetApiPurchasesPurchaseIdItemsItemIdQueryOptions = <TData = Awaited<ReturnType<typeof getApiPurchasesPurchaseIdItemsItemId>>, TError = unknown>(purchaseId: number,
+    itemId: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiPurchasesPurchaseIdItemsItemId>>, TError, TData>>, request?: SecondParameter<typeof fetcher>}
 ) => {
 
 const {query: queryOptions, request: requestOptions} = options ?? {};
 
-  const queryKey =  queryOptions?.queryKey ?? getGetPurchasesPurchaseIdItemsItemIdQueryKey(purchaseId,itemId);
+  const queryKey =  queryOptions?.queryKey ?? getGetApiPurchasesPurchaseIdItemsItemIdQueryKey(purchaseId,itemId);
 
   
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getPurchasesPurchaseIdItemsItemId>>> = ({ signal }) => getPurchasesPurchaseIdItemsItemId(purchaseId,itemId, { signal, ...requestOptions });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getApiPurchasesPurchaseIdItemsItemId>>> = ({ signal }) => getApiPurchasesPurchaseIdItemsItemId(purchaseId,itemId, { signal, ...requestOptions });
 
       
 
       
 
-   return  { queryKey, queryFn, enabled: !!(purchaseId && itemId), ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getPurchasesPurchaseIdItemsItemId>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+   return  { queryKey, queryFn, enabled: !!(purchaseId && itemId), ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getApiPurchasesPurchaseIdItemsItemId>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
 }
 
-export type GetPurchasesPurchaseIdItemsItemIdQueryResult = NonNullable<Awaited<ReturnType<typeof getPurchasesPurchaseIdItemsItemId>>>
-export type GetPurchasesPurchaseIdItemsItemIdQueryError = unknown
+export type GetApiPurchasesPurchaseIdItemsItemIdQueryResult = NonNullable<Awaited<ReturnType<typeof getApiPurchasesPurchaseIdItemsItemId>>>
+export type GetApiPurchasesPurchaseIdItemsItemIdQueryError = unknown
 
 
-export function useGetPurchasesPurchaseIdItemsItemId<TData = Awaited<ReturnType<typeof getPurchasesPurchaseIdItemsItemId>>, TError = unknown>(
+export function useGetApiPurchasesPurchaseIdItemsItemId<TData = Awaited<ReturnType<typeof getApiPurchasesPurchaseIdItemsItemId>>, TError = unknown>(
  purchaseId: number,
-    itemId: number, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getPurchasesPurchaseIdItemsItemId>>, TError, TData>> & Pick<
+    itemId: number, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiPurchasesPurchaseIdItemsItemId>>, TError, TData>> & Pick<
         DefinedInitialDataOptions<
-          Awaited<ReturnType<typeof getPurchasesPurchaseIdItemsItemId>>,
+          Awaited<ReturnType<typeof getApiPurchasesPurchaseIdItemsItemId>>,
           TError,
-          Awaited<ReturnType<typeof getPurchasesPurchaseIdItemsItemId>>
+          Awaited<ReturnType<typeof getApiPurchasesPurchaseIdItemsItemId>>
         > , 'initialData'
       >, request?: SecondParameter<typeof fetcher>}
  , queryClient?: QueryClient
   ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useGetPurchasesPurchaseIdItemsItemId<TData = Awaited<ReturnType<typeof getPurchasesPurchaseIdItemsItemId>>, TError = unknown>(
+export function useGetApiPurchasesPurchaseIdItemsItemId<TData = Awaited<ReturnType<typeof getApiPurchasesPurchaseIdItemsItemId>>, TError = unknown>(
  purchaseId: number,
-    itemId: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getPurchasesPurchaseIdItemsItemId>>, TError, TData>> & Pick<
+    itemId: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiPurchasesPurchaseIdItemsItemId>>, TError, TData>> & Pick<
         UndefinedInitialDataOptions<
-          Awaited<ReturnType<typeof getPurchasesPurchaseIdItemsItemId>>,
+          Awaited<ReturnType<typeof getApiPurchasesPurchaseIdItemsItemId>>,
           TError,
-          Awaited<ReturnType<typeof getPurchasesPurchaseIdItemsItemId>>
+          Awaited<ReturnType<typeof getApiPurchasesPurchaseIdItemsItemId>>
         > , 'initialData'
       >, request?: SecondParameter<typeof fetcher>}
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useGetPurchasesPurchaseIdItemsItemId<TData = Awaited<ReturnType<typeof getPurchasesPurchaseIdItemsItemId>>, TError = unknown>(
+export function useGetApiPurchasesPurchaseIdItemsItemId<TData = Awaited<ReturnType<typeof getApiPurchasesPurchaseIdItemsItemId>>, TError = unknown>(
  purchaseId: number,
-    itemId: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getPurchasesPurchaseIdItemsItemId>>, TError, TData>>, request?: SecondParameter<typeof fetcher>}
+    itemId: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiPurchasesPurchaseIdItemsItemId>>, TError, TData>>, request?: SecondParameter<typeof fetcher>}
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 
-export function useGetPurchasesPurchaseIdItemsItemId<TData = Awaited<ReturnType<typeof getPurchasesPurchaseIdItemsItemId>>, TError = unknown>(
+export function useGetApiPurchasesPurchaseIdItemsItemId<TData = Awaited<ReturnType<typeof getApiPurchasesPurchaseIdItemsItemId>>, TError = unknown>(
  purchaseId: number,
-    itemId: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getPurchasesPurchaseIdItemsItemId>>, TError, TData>>, request?: SecondParameter<typeof fetcher>}
+    itemId: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiPurchasesPurchaseIdItemsItemId>>, TError, TData>>, request?: SecondParameter<typeof fetcher>}
  , queryClient?: QueryClient 
  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
-  const queryOptions = getGetPurchasesPurchaseIdItemsItemIdQueryOptions(purchaseId,itemId,options)
+  const queryOptions = getGetApiPurchasesPurchaseIdItemsItemIdQueryOptions(purchaseId,itemId,options)
 
   const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
@@ -778,7 +778,7 @@ export function useGetPurchasesPurchaseIdItemsItemId<TData = Awaited<ReturnType<
 
 
 
-export const getPutPurchasesPurchaseIdItemsItemIdUrl = (purchaseId: number,
+export const getPutApiPurchasesPurchaseIdItemsItemIdUrl = (purchaseId: number,
     itemId: number,) => {
 
 
@@ -787,11 +787,11 @@ export const getPutPurchasesPurchaseIdItemsItemIdUrl = (purchaseId: number,
   return `/api/Purchases/${purchaseId}/Items/${itemId}`
 }
 
-export const putPurchasesPurchaseIdItemsItemId = async (purchaseId: number,
+export const putApiPurchasesPurchaseIdItemsItemId = async (purchaseId: number,
     itemId: number,
     updateItemDto: UpdateItemDto, options?: RequestInit): Promise<void> => {
   
-  return fetcher<void>(getPutPurchasesPurchaseIdItemsItemIdUrl(purchaseId,itemId),
+  return fetcher<void>(getPutApiPurchasesPurchaseIdItemsItemIdUrl(purchaseId,itemId),
   {      
     ...options,
     method: 'PUT',
@@ -804,11 +804,11 @@ export const putPurchasesPurchaseIdItemsItemId = async (purchaseId: number,
 
 
 
-export const getPutPurchasesPurchaseIdItemsItemIdMutationOptions = <TError = unknown,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof putPurchasesPurchaseIdItemsItemId>>, TError,{purchaseId: number;itemId: number;data: UpdateItemDto}, TContext>, request?: SecondParameter<typeof fetcher>}
-): UseMutationOptions<Awaited<ReturnType<typeof putPurchasesPurchaseIdItemsItemId>>, TError,{purchaseId: number;itemId: number;data: UpdateItemDto}, TContext> => {
+export const getPutApiPurchasesPurchaseIdItemsItemIdMutationOptions = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof putApiPurchasesPurchaseIdItemsItemId>>, TError,{purchaseId: number;itemId: number;data: UpdateItemDto}, TContext>, request?: SecondParameter<typeof fetcher>}
+): UseMutationOptions<Awaited<ReturnType<typeof putApiPurchasesPurchaseIdItemsItemId>>, TError,{purchaseId: number;itemId: number;data: UpdateItemDto}, TContext> => {
 
-const mutationKey = ['putPurchasesPurchaseIdItemsItemId'];
+const mutationKey = ['putApiPurchasesPurchaseIdItemsItemId'];
 const {mutation: mutationOptions, request: requestOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
@@ -818,10 +818,10 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
       
 
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof putPurchasesPurchaseIdItemsItemId>>, {purchaseId: number;itemId: number;data: UpdateItemDto}> = (props) => {
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof putApiPurchasesPurchaseIdItemsItemId>>, {purchaseId: number;itemId: number;data: UpdateItemDto}> = (props) => {
           const {purchaseId,itemId,data} = props ?? {};
 
-          return  putPurchasesPurchaseIdItemsItemId(purchaseId,itemId,data,requestOptions)
+          return  putApiPurchasesPurchaseIdItemsItemId(purchaseId,itemId,data,requestOptions)
         }
 
         
@@ -829,25 +829,25 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
 
   return  { mutationFn, ...mutationOptions }}
 
-    export type PutPurchasesPurchaseIdItemsItemIdMutationResult = NonNullable<Awaited<ReturnType<typeof putPurchasesPurchaseIdItemsItemId>>>
-    export type PutPurchasesPurchaseIdItemsItemIdMutationBody = UpdateItemDto
-    export type PutPurchasesPurchaseIdItemsItemIdMutationError = unknown
+    export type PutApiPurchasesPurchaseIdItemsItemIdMutationResult = NonNullable<Awaited<ReturnType<typeof putApiPurchasesPurchaseIdItemsItemId>>>
+    export type PutApiPurchasesPurchaseIdItemsItemIdMutationBody = UpdateItemDto
+    export type PutApiPurchasesPurchaseIdItemsItemIdMutationError = unknown
 
-    export const usePutPurchasesPurchaseIdItemsItemId = <TError = unknown,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof putPurchasesPurchaseIdItemsItemId>>, TError,{purchaseId: number;itemId: number;data: UpdateItemDto}, TContext>, request?: SecondParameter<typeof fetcher>}
+    export const usePutApiPurchasesPurchaseIdItemsItemId = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof putApiPurchasesPurchaseIdItemsItemId>>, TError,{purchaseId: number;itemId: number;data: UpdateItemDto}, TContext>, request?: SecondParameter<typeof fetcher>}
  , queryClient?: QueryClient): UseMutationResult<
-        Awaited<ReturnType<typeof putPurchasesPurchaseIdItemsItemId>>,
+        Awaited<ReturnType<typeof putApiPurchasesPurchaseIdItemsItemId>>,
         TError,
         {purchaseId: number;itemId: number;data: UpdateItemDto},
         TContext
       > => {
 
-      const mutationOptions = getPutPurchasesPurchaseIdItemsItemIdMutationOptions(options);
+      const mutationOptions = getPutApiPurchasesPurchaseIdItemsItemIdMutationOptions(options);
 
       return useMutation(mutationOptions, queryClient);
     }
     
-export const getDeletePurchasesPurchaseIdItemsItemIdUrl = (purchaseId: number,
+export const getDeleteApiPurchasesPurchaseIdItemsItemIdUrl = (purchaseId: number,
     itemId: number,) => {
 
 
@@ -856,10 +856,10 @@ export const getDeletePurchasesPurchaseIdItemsItemIdUrl = (purchaseId: number,
   return `/api/Purchases/${purchaseId}/Items/${itemId}`
 }
 
-export const deletePurchasesPurchaseIdItemsItemId = async (purchaseId: number,
+export const deleteApiPurchasesPurchaseIdItemsItemId = async (purchaseId: number,
     itemId: number, options?: RequestInit): Promise<void> => {
   
-  return fetcher<void>(getDeletePurchasesPurchaseIdItemsItemIdUrl(purchaseId,itemId),
+  return fetcher<void>(getDeleteApiPurchasesPurchaseIdItemsItemIdUrl(purchaseId,itemId),
   {      
     ...options,
     method: 'DELETE'
@@ -871,11 +871,11 @@ export const deletePurchasesPurchaseIdItemsItemId = async (purchaseId: number,
 
 
 
-export const getDeletePurchasesPurchaseIdItemsItemIdMutationOptions = <TError = unknown,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deletePurchasesPurchaseIdItemsItemId>>, TError,{purchaseId: number;itemId: number}, TContext>, request?: SecondParameter<typeof fetcher>}
-): UseMutationOptions<Awaited<ReturnType<typeof deletePurchasesPurchaseIdItemsItemId>>, TError,{purchaseId: number;itemId: number}, TContext> => {
+export const getDeleteApiPurchasesPurchaseIdItemsItemIdMutationOptions = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteApiPurchasesPurchaseIdItemsItemId>>, TError,{purchaseId: number;itemId: number}, TContext>, request?: SecondParameter<typeof fetcher>}
+): UseMutationOptions<Awaited<ReturnType<typeof deleteApiPurchasesPurchaseIdItemsItemId>>, TError,{purchaseId: number;itemId: number}, TContext> => {
 
-const mutationKey = ['deletePurchasesPurchaseIdItemsItemId'];
+const mutationKey = ['deleteApiPurchasesPurchaseIdItemsItemId'];
 const {mutation: mutationOptions, request: requestOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
@@ -885,10 +885,10 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
       
 
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof deletePurchasesPurchaseIdItemsItemId>>, {purchaseId: number;itemId: number}> = (props) => {
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof deleteApiPurchasesPurchaseIdItemsItemId>>, {purchaseId: number;itemId: number}> = (props) => {
           const {purchaseId,itemId} = props ?? {};
 
-          return  deletePurchasesPurchaseIdItemsItemId(purchaseId,itemId,requestOptions)
+          return  deleteApiPurchasesPurchaseIdItemsItemId(purchaseId,itemId,requestOptions)
         }
 
         
@@ -896,25 +896,25 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
 
   return  { mutationFn, ...mutationOptions }}
 
-    export type DeletePurchasesPurchaseIdItemsItemIdMutationResult = NonNullable<Awaited<ReturnType<typeof deletePurchasesPurchaseIdItemsItemId>>>
+    export type DeleteApiPurchasesPurchaseIdItemsItemIdMutationResult = NonNullable<Awaited<ReturnType<typeof deleteApiPurchasesPurchaseIdItemsItemId>>>
     
-    export type DeletePurchasesPurchaseIdItemsItemIdMutationError = unknown
+    export type DeleteApiPurchasesPurchaseIdItemsItemIdMutationError = unknown
 
-    export const useDeletePurchasesPurchaseIdItemsItemId = <TError = unknown,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deletePurchasesPurchaseIdItemsItemId>>, TError,{purchaseId: number;itemId: number}, TContext>, request?: SecondParameter<typeof fetcher>}
+    export const useDeleteApiPurchasesPurchaseIdItemsItemId = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteApiPurchasesPurchaseIdItemsItemId>>, TError,{purchaseId: number;itemId: number}, TContext>, request?: SecondParameter<typeof fetcher>}
  , queryClient?: QueryClient): UseMutationResult<
-        Awaited<ReturnType<typeof deletePurchasesPurchaseIdItemsItemId>>,
+        Awaited<ReturnType<typeof deleteApiPurchasesPurchaseIdItemsItemId>>,
         TError,
         {purchaseId: number;itemId: number},
         TContext
       > => {
 
-      const mutationOptions = getDeletePurchasesPurchaseIdItemsItemIdMutationOptions(options);
+      const mutationOptions = getDeleteApiPurchasesPurchaseIdItemsItemIdMutationOptions(options);
 
       return useMutation(mutationOptions, queryClient);
     }
     
-export const getGetJourneysUrl = (params?: GetJourneysParams,) => {
+export const getGetApiJourneysUrl = (params?: GetApiJourneysParams,) => {
   const normalizedParams = new URLSearchParams();
 
   Object.entries(params || {}).forEach(([key, value]) => {
@@ -929,9 +929,9 @@ export const getGetJourneysUrl = (params?: GetJourneysParams,) => {
   return stringifiedParams.length > 0 ? `/api/Journeys?${stringifiedParams}` : `/api/Journeys`
 }
 
-export const getJourneys = async (params?: GetJourneysParams, options?: RequestInit): Promise<JourneyByWeekDto> => {
+export const getApiJourneys = async (params?: GetApiJourneysParams, options?: RequestInit): Promise<JourneyByWeekDto> => {
   
-  return fetcher<JourneyByWeekDto>(getGetJourneysUrl(params),
+  return fetcher<JourneyByWeekDto>(getGetApiJourneysUrl(params),
   {      
     ...options,
     method: 'GET'
@@ -944,66 +944,66 @@ export const getJourneys = async (params?: GetJourneysParams, options?: RequestI
 
 
 
-export const getGetJourneysQueryKey = (params?: GetJourneysParams,) => {
+export const getGetApiJourneysQueryKey = (params?: GetApiJourneysParams,) => {
     return [
     `/api/Journeys`, ...(params ? [params]: [])
     ] as const;
     }
 
     
-export const getGetJourneysQueryOptions = <TData = Awaited<ReturnType<typeof getJourneys>>, TError = unknown>(params?: GetJourneysParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getJourneys>>, TError, TData>>, request?: SecondParameter<typeof fetcher>}
+export const getGetApiJourneysQueryOptions = <TData = Awaited<ReturnType<typeof getApiJourneys>>, TError = unknown>(params?: GetApiJourneysParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiJourneys>>, TError, TData>>, request?: SecondParameter<typeof fetcher>}
 ) => {
 
 const {query: queryOptions, request: requestOptions} = options ?? {};
 
-  const queryKey =  queryOptions?.queryKey ?? getGetJourneysQueryKey(params);
+  const queryKey =  queryOptions?.queryKey ?? getGetApiJourneysQueryKey(params);
 
   
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getJourneys>>> = ({ signal }) => getJourneys(params, { signal, ...requestOptions });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getApiJourneys>>> = ({ signal }) => getApiJourneys(params, { signal, ...requestOptions });
 
       
 
       
 
-   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getJourneys>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getApiJourneys>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
 }
 
-export type GetJourneysQueryResult = NonNullable<Awaited<ReturnType<typeof getJourneys>>>
-export type GetJourneysQueryError = unknown
+export type GetApiJourneysQueryResult = NonNullable<Awaited<ReturnType<typeof getApiJourneys>>>
+export type GetApiJourneysQueryError = unknown
 
 
-export function useGetJourneys<TData = Awaited<ReturnType<typeof getJourneys>>, TError = unknown>(
- params: undefined |  GetJourneysParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getJourneys>>, TError, TData>> & Pick<
+export function useGetApiJourneys<TData = Awaited<ReturnType<typeof getApiJourneys>>, TError = unknown>(
+ params: undefined |  GetApiJourneysParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiJourneys>>, TError, TData>> & Pick<
         DefinedInitialDataOptions<
-          Awaited<ReturnType<typeof getJourneys>>,
+          Awaited<ReturnType<typeof getApiJourneys>>,
           TError,
-          Awaited<ReturnType<typeof getJourneys>>
+          Awaited<ReturnType<typeof getApiJourneys>>
         > , 'initialData'
       >, request?: SecondParameter<typeof fetcher>}
  , queryClient?: QueryClient
   ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useGetJourneys<TData = Awaited<ReturnType<typeof getJourneys>>, TError = unknown>(
- params?: GetJourneysParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getJourneys>>, TError, TData>> & Pick<
+export function useGetApiJourneys<TData = Awaited<ReturnType<typeof getApiJourneys>>, TError = unknown>(
+ params?: GetApiJourneysParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiJourneys>>, TError, TData>> & Pick<
         UndefinedInitialDataOptions<
-          Awaited<ReturnType<typeof getJourneys>>,
+          Awaited<ReturnType<typeof getApiJourneys>>,
           TError,
-          Awaited<ReturnType<typeof getJourneys>>
+          Awaited<ReturnType<typeof getApiJourneys>>
         > , 'initialData'
       >, request?: SecondParameter<typeof fetcher>}
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useGetJourneys<TData = Awaited<ReturnType<typeof getJourneys>>, TError = unknown>(
- params?: GetJourneysParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getJourneys>>, TError, TData>>, request?: SecondParameter<typeof fetcher>}
+export function useGetApiJourneys<TData = Awaited<ReturnType<typeof getApiJourneys>>, TError = unknown>(
+ params?: GetApiJourneysParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiJourneys>>, TError, TData>>, request?: SecondParameter<typeof fetcher>}
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 
-export function useGetJourneys<TData = Awaited<ReturnType<typeof getJourneys>>, TError = unknown>(
- params?: GetJourneysParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getJourneys>>, TError, TData>>, request?: SecondParameter<typeof fetcher>}
+export function useGetApiJourneys<TData = Awaited<ReturnType<typeof getApiJourneys>>, TError = unknown>(
+ params?: GetApiJourneysParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiJourneys>>, TError, TData>>, request?: SecondParameter<typeof fetcher>}
  , queryClient?: QueryClient 
  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
-  const queryOptions = getGetJourneysQueryOptions(params,options)
+  const queryOptions = getGetApiJourneysQueryOptions(params,options)
 
   const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
@@ -1016,7 +1016,7 @@ export function useGetJourneys<TData = Awaited<ReturnType<typeof getJourneys>>, 
 
 
 
-export const getPostJourneysUrl = () => {
+export const getPostApiJourneysUrl = () => {
 
 
   
@@ -1024,9 +1024,9 @@ export const getPostJourneysUrl = () => {
   return `/api/Journeys`
 }
 
-export const postJourneys = async (createJourneyDto: CreateJourneyDto, options?: RequestInit): Promise<JourneyDto> => {
+export const postApiJourneys = async (createJourneyDto: CreateJourneyDto, options?: RequestInit): Promise<JourneyDto> => {
   
-  return fetcher<JourneyDto>(getPostJourneysUrl(),
+  return fetcher<JourneyDto>(getPostApiJourneysUrl(),
   {      
     ...options,
     method: 'POST',
@@ -1039,11 +1039,11 @@ export const postJourneys = async (createJourneyDto: CreateJourneyDto, options?:
 
 
 
-export const getPostJourneysMutationOptions = <TError = unknown,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postJourneys>>, TError,{data: CreateJourneyDto}, TContext>, request?: SecondParameter<typeof fetcher>}
-): UseMutationOptions<Awaited<ReturnType<typeof postJourneys>>, TError,{data: CreateJourneyDto}, TContext> => {
+export const getPostApiJourneysMutationOptions = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiJourneys>>, TError,{data: CreateJourneyDto}, TContext>, request?: SecondParameter<typeof fetcher>}
+): UseMutationOptions<Awaited<ReturnType<typeof postApiJourneys>>, TError,{data: CreateJourneyDto}, TContext> => {
 
-const mutationKey = ['postJourneys'];
+const mutationKey = ['postApiJourneys'];
 const {mutation: mutationOptions, request: requestOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
@@ -1053,10 +1053,10 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
       
 
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof postJourneys>>, {data: CreateJourneyDto}> = (props) => {
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof postApiJourneys>>, {data: CreateJourneyDto}> = (props) => {
           const {data} = props ?? {};
 
-          return  postJourneys(data,requestOptions)
+          return  postApiJourneys(data,requestOptions)
         }
 
         
@@ -1064,25 +1064,25 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
 
   return  { mutationFn, ...mutationOptions }}
 
-    export type PostJourneysMutationResult = NonNullable<Awaited<ReturnType<typeof postJourneys>>>
-    export type PostJourneysMutationBody = CreateJourneyDto
-    export type PostJourneysMutationError = unknown
+    export type PostApiJourneysMutationResult = NonNullable<Awaited<ReturnType<typeof postApiJourneys>>>
+    export type PostApiJourneysMutationBody = CreateJourneyDto
+    export type PostApiJourneysMutationError = unknown
 
-    export const usePostJourneys = <TError = unknown,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postJourneys>>, TError,{data: CreateJourneyDto}, TContext>, request?: SecondParameter<typeof fetcher>}
+    export const usePostApiJourneys = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiJourneys>>, TError,{data: CreateJourneyDto}, TContext>, request?: SecondParameter<typeof fetcher>}
  , queryClient?: QueryClient): UseMutationResult<
-        Awaited<ReturnType<typeof postJourneys>>,
+        Awaited<ReturnType<typeof postApiJourneys>>,
         TError,
         {data: CreateJourneyDto},
         TContext
       > => {
 
-      const mutationOptions = getPostJourneysMutationOptions(options);
+      const mutationOptions = getPostApiJourneysMutationOptions(options);
 
       return useMutation(mutationOptions, queryClient);
     }
     
-export const getGetJourneysIdUrl = (id: number,) => {
+export const getGetApiJourneysIdUrl = (id: number,) => {
 
 
   
@@ -1090,9 +1090,9 @@ export const getGetJourneysIdUrl = (id: number,) => {
   return `/api/Journeys/${id}`
 }
 
-export const getJourneysId = async (id: number, options?: RequestInit): Promise<JourneyDto> => {
+export const getApiJourneysId = async (id: number, options?: RequestInit): Promise<JourneyDto> => {
   
-  return fetcher<JourneyDto>(getGetJourneysIdUrl(id),
+  return fetcher<JourneyDto>(getGetApiJourneysIdUrl(id),
   {      
     ...options,
     method: 'GET'
@@ -1105,66 +1105,66 @@ export const getJourneysId = async (id: number, options?: RequestInit): Promise<
 
 
 
-export const getGetJourneysIdQueryKey = (id?: number,) => {
+export const getGetApiJourneysIdQueryKey = (id?: number,) => {
     return [
     `/api/Journeys/${id}`
     ] as const;
     }
 
     
-export const getGetJourneysIdQueryOptions = <TData = Awaited<ReturnType<typeof getJourneysId>>, TError = unknown>(id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getJourneysId>>, TError, TData>>, request?: SecondParameter<typeof fetcher>}
+export const getGetApiJourneysIdQueryOptions = <TData = Awaited<ReturnType<typeof getApiJourneysId>>, TError = unknown>(id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiJourneysId>>, TError, TData>>, request?: SecondParameter<typeof fetcher>}
 ) => {
 
 const {query: queryOptions, request: requestOptions} = options ?? {};
 
-  const queryKey =  queryOptions?.queryKey ?? getGetJourneysIdQueryKey(id);
+  const queryKey =  queryOptions?.queryKey ?? getGetApiJourneysIdQueryKey(id);
 
   
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getJourneysId>>> = ({ signal }) => getJourneysId(id, { signal, ...requestOptions });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getApiJourneysId>>> = ({ signal }) => getApiJourneysId(id, { signal, ...requestOptions });
 
       
 
       
 
-   return  { queryKey, queryFn, enabled: !!(id), ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getJourneysId>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+   return  { queryKey, queryFn, enabled: !!(id), ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getApiJourneysId>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
 }
 
-export type GetJourneysIdQueryResult = NonNullable<Awaited<ReturnType<typeof getJourneysId>>>
-export type GetJourneysIdQueryError = unknown
+export type GetApiJourneysIdQueryResult = NonNullable<Awaited<ReturnType<typeof getApiJourneysId>>>
+export type GetApiJourneysIdQueryError = unknown
 
 
-export function useGetJourneysId<TData = Awaited<ReturnType<typeof getJourneysId>>, TError = unknown>(
- id: number, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getJourneysId>>, TError, TData>> & Pick<
+export function useGetApiJourneysId<TData = Awaited<ReturnType<typeof getApiJourneysId>>, TError = unknown>(
+ id: number, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiJourneysId>>, TError, TData>> & Pick<
         DefinedInitialDataOptions<
-          Awaited<ReturnType<typeof getJourneysId>>,
+          Awaited<ReturnType<typeof getApiJourneysId>>,
           TError,
-          Awaited<ReturnType<typeof getJourneysId>>
+          Awaited<ReturnType<typeof getApiJourneysId>>
         > , 'initialData'
       >, request?: SecondParameter<typeof fetcher>}
  , queryClient?: QueryClient
   ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useGetJourneysId<TData = Awaited<ReturnType<typeof getJourneysId>>, TError = unknown>(
- id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getJourneysId>>, TError, TData>> & Pick<
+export function useGetApiJourneysId<TData = Awaited<ReturnType<typeof getApiJourneysId>>, TError = unknown>(
+ id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiJourneysId>>, TError, TData>> & Pick<
         UndefinedInitialDataOptions<
-          Awaited<ReturnType<typeof getJourneysId>>,
+          Awaited<ReturnType<typeof getApiJourneysId>>,
           TError,
-          Awaited<ReturnType<typeof getJourneysId>>
+          Awaited<ReturnType<typeof getApiJourneysId>>
         > , 'initialData'
       >, request?: SecondParameter<typeof fetcher>}
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useGetJourneysId<TData = Awaited<ReturnType<typeof getJourneysId>>, TError = unknown>(
- id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getJourneysId>>, TError, TData>>, request?: SecondParameter<typeof fetcher>}
+export function useGetApiJourneysId<TData = Awaited<ReturnType<typeof getApiJourneysId>>, TError = unknown>(
+ id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiJourneysId>>, TError, TData>>, request?: SecondParameter<typeof fetcher>}
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 
-export function useGetJourneysId<TData = Awaited<ReturnType<typeof getJourneysId>>, TError = unknown>(
- id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getJourneysId>>, TError, TData>>, request?: SecondParameter<typeof fetcher>}
+export function useGetApiJourneysId<TData = Awaited<ReturnType<typeof getApiJourneysId>>, TError = unknown>(
+ id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiJourneysId>>, TError, TData>>, request?: SecondParameter<typeof fetcher>}
  , queryClient?: QueryClient 
  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
-  const queryOptions = getGetJourneysIdQueryOptions(id,options)
+  const queryOptions = getGetApiJourneysIdQueryOptions(id,options)
 
   const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
@@ -1177,7 +1177,7 @@ export function useGetJourneysId<TData = Awaited<ReturnType<typeof getJourneysId
 
 
 
-export const getPutJourneysIdUrl = (id: number,) => {
+export const getPutApiJourneysIdUrl = (id: number,) => {
 
 
   
@@ -1185,10 +1185,10 @@ export const getPutJourneysIdUrl = (id: number,) => {
   return `/api/Journeys/${id}`
 }
 
-export const putJourneysId = async (id: number,
+export const putApiJourneysId = async (id: number,
     updateJourneyDto: UpdateJourneyDto, options?: RequestInit): Promise<void> => {
   
-  return fetcher<void>(getPutJourneysIdUrl(id),
+  return fetcher<void>(getPutApiJourneysIdUrl(id),
   {      
     ...options,
     method: 'PUT',
@@ -1201,11 +1201,11 @@ export const putJourneysId = async (id: number,
 
 
 
-export const getPutJourneysIdMutationOptions = <TError = unknown,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof putJourneysId>>, TError,{id: number;data: UpdateJourneyDto}, TContext>, request?: SecondParameter<typeof fetcher>}
-): UseMutationOptions<Awaited<ReturnType<typeof putJourneysId>>, TError,{id: number;data: UpdateJourneyDto}, TContext> => {
+export const getPutApiJourneysIdMutationOptions = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof putApiJourneysId>>, TError,{id: number;data: UpdateJourneyDto}, TContext>, request?: SecondParameter<typeof fetcher>}
+): UseMutationOptions<Awaited<ReturnType<typeof putApiJourneysId>>, TError,{id: number;data: UpdateJourneyDto}, TContext> => {
 
-const mutationKey = ['putJourneysId'];
+const mutationKey = ['putApiJourneysId'];
 const {mutation: mutationOptions, request: requestOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
@@ -1215,10 +1215,10 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
       
 
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof putJourneysId>>, {id: number;data: UpdateJourneyDto}> = (props) => {
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof putApiJourneysId>>, {id: number;data: UpdateJourneyDto}> = (props) => {
           const {id,data} = props ?? {};
 
-          return  putJourneysId(id,data,requestOptions)
+          return  putApiJourneysId(id,data,requestOptions)
         }
 
         
@@ -1226,25 +1226,25 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
 
   return  { mutationFn, ...mutationOptions }}
 
-    export type PutJourneysIdMutationResult = NonNullable<Awaited<ReturnType<typeof putJourneysId>>>
-    export type PutJourneysIdMutationBody = UpdateJourneyDto
-    export type PutJourneysIdMutationError = unknown
+    export type PutApiJourneysIdMutationResult = NonNullable<Awaited<ReturnType<typeof putApiJourneysId>>>
+    export type PutApiJourneysIdMutationBody = UpdateJourneyDto
+    export type PutApiJourneysIdMutationError = unknown
 
-    export const usePutJourneysId = <TError = unknown,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof putJourneysId>>, TError,{id: number;data: UpdateJourneyDto}, TContext>, request?: SecondParameter<typeof fetcher>}
+    export const usePutApiJourneysId = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof putApiJourneysId>>, TError,{id: number;data: UpdateJourneyDto}, TContext>, request?: SecondParameter<typeof fetcher>}
  , queryClient?: QueryClient): UseMutationResult<
-        Awaited<ReturnType<typeof putJourneysId>>,
+        Awaited<ReturnType<typeof putApiJourneysId>>,
         TError,
         {id: number;data: UpdateJourneyDto},
         TContext
       > => {
 
-      const mutationOptions = getPutJourneysIdMutationOptions(options);
+      const mutationOptions = getPutApiJourneysIdMutationOptions(options);
 
       return useMutation(mutationOptions, queryClient);
     }
     
-export const getDeleteJourneysIdUrl = (id: number,) => {
+export const getDeleteApiJourneysIdUrl = (id: number,) => {
 
 
   
@@ -1252,9 +1252,9 @@ export const getDeleteJourneysIdUrl = (id: number,) => {
   return `/api/Journeys/${id}`
 }
 
-export const deleteJourneysId = async (id: number, options?: RequestInit): Promise<void> => {
+export const deleteApiJourneysId = async (id: number, options?: RequestInit): Promise<void> => {
   
-  return fetcher<void>(getDeleteJourneysIdUrl(id),
+  return fetcher<void>(getDeleteApiJourneysIdUrl(id),
   {      
     ...options,
     method: 'DELETE'
@@ -1266,11 +1266,11 @@ export const deleteJourneysId = async (id: number, options?: RequestInit): Promi
 
 
 
-export const getDeleteJourneysIdMutationOptions = <TError = unknown,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteJourneysId>>, TError,{id: number}, TContext>, request?: SecondParameter<typeof fetcher>}
-): UseMutationOptions<Awaited<ReturnType<typeof deleteJourneysId>>, TError,{id: number}, TContext> => {
+export const getDeleteApiJourneysIdMutationOptions = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteApiJourneysId>>, TError,{id: number}, TContext>, request?: SecondParameter<typeof fetcher>}
+): UseMutationOptions<Awaited<ReturnType<typeof deleteApiJourneysId>>, TError,{id: number}, TContext> => {
 
-const mutationKey = ['deleteJourneysId'];
+const mutationKey = ['deleteApiJourneysId'];
 const {mutation: mutationOptions, request: requestOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
@@ -1280,10 +1280,10 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
       
 
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof deleteJourneysId>>, {id: number}> = (props) => {
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof deleteApiJourneysId>>, {id: number}> = (props) => {
           const {id} = props ?? {};
 
-          return  deleteJourneysId(id,requestOptions)
+          return  deleteApiJourneysId(id,requestOptions)
         }
 
         
@@ -1291,25 +1291,25 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
 
   return  { mutationFn, ...mutationOptions }}
 
-    export type DeleteJourneysIdMutationResult = NonNullable<Awaited<ReturnType<typeof deleteJourneysId>>>
+    export type DeleteApiJourneysIdMutationResult = NonNullable<Awaited<ReturnType<typeof deleteApiJourneysId>>>
     
-    export type DeleteJourneysIdMutationError = unknown
+    export type DeleteApiJourneysIdMutationError = unknown
 
-    export const useDeleteJourneysId = <TError = unknown,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteJourneysId>>, TError,{id: number}, TContext>, request?: SecondParameter<typeof fetcher>}
+    export const useDeleteApiJourneysId = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteApiJourneysId>>, TError,{id: number}, TContext>, request?: SecondParameter<typeof fetcher>}
  , queryClient?: QueryClient): UseMutationResult<
-        Awaited<ReturnType<typeof deleteJourneysId>>,
+        Awaited<ReturnType<typeof deleteApiJourneysId>>,
         TError,
         {id: number},
         TContext
       > => {
 
-      const mutationOptions = getDeleteJourneysIdMutationOptions(options);
+      const mutationOptions = getDeleteApiJourneysIdMutationOptions(options);
 
       return useMutation(mutationOptions, queryClient);
     }
     
-export const getGetLocationsUrl = () => {
+export const getGetApiLocationsUrl = () => {
 
 
   
@@ -1317,9 +1317,9 @@ export const getGetLocationsUrl = () => {
   return `/api/Locations`
 }
 
-export const getLocations = async ( options?: RequestInit): Promise<LocationDto[]> => {
+export const getApiLocations = async ( options?: RequestInit): Promise<LocationDto[]> => {
   
-  return fetcher<LocationDto[]>(getGetLocationsUrl(),
+  return fetcher<LocationDto[]>(getGetApiLocationsUrl(),
   {      
     ...options,
     method: 'GET'
@@ -1332,66 +1332,66 @@ export const getLocations = async ( options?: RequestInit): Promise<LocationDto[
 
 
 
-export const getGetLocationsQueryKey = () => {
+export const getGetApiLocationsQueryKey = () => {
     return [
     `/api/Locations`
     ] as const;
     }
 
     
-export const getGetLocationsQueryOptions = <TData = Awaited<ReturnType<typeof getLocations>>, TError = unknown>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getLocations>>, TError, TData>>, request?: SecondParameter<typeof fetcher>}
+export const getGetApiLocationsQueryOptions = <TData = Awaited<ReturnType<typeof getApiLocations>>, TError = unknown>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiLocations>>, TError, TData>>, request?: SecondParameter<typeof fetcher>}
 ) => {
 
 const {query: queryOptions, request: requestOptions} = options ?? {};
 
-  const queryKey =  queryOptions?.queryKey ?? getGetLocationsQueryKey();
+  const queryKey =  queryOptions?.queryKey ?? getGetApiLocationsQueryKey();
 
   
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getLocations>>> = ({ signal }) => getLocations({ signal, ...requestOptions });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getApiLocations>>> = ({ signal }) => getApiLocations({ signal, ...requestOptions });
 
       
 
       
 
-   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getLocations>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getApiLocations>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
 }
 
-export type GetLocationsQueryResult = NonNullable<Awaited<ReturnType<typeof getLocations>>>
-export type GetLocationsQueryError = unknown
+export type GetApiLocationsQueryResult = NonNullable<Awaited<ReturnType<typeof getApiLocations>>>
+export type GetApiLocationsQueryError = unknown
 
 
-export function useGetLocations<TData = Awaited<ReturnType<typeof getLocations>>, TError = unknown>(
-  options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getLocations>>, TError, TData>> & Pick<
+export function useGetApiLocations<TData = Awaited<ReturnType<typeof getApiLocations>>, TError = unknown>(
+  options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiLocations>>, TError, TData>> & Pick<
         DefinedInitialDataOptions<
-          Awaited<ReturnType<typeof getLocations>>,
+          Awaited<ReturnType<typeof getApiLocations>>,
           TError,
-          Awaited<ReturnType<typeof getLocations>>
+          Awaited<ReturnType<typeof getApiLocations>>
         > , 'initialData'
       >, request?: SecondParameter<typeof fetcher>}
  , queryClient?: QueryClient
   ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useGetLocations<TData = Awaited<ReturnType<typeof getLocations>>, TError = unknown>(
-  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getLocations>>, TError, TData>> & Pick<
+export function useGetApiLocations<TData = Awaited<ReturnType<typeof getApiLocations>>, TError = unknown>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiLocations>>, TError, TData>> & Pick<
         UndefinedInitialDataOptions<
-          Awaited<ReturnType<typeof getLocations>>,
+          Awaited<ReturnType<typeof getApiLocations>>,
           TError,
-          Awaited<ReturnType<typeof getLocations>>
+          Awaited<ReturnType<typeof getApiLocations>>
         > , 'initialData'
       >, request?: SecondParameter<typeof fetcher>}
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useGetLocations<TData = Awaited<ReturnType<typeof getLocations>>, TError = unknown>(
-  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getLocations>>, TError, TData>>, request?: SecondParameter<typeof fetcher>}
+export function useGetApiLocations<TData = Awaited<ReturnType<typeof getApiLocations>>, TError = unknown>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiLocations>>, TError, TData>>, request?: SecondParameter<typeof fetcher>}
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 
-export function useGetLocations<TData = Awaited<ReturnType<typeof getLocations>>, TError = unknown>(
-  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getLocations>>, TError, TData>>, request?: SecondParameter<typeof fetcher>}
+export function useGetApiLocations<TData = Awaited<ReturnType<typeof getApiLocations>>, TError = unknown>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiLocations>>, TError, TData>>, request?: SecondParameter<typeof fetcher>}
  , queryClient?: QueryClient 
  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
-  const queryOptions = getGetLocationsQueryOptions(options)
+  const queryOptions = getGetApiLocationsQueryOptions(options)
 
   const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
@@ -1404,7 +1404,7 @@ export function useGetLocations<TData = Awaited<ReturnType<typeof getLocations>>
 
 
 
-export const getPostLocationsUrl = () => {
+export const getPostApiLocationsUrl = () => {
 
 
   
@@ -1412,9 +1412,9 @@ export const getPostLocationsUrl = () => {
   return `/api/Locations`
 }
 
-export const postLocations = async (createLocationDto: CreateLocationDto, options?: RequestInit): Promise<LocationDto> => {
+export const postApiLocations = async (createLocationDto: CreateLocationDto, options?: RequestInit): Promise<LocationDto> => {
   
-  return fetcher<LocationDto>(getPostLocationsUrl(),
+  return fetcher<LocationDto>(getPostApiLocationsUrl(),
   {      
     ...options,
     method: 'POST',
@@ -1427,11 +1427,11 @@ export const postLocations = async (createLocationDto: CreateLocationDto, option
 
 
 
-export const getPostLocationsMutationOptions = <TError = unknown,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postLocations>>, TError,{data: CreateLocationDto}, TContext>, request?: SecondParameter<typeof fetcher>}
-): UseMutationOptions<Awaited<ReturnType<typeof postLocations>>, TError,{data: CreateLocationDto}, TContext> => {
+export const getPostApiLocationsMutationOptions = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiLocations>>, TError,{data: CreateLocationDto}, TContext>, request?: SecondParameter<typeof fetcher>}
+): UseMutationOptions<Awaited<ReturnType<typeof postApiLocations>>, TError,{data: CreateLocationDto}, TContext> => {
 
-const mutationKey = ['postLocations'];
+const mutationKey = ['postApiLocations'];
 const {mutation: mutationOptions, request: requestOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
@@ -1441,10 +1441,10 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
       
 
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof postLocations>>, {data: CreateLocationDto}> = (props) => {
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof postApiLocations>>, {data: CreateLocationDto}> = (props) => {
           const {data} = props ?? {};
 
-          return  postLocations(data,requestOptions)
+          return  postApiLocations(data,requestOptions)
         }
 
         
@@ -1452,25 +1452,25 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
 
   return  { mutationFn, ...mutationOptions }}
 
-    export type PostLocationsMutationResult = NonNullable<Awaited<ReturnType<typeof postLocations>>>
-    export type PostLocationsMutationBody = CreateLocationDto
-    export type PostLocationsMutationError = unknown
+    export type PostApiLocationsMutationResult = NonNullable<Awaited<ReturnType<typeof postApiLocations>>>
+    export type PostApiLocationsMutationBody = CreateLocationDto
+    export type PostApiLocationsMutationError = unknown
 
-    export const usePostLocations = <TError = unknown,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postLocations>>, TError,{data: CreateLocationDto}, TContext>, request?: SecondParameter<typeof fetcher>}
+    export const usePostApiLocations = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiLocations>>, TError,{data: CreateLocationDto}, TContext>, request?: SecondParameter<typeof fetcher>}
  , queryClient?: QueryClient): UseMutationResult<
-        Awaited<ReturnType<typeof postLocations>>,
+        Awaited<ReturnType<typeof postApiLocations>>,
         TError,
         {data: CreateLocationDto},
         TContext
       > => {
 
-      const mutationOptions = getPostLocationsMutationOptions(options);
+      const mutationOptions = getPostApiLocationsMutationOptions(options);
 
       return useMutation(mutationOptions, queryClient);
     }
     
-export const getGetLocationsIdUrl = (id: number,) => {
+export const getGetApiLocationsIdUrl = (id: number,) => {
 
 
   
@@ -1478,9 +1478,9 @@ export const getGetLocationsIdUrl = (id: number,) => {
   return `/api/Locations/${id}`
 }
 
-export const getLocationsId = async (id: number, options?: RequestInit): Promise<LocationDto> => {
+export const getApiLocationsId = async (id: number, options?: RequestInit): Promise<LocationDto> => {
   
-  return fetcher<LocationDto>(getGetLocationsIdUrl(id),
+  return fetcher<LocationDto>(getGetApiLocationsIdUrl(id),
   {      
     ...options,
     method: 'GET'
@@ -1493,66 +1493,66 @@ export const getLocationsId = async (id: number, options?: RequestInit): Promise
 
 
 
-export const getGetLocationsIdQueryKey = (id?: number,) => {
+export const getGetApiLocationsIdQueryKey = (id?: number,) => {
     return [
     `/api/Locations/${id}`
     ] as const;
     }
 
     
-export const getGetLocationsIdQueryOptions = <TData = Awaited<ReturnType<typeof getLocationsId>>, TError = unknown>(id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getLocationsId>>, TError, TData>>, request?: SecondParameter<typeof fetcher>}
+export const getGetApiLocationsIdQueryOptions = <TData = Awaited<ReturnType<typeof getApiLocationsId>>, TError = unknown>(id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiLocationsId>>, TError, TData>>, request?: SecondParameter<typeof fetcher>}
 ) => {
 
 const {query: queryOptions, request: requestOptions} = options ?? {};
 
-  const queryKey =  queryOptions?.queryKey ?? getGetLocationsIdQueryKey(id);
+  const queryKey =  queryOptions?.queryKey ?? getGetApiLocationsIdQueryKey(id);
 
   
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getLocationsId>>> = ({ signal }) => getLocationsId(id, { signal, ...requestOptions });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getApiLocationsId>>> = ({ signal }) => getApiLocationsId(id, { signal, ...requestOptions });
 
       
 
       
 
-   return  { queryKey, queryFn, enabled: !!(id), ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getLocationsId>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+   return  { queryKey, queryFn, enabled: !!(id), ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getApiLocationsId>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
 }
 
-export type GetLocationsIdQueryResult = NonNullable<Awaited<ReturnType<typeof getLocationsId>>>
-export type GetLocationsIdQueryError = unknown
+export type GetApiLocationsIdQueryResult = NonNullable<Awaited<ReturnType<typeof getApiLocationsId>>>
+export type GetApiLocationsIdQueryError = unknown
 
 
-export function useGetLocationsId<TData = Awaited<ReturnType<typeof getLocationsId>>, TError = unknown>(
- id: number, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getLocationsId>>, TError, TData>> & Pick<
+export function useGetApiLocationsId<TData = Awaited<ReturnType<typeof getApiLocationsId>>, TError = unknown>(
+ id: number, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiLocationsId>>, TError, TData>> & Pick<
         DefinedInitialDataOptions<
-          Awaited<ReturnType<typeof getLocationsId>>,
+          Awaited<ReturnType<typeof getApiLocationsId>>,
           TError,
-          Awaited<ReturnType<typeof getLocationsId>>
+          Awaited<ReturnType<typeof getApiLocationsId>>
         > , 'initialData'
       >, request?: SecondParameter<typeof fetcher>}
  , queryClient?: QueryClient
   ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useGetLocationsId<TData = Awaited<ReturnType<typeof getLocationsId>>, TError = unknown>(
- id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getLocationsId>>, TError, TData>> & Pick<
+export function useGetApiLocationsId<TData = Awaited<ReturnType<typeof getApiLocationsId>>, TError = unknown>(
+ id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiLocationsId>>, TError, TData>> & Pick<
         UndefinedInitialDataOptions<
-          Awaited<ReturnType<typeof getLocationsId>>,
+          Awaited<ReturnType<typeof getApiLocationsId>>,
           TError,
-          Awaited<ReturnType<typeof getLocationsId>>
+          Awaited<ReturnType<typeof getApiLocationsId>>
         > , 'initialData'
       >, request?: SecondParameter<typeof fetcher>}
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useGetLocationsId<TData = Awaited<ReturnType<typeof getLocationsId>>, TError = unknown>(
- id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getLocationsId>>, TError, TData>>, request?: SecondParameter<typeof fetcher>}
+export function useGetApiLocationsId<TData = Awaited<ReturnType<typeof getApiLocationsId>>, TError = unknown>(
+ id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiLocationsId>>, TError, TData>>, request?: SecondParameter<typeof fetcher>}
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 
-export function useGetLocationsId<TData = Awaited<ReturnType<typeof getLocationsId>>, TError = unknown>(
- id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getLocationsId>>, TError, TData>>, request?: SecondParameter<typeof fetcher>}
+export function useGetApiLocationsId<TData = Awaited<ReturnType<typeof getApiLocationsId>>, TError = unknown>(
+ id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiLocationsId>>, TError, TData>>, request?: SecondParameter<typeof fetcher>}
  , queryClient?: QueryClient 
  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
-  const queryOptions = getGetLocationsIdQueryOptions(id,options)
+  const queryOptions = getGetApiLocationsIdQueryOptions(id,options)
 
   const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
@@ -1565,7 +1565,7 @@ export function useGetLocationsId<TData = Awaited<ReturnType<typeof getLocations
 
 
 
-export const getPutLocationsIdUrl = (id: number,) => {
+export const getPutApiLocationsIdUrl = (id: number,) => {
 
 
   
@@ -1573,10 +1573,10 @@ export const getPutLocationsIdUrl = (id: number,) => {
   return `/api/Locations/${id}`
 }
 
-export const putLocationsId = async (id: number,
+export const putApiLocationsId = async (id: number,
     updateLocationDto: UpdateLocationDto, options?: RequestInit): Promise<void> => {
   
-  return fetcher<void>(getPutLocationsIdUrl(id),
+  return fetcher<void>(getPutApiLocationsIdUrl(id),
   {      
     ...options,
     method: 'PUT',
@@ -1589,11 +1589,11 @@ export const putLocationsId = async (id: number,
 
 
 
-export const getPutLocationsIdMutationOptions = <TError = unknown,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof putLocationsId>>, TError,{id: number;data: UpdateLocationDto}, TContext>, request?: SecondParameter<typeof fetcher>}
-): UseMutationOptions<Awaited<ReturnType<typeof putLocationsId>>, TError,{id: number;data: UpdateLocationDto}, TContext> => {
+export const getPutApiLocationsIdMutationOptions = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof putApiLocationsId>>, TError,{id: number;data: UpdateLocationDto}, TContext>, request?: SecondParameter<typeof fetcher>}
+): UseMutationOptions<Awaited<ReturnType<typeof putApiLocationsId>>, TError,{id: number;data: UpdateLocationDto}, TContext> => {
 
-const mutationKey = ['putLocationsId'];
+const mutationKey = ['putApiLocationsId'];
 const {mutation: mutationOptions, request: requestOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
@@ -1603,10 +1603,10 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
       
 
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof putLocationsId>>, {id: number;data: UpdateLocationDto}> = (props) => {
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof putApiLocationsId>>, {id: number;data: UpdateLocationDto}> = (props) => {
           const {id,data} = props ?? {};
 
-          return  putLocationsId(id,data,requestOptions)
+          return  putApiLocationsId(id,data,requestOptions)
         }
 
         
@@ -1614,25 +1614,25 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
 
   return  { mutationFn, ...mutationOptions }}
 
-    export type PutLocationsIdMutationResult = NonNullable<Awaited<ReturnType<typeof putLocationsId>>>
-    export type PutLocationsIdMutationBody = UpdateLocationDto
-    export type PutLocationsIdMutationError = unknown
+    export type PutApiLocationsIdMutationResult = NonNullable<Awaited<ReturnType<typeof putApiLocationsId>>>
+    export type PutApiLocationsIdMutationBody = UpdateLocationDto
+    export type PutApiLocationsIdMutationError = unknown
 
-    export const usePutLocationsId = <TError = unknown,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof putLocationsId>>, TError,{id: number;data: UpdateLocationDto}, TContext>, request?: SecondParameter<typeof fetcher>}
+    export const usePutApiLocationsId = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof putApiLocationsId>>, TError,{id: number;data: UpdateLocationDto}, TContext>, request?: SecondParameter<typeof fetcher>}
  , queryClient?: QueryClient): UseMutationResult<
-        Awaited<ReturnType<typeof putLocationsId>>,
+        Awaited<ReturnType<typeof putApiLocationsId>>,
         TError,
         {id: number;data: UpdateLocationDto},
         TContext
       > => {
 
-      const mutationOptions = getPutLocationsIdMutationOptions(options);
+      const mutationOptions = getPutApiLocationsIdMutationOptions(options);
 
       return useMutation(mutationOptions, queryClient);
     }
     
-export const getDeleteLocationsIdUrl = (id: number,) => {
+export const getDeleteApiLocationsIdUrl = (id: number,) => {
 
 
   
@@ -1640,9 +1640,9 @@ export const getDeleteLocationsIdUrl = (id: number,) => {
   return `/api/Locations/${id}`
 }
 
-export const deleteLocationsId = async (id: number, options?: RequestInit): Promise<void> => {
+export const deleteApiLocationsId = async (id: number, options?: RequestInit): Promise<void> => {
   
-  return fetcher<void>(getDeleteLocationsIdUrl(id),
+  return fetcher<void>(getDeleteApiLocationsIdUrl(id),
   {      
     ...options,
     method: 'DELETE'
@@ -1654,11 +1654,11 @@ export const deleteLocationsId = async (id: number, options?: RequestInit): Prom
 
 
 
-export const getDeleteLocationsIdMutationOptions = <TError = unknown,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteLocationsId>>, TError,{id: number}, TContext>, request?: SecondParameter<typeof fetcher>}
-): UseMutationOptions<Awaited<ReturnType<typeof deleteLocationsId>>, TError,{id: number}, TContext> => {
+export const getDeleteApiLocationsIdMutationOptions = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteApiLocationsId>>, TError,{id: number}, TContext>, request?: SecondParameter<typeof fetcher>}
+): UseMutationOptions<Awaited<ReturnType<typeof deleteApiLocationsId>>, TError,{id: number}, TContext> => {
 
-const mutationKey = ['deleteLocationsId'];
+const mutationKey = ['deleteApiLocationsId'];
 const {mutation: mutationOptions, request: requestOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
@@ -1668,10 +1668,10 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
       
 
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof deleteLocationsId>>, {id: number}> = (props) => {
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof deleteApiLocationsId>>, {id: number}> = (props) => {
           const {id} = props ?? {};
 
-          return  deleteLocationsId(id,requestOptions)
+          return  deleteApiLocationsId(id,requestOptions)
         }
 
         
@@ -1679,25 +1679,25 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
 
   return  { mutationFn, ...mutationOptions }}
 
-    export type DeleteLocationsIdMutationResult = NonNullable<Awaited<ReturnType<typeof deleteLocationsId>>>
+    export type DeleteApiLocationsIdMutationResult = NonNullable<Awaited<ReturnType<typeof deleteApiLocationsId>>>
     
-    export type DeleteLocationsIdMutationError = unknown
+    export type DeleteApiLocationsIdMutationError = unknown
 
-    export const useDeleteLocationsId = <TError = unknown,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteLocationsId>>, TError,{id: number}, TContext>, request?: SecondParameter<typeof fetcher>}
+    export const useDeleteApiLocationsId = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteApiLocationsId>>, TError,{id: number}, TContext>, request?: SecondParameter<typeof fetcher>}
  , queryClient?: QueryClient): UseMutationResult<
-        Awaited<ReturnType<typeof deleteLocationsId>>,
+        Awaited<ReturnType<typeof deleteApiLocationsId>>,
         TError,
         {id: number},
         TContext
       > => {
 
-      const mutationOptions = getDeleteLocationsIdMutationOptions(options);
+      const mutationOptions = getDeleteApiLocationsIdMutationOptions(options);
 
       return useMutation(mutationOptions, queryClient);
     }
     
-export const getGetPurchasesUrl = () => {
+export const getGetApiPurchasesUrl = () => {
 
 
   
@@ -1705,9 +1705,9 @@ export const getGetPurchasesUrl = () => {
   return `/api/Purchases`
 }
 
-export const getPurchases = async ( options?: RequestInit): Promise<PurchaseDto[]> => {
+export const getApiPurchases = async ( options?: RequestInit): Promise<PurchaseDto[]> => {
   
-  return fetcher<PurchaseDto[]>(getGetPurchasesUrl(),
+  return fetcher<PurchaseDto[]>(getGetApiPurchasesUrl(),
   {      
     ...options,
     method: 'GET'
@@ -1720,66 +1720,66 @@ export const getPurchases = async ( options?: RequestInit): Promise<PurchaseDto[
 
 
 
-export const getGetPurchasesQueryKey = () => {
+export const getGetApiPurchasesQueryKey = () => {
     return [
     `/api/Purchases`
     ] as const;
     }
 
     
-export const getGetPurchasesQueryOptions = <TData = Awaited<ReturnType<typeof getPurchases>>, TError = unknown>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getPurchases>>, TError, TData>>, request?: SecondParameter<typeof fetcher>}
+export const getGetApiPurchasesQueryOptions = <TData = Awaited<ReturnType<typeof getApiPurchases>>, TError = unknown>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiPurchases>>, TError, TData>>, request?: SecondParameter<typeof fetcher>}
 ) => {
 
 const {query: queryOptions, request: requestOptions} = options ?? {};
 
-  const queryKey =  queryOptions?.queryKey ?? getGetPurchasesQueryKey();
+  const queryKey =  queryOptions?.queryKey ?? getGetApiPurchasesQueryKey();
 
   
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getPurchases>>> = ({ signal }) => getPurchases({ signal, ...requestOptions });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getApiPurchases>>> = ({ signal }) => getApiPurchases({ signal, ...requestOptions });
 
       
 
       
 
-   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getPurchases>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getApiPurchases>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
 }
 
-export type GetPurchasesQueryResult = NonNullable<Awaited<ReturnType<typeof getPurchases>>>
-export type GetPurchasesQueryError = unknown
+export type GetApiPurchasesQueryResult = NonNullable<Awaited<ReturnType<typeof getApiPurchases>>>
+export type GetApiPurchasesQueryError = unknown
 
 
-export function useGetPurchases<TData = Awaited<ReturnType<typeof getPurchases>>, TError = unknown>(
-  options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getPurchases>>, TError, TData>> & Pick<
+export function useGetApiPurchases<TData = Awaited<ReturnType<typeof getApiPurchases>>, TError = unknown>(
+  options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiPurchases>>, TError, TData>> & Pick<
         DefinedInitialDataOptions<
-          Awaited<ReturnType<typeof getPurchases>>,
+          Awaited<ReturnType<typeof getApiPurchases>>,
           TError,
-          Awaited<ReturnType<typeof getPurchases>>
+          Awaited<ReturnType<typeof getApiPurchases>>
         > , 'initialData'
       >, request?: SecondParameter<typeof fetcher>}
  , queryClient?: QueryClient
   ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useGetPurchases<TData = Awaited<ReturnType<typeof getPurchases>>, TError = unknown>(
-  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getPurchases>>, TError, TData>> & Pick<
+export function useGetApiPurchases<TData = Awaited<ReturnType<typeof getApiPurchases>>, TError = unknown>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiPurchases>>, TError, TData>> & Pick<
         UndefinedInitialDataOptions<
-          Awaited<ReturnType<typeof getPurchases>>,
+          Awaited<ReturnType<typeof getApiPurchases>>,
           TError,
-          Awaited<ReturnType<typeof getPurchases>>
+          Awaited<ReturnType<typeof getApiPurchases>>
         > , 'initialData'
       >, request?: SecondParameter<typeof fetcher>}
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useGetPurchases<TData = Awaited<ReturnType<typeof getPurchases>>, TError = unknown>(
-  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getPurchases>>, TError, TData>>, request?: SecondParameter<typeof fetcher>}
+export function useGetApiPurchases<TData = Awaited<ReturnType<typeof getApiPurchases>>, TError = unknown>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiPurchases>>, TError, TData>>, request?: SecondParameter<typeof fetcher>}
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 
-export function useGetPurchases<TData = Awaited<ReturnType<typeof getPurchases>>, TError = unknown>(
-  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getPurchases>>, TError, TData>>, request?: SecondParameter<typeof fetcher>}
+export function useGetApiPurchases<TData = Awaited<ReturnType<typeof getApiPurchases>>, TError = unknown>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiPurchases>>, TError, TData>>, request?: SecondParameter<typeof fetcher>}
  , queryClient?: QueryClient 
  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
-  const queryOptions = getGetPurchasesQueryOptions(options)
+  const queryOptions = getGetApiPurchasesQueryOptions(options)
 
   const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
@@ -1792,7 +1792,7 @@ export function useGetPurchases<TData = Awaited<ReturnType<typeof getPurchases>>
 
 
 
-export const getPostPurchasesUrl = () => {
+export const getPostApiPurchasesUrl = () => {
 
 
   
@@ -1800,9 +1800,9 @@ export const getPostPurchasesUrl = () => {
   return `/api/Purchases`
 }
 
-export const postPurchases = async (createPurchaseDto: CreatePurchaseDto, options?: RequestInit): Promise<PurchaseDto> => {
+export const postApiPurchases = async (createPurchaseDto: CreatePurchaseDto, options?: RequestInit): Promise<PurchaseDto> => {
   
-  return fetcher<PurchaseDto>(getPostPurchasesUrl(),
+  return fetcher<PurchaseDto>(getPostApiPurchasesUrl(),
   {      
     ...options,
     method: 'POST',
@@ -1815,11 +1815,11 @@ export const postPurchases = async (createPurchaseDto: CreatePurchaseDto, option
 
 
 
-export const getPostPurchasesMutationOptions = <TError = unknown,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postPurchases>>, TError,{data: CreatePurchaseDto}, TContext>, request?: SecondParameter<typeof fetcher>}
-): UseMutationOptions<Awaited<ReturnType<typeof postPurchases>>, TError,{data: CreatePurchaseDto}, TContext> => {
+export const getPostApiPurchasesMutationOptions = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiPurchases>>, TError,{data: CreatePurchaseDto}, TContext>, request?: SecondParameter<typeof fetcher>}
+): UseMutationOptions<Awaited<ReturnType<typeof postApiPurchases>>, TError,{data: CreatePurchaseDto}, TContext> => {
 
-const mutationKey = ['postPurchases'];
+const mutationKey = ['postApiPurchases'];
 const {mutation: mutationOptions, request: requestOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
@@ -1829,10 +1829,10 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
       
 
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof postPurchases>>, {data: CreatePurchaseDto}> = (props) => {
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof postApiPurchases>>, {data: CreatePurchaseDto}> = (props) => {
           const {data} = props ?? {};
 
-          return  postPurchases(data,requestOptions)
+          return  postApiPurchases(data,requestOptions)
         }
 
         
@@ -1840,25 +1840,25 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
 
   return  { mutationFn, ...mutationOptions }}
 
-    export type PostPurchasesMutationResult = NonNullable<Awaited<ReturnType<typeof postPurchases>>>
-    export type PostPurchasesMutationBody = CreatePurchaseDto
-    export type PostPurchasesMutationError = unknown
+    export type PostApiPurchasesMutationResult = NonNullable<Awaited<ReturnType<typeof postApiPurchases>>>
+    export type PostApiPurchasesMutationBody = CreatePurchaseDto
+    export type PostApiPurchasesMutationError = unknown
 
-    export const usePostPurchases = <TError = unknown,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postPurchases>>, TError,{data: CreatePurchaseDto}, TContext>, request?: SecondParameter<typeof fetcher>}
+    export const usePostApiPurchases = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiPurchases>>, TError,{data: CreatePurchaseDto}, TContext>, request?: SecondParameter<typeof fetcher>}
  , queryClient?: QueryClient): UseMutationResult<
-        Awaited<ReturnType<typeof postPurchases>>,
+        Awaited<ReturnType<typeof postApiPurchases>>,
         TError,
         {data: CreatePurchaseDto},
         TContext
       > => {
 
-      const mutationOptions = getPostPurchasesMutationOptions(options);
+      const mutationOptions = getPostApiPurchasesMutationOptions(options);
 
       return useMutation(mutationOptions, queryClient);
     }
     
-export const getGetPurchasesIdUrl = (id: number,) => {
+export const getGetApiPurchasesIdUrl = (id: number,) => {
 
 
   
@@ -1866,9 +1866,9 @@ export const getGetPurchasesIdUrl = (id: number,) => {
   return `/api/Purchases/${id}`
 }
 
-export const getPurchasesId = async (id: number, options?: RequestInit): Promise<PurchaseDto> => {
+export const getApiPurchasesId = async (id: number, options?: RequestInit): Promise<PurchaseDto> => {
   
-  return fetcher<PurchaseDto>(getGetPurchasesIdUrl(id),
+  return fetcher<PurchaseDto>(getGetApiPurchasesIdUrl(id),
   {      
     ...options,
     method: 'GET'
@@ -1881,66 +1881,66 @@ export const getPurchasesId = async (id: number, options?: RequestInit): Promise
 
 
 
-export const getGetPurchasesIdQueryKey = (id?: number,) => {
+export const getGetApiPurchasesIdQueryKey = (id?: number,) => {
     return [
     `/api/Purchases/${id}`
     ] as const;
     }
 
     
-export const getGetPurchasesIdQueryOptions = <TData = Awaited<ReturnType<typeof getPurchasesId>>, TError = unknown>(id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getPurchasesId>>, TError, TData>>, request?: SecondParameter<typeof fetcher>}
+export const getGetApiPurchasesIdQueryOptions = <TData = Awaited<ReturnType<typeof getApiPurchasesId>>, TError = unknown>(id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiPurchasesId>>, TError, TData>>, request?: SecondParameter<typeof fetcher>}
 ) => {
 
 const {query: queryOptions, request: requestOptions} = options ?? {};
 
-  const queryKey =  queryOptions?.queryKey ?? getGetPurchasesIdQueryKey(id);
+  const queryKey =  queryOptions?.queryKey ?? getGetApiPurchasesIdQueryKey(id);
 
   
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getPurchasesId>>> = ({ signal }) => getPurchasesId(id, { signal, ...requestOptions });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getApiPurchasesId>>> = ({ signal }) => getApiPurchasesId(id, { signal, ...requestOptions });
 
       
 
       
 
-   return  { queryKey, queryFn, enabled: !!(id), ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getPurchasesId>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+   return  { queryKey, queryFn, enabled: !!(id), ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getApiPurchasesId>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
 }
 
-export type GetPurchasesIdQueryResult = NonNullable<Awaited<ReturnType<typeof getPurchasesId>>>
-export type GetPurchasesIdQueryError = unknown
+export type GetApiPurchasesIdQueryResult = NonNullable<Awaited<ReturnType<typeof getApiPurchasesId>>>
+export type GetApiPurchasesIdQueryError = unknown
 
 
-export function useGetPurchasesId<TData = Awaited<ReturnType<typeof getPurchasesId>>, TError = unknown>(
- id: number, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getPurchasesId>>, TError, TData>> & Pick<
+export function useGetApiPurchasesId<TData = Awaited<ReturnType<typeof getApiPurchasesId>>, TError = unknown>(
+ id: number, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiPurchasesId>>, TError, TData>> & Pick<
         DefinedInitialDataOptions<
-          Awaited<ReturnType<typeof getPurchasesId>>,
+          Awaited<ReturnType<typeof getApiPurchasesId>>,
           TError,
-          Awaited<ReturnType<typeof getPurchasesId>>
+          Awaited<ReturnType<typeof getApiPurchasesId>>
         > , 'initialData'
       >, request?: SecondParameter<typeof fetcher>}
  , queryClient?: QueryClient
   ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useGetPurchasesId<TData = Awaited<ReturnType<typeof getPurchasesId>>, TError = unknown>(
- id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getPurchasesId>>, TError, TData>> & Pick<
+export function useGetApiPurchasesId<TData = Awaited<ReturnType<typeof getApiPurchasesId>>, TError = unknown>(
+ id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiPurchasesId>>, TError, TData>> & Pick<
         UndefinedInitialDataOptions<
-          Awaited<ReturnType<typeof getPurchasesId>>,
+          Awaited<ReturnType<typeof getApiPurchasesId>>,
           TError,
-          Awaited<ReturnType<typeof getPurchasesId>>
+          Awaited<ReturnType<typeof getApiPurchasesId>>
         > , 'initialData'
       >, request?: SecondParameter<typeof fetcher>}
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useGetPurchasesId<TData = Awaited<ReturnType<typeof getPurchasesId>>, TError = unknown>(
- id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getPurchasesId>>, TError, TData>>, request?: SecondParameter<typeof fetcher>}
+export function useGetApiPurchasesId<TData = Awaited<ReturnType<typeof getApiPurchasesId>>, TError = unknown>(
+ id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiPurchasesId>>, TError, TData>>, request?: SecondParameter<typeof fetcher>}
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 
-export function useGetPurchasesId<TData = Awaited<ReturnType<typeof getPurchasesId>>, TError = unknown>(
- id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getPurchasesId>>, TError, TData>>, request?: SecondParameter<typeof fetcher>}
+export function useGetApiPurchasesId<TData = Awaited<ReturnType<typeof getApiPurchasesId>>, TError = unknown>(
+ id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiPurchasesId>>, TError, TData>>, request?: SecondParameter<typeof fetcher>}
  , queryClient?: QueryClient 
  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
-  const queryOptions = getGetPurchasesIdQueryOptions(id,options)
+  const queryOptions = getGetApiPurchasesIdQueryOptions(id,options)
 
   const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
@@ -1953,7 +1953,7 @@ export function useGetPurchasesId<TData = Awaited<ReturnType<typeof getPurchases
 
 
 
-export const getPutPurchasesIdUrl = (id: number,) => {
+export const getPutApiPurchasesIdUrl = (id: number,) => {
 
 
   
@@ -1961,10 +1961,10 @@ export const getPutPurchasesIdUrl = (id: number,) => {
   return `/api/Purchases/${id}`
 }
 
-export const putPurchasesId = async (id: number,
+export const putApiPurchasesId = async (id: number,
     updatePurchaseDto: UpdatePurchaseDto, options?: RequestInit): Promise<void> => {
   
-  return fetcher<void>(getPutPurchasesIdUrl(id),
+  return fetcher<void>(getPutApiPurchasesIdUrl(id),
   {      
     ...options,
     method: 'PUT',
@@ -1977,11 +1977,11 @@ export const putPurchasesId = async (id: number,
 
 
 
-export const getPutPurchasesIdMutationOptions = <TError = unknown,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof putPurchasesId>>, TError,{id: number;data: UpdatePurchaseDto}, TContext>, request?: SecondParameter<typeof fetcher>}
-): UseMutationOptions<Awaited<ReturnType<typeof putPurchasesId>>, TError,{id: number;data: UpdatePurchaseDto}, TContext> => {
+export const getPutApiPurchasesIdMutationOptions = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof putApiPurchasesId>>, TError,{id: number;data: UpdatePurchaseDto}, TContext>, request?: SecondParameter<typeof fetcher>}
+): UseMutationOptions<Awaited<ReturnType<typeof putApiPurchasesId>>, TError,{id: number;data: UpdatePurchaseDto}, TContext> => {
 
-const mutationKey = ['putPurchasesId'];
+const mutationKey = ['putApiPurchasesId'];
 const {mutation: mutationOptions, request: requestOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
@@ -1991,10 +1991,10 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
       
 
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof putPurchasesId>>, {id: number;data: UpdatePurchaseDto}> = (props) => {
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof putApiPurchasesId>>, {id: number;data: UpdatePurchaseDto}> = (props) => {
           const {id,data} = props ?? {};
 
-          return  putPurchasesId(id,data,requestOptions)
+          return  putApiPurchasesId(id,data,requestOptions)
         }
 
         
@@ -2002,25 +2002,25 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
 
   return  { mutationFn, ...mutationOptions }}
 
-    export type PutPurchasesIdMutationResult = NonNullable<Awaited<ReturnType<typeof putPurchasesId>>>
-    export type PutPurchasesIdMutationBody = UpdatePurchaseDto
-    export type PutPurchasesIdMutationError = unknown
+    export type PutApiPurchasesIdMutationResult = NonNullable<Awaited<ReturnType<typeof putApiPurchasesId>>>
+    export type PutApiPurchasesIdMutationBody = UpdatePurchaseDto
+    export type PutApiPurchasesIdMutationError = unknown
 
-    export const usePutPurchasesId = <TError = unknown,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof putPurchasesId>>, TError,{id: number;data: UpdatePurchaseDto}, TContext>, request?: SecondParameter<typeof fetcher>}
+    export const usePutApiPurchasesId = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof putApiPurchasesId>>, TError,{id: number;data: UpdatePurchaseDto}, TContext>, request?: SecondParameter<typeof fetcher>}
  , queryClient?: QueryClient): UseMutationResult<
-        Awaited<ReturnType<typeof putPurchasesId>>,
+        Awaited<ReturnType<typeof putApiPurchasesId>>,
         TError,
         {id: number;data: UpdatePurchaseDto},
         TContext
       > => {
 
-      const mutationOptions = getPutPurchasesIdMutationOptions(options);
+      const mutationOptions = getPutApiPurchasesIdMutationOptions(options);
 
       return useMutation(mutationOptions, queryClient);
     }
     
-export const getDeletePurchasesIdUrl = (id: number,) => {
+export const getDeleteApiPurchasesIdUrl = (id: number,) => {
 
 
   
@@ -2028,9 +2028,9 @@ export const getDeletePurchasesIdUrl = (id: number,) => {
   return `/api/Purchases/${id}`
 }
 
-export const deletePurchasesId = async (id: number, options?: RequestInit): Promise<void> => {
+export const deleteApiPurchasesId = async (id: number, options?: RequestInit): Promise<void> => {
   
-  return fetcher<void>(getDeletePurchasesIdUrl(id),
+  return fetcher<void>(getDeleteApiPurchasesIdUrl(id),
   {      
     ...options,
     method: 'DELETE'
@@ -2042,11 +2042,11 @@ export const deletePurchasesId = async (id: number, options?: RequestInit): Prom
 
 
 
-export const getDeletePurchasesIdMutationOptions = <TError = unknown,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deletePurchasesId>>, TError,{id: number}, TContext>, request?: SecondParameter<typeof fetcher>}
-): UseMutationOptions<Awaited<ReturnType<typeof deletePurchasesId>>, TError,{id: number}, TContext> => {
+export const getDeleteApiPurchasesIdMutationOptions = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteApiPurchasesId>>, TError,{id: number}, TContext>, request?: SecondParameter<typeof fetcher>}
+): UseMutationOptions<Awaited<ReturnType<typeof deleteApiPurchasesId>>, TError,{id: number}, TContext> => {
 
-const mutationKey = ['deletePurchasesId'];
+const mutationKey = ['deleteApiPurchasesId'];
 const {mutation: mutationOptions, request: requestOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
@@ -2056,10 +2056,10 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
       
 
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof deletePurchasesId>>, {id: number}> = (props) => {
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof deleteApiPurchasesId>>, {id: number}> = (props) => {
           const {id} = props ?? {};
 
-          return  deletePurchasesId(id,requestOptions)
+          return  deleteApiPurchasesId(id,requestOptions)
         }
 
         
@@ -2067,25 +2067,25 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
 
   return  { mutationFn, ...mutationOptions }}
 
-    export type DeletePurchasesIdMutationResult = NonNullable<Awaited<ReturnType<typeof deletePurchasesId>>>
+    export type DeleteApiPurchasesIdMutationResult = NonNullable<Awaited<ReturnType<typeof deleteApiPurchasesId>>>
     
-    export type DeletePurchasesIdMutationError = unknown
+    export type DeleteApiPurchasesIdMutationError = unknown
 
-    export const useDeletePurchasesId = <TError = unknown,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deletePurchasesId>>, TError,{id: number}, TContext>, request?: SecondParameter<typeof fetcher>}
+    export const useDeleteApiPurchasesId = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteApiPurchasesId>>, TError,{id: number}, TContext>, request?: SecondParameter<typeof fetcher>}
  , queryClient?: QueryClient): UseMutationResult<
-        Awaited<ReturnType<typeof deletePurchasesId>>,
+        Awaited<ReturnType<typeof deleteApiPurchasesId>>,
         TError,
         {id: number},
         TContext
       > => {
 
-      const mutationOptions = getDeletePurchasesIdMutationOptions(options);
+      const mutationOptions = getDeleteApiPurchasesIdMutationOptions(options);
 
       return useMutation(mutationOptions, queryClient);
     }
     
-export const getGetReasonsUrl = () => {
+export const getGetApiReasonsUrl = () => {
 
 
   
@@ -2093,9 +2093,9 @@ export const getGetReasonsUrl = () => {
   return `/api/Reasons`
 }
 
-export const getReasons = async ( options?: RequestInit): Promise<ReasonDto[]> => {
+export const getApiReasons = async ( options?: RequestInit): Promise<ReasonDto[]> => {
   
-  return fetcher<ReasonDto[]>(getGetReasonsUrl(),
+  return fetcher<ReasonDto[]>(getGetApiReasonsUrl(),
   {      
     ...options,
     method: 'GET'
@@ -2108,66 +2108,66 @@ export const getReasons = async ( options?: RequestInit): Promise<ReasonDto[]> =
 
 
 
-export const getGetReasonsQueryKey = () => {
+export const getGetApiReasonsQueryKey = () => {
     return [
     `/api/Reasons`
     ] as const;
     }
 
     
-export const getGetReasonsQueryOptions = <TData = Awaited<ReturnType<typeof getReasons>>, TError = unknown>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getReasons>>, TError, TData>>, request?: SecondParameter<typeof fetcher>}
+export const getGetApiReasonsQueryOptions = <TData = Awaited<ReturnType<typeof getApiReasons>>, TError = unknown>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiReasons>>, TError, TData>>, request?: SecondParameter<typeof fetcher>}
 ) => {
 
 const {query: queryOptions, request: requestOptions} = options ?? {};
 
-  const queryKey =  queryOptions?.queryKey ?? getGetReasonsQueryKey();
+  const queryKey =  queryOptions?.queryKey ?? getGetApiReasonsQueryKey();
 
   
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getReasons>>> = ({ signal }) => getReasons({ signal, ...requestOptions });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getApiReasons>>> = ({ signal }) => getApiReasons({ signal, ...requestOptions });
 
       
 
       
 
-   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getReasons>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getApiReasons>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
 }
 
-export type GetReasonsQueryResult = NonNullable<Awaited<ReturnType<typeof getReasons>>>
-export type GetReasonsQueryError = unknown
+export type GetApiReasonsQueryResult = NonNullable<Awaited<ReturnType<typeof getApiReasons>>>
+export type GetApiReasonsQueryError = unknown
 
 
-export function useGetReasons<TData = Awaited<ReturnType<typeof getReasons>>, TError = unknown>(
-  options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getReasons>>, TError, TData>> & Pick<
+export function useGetApiReasons<TData = Awaited<ReturnType<typeof getApiReasons>>, TError = unknown>(
+  options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiReasons>>, TError, TData>> & Pick<
         DefinedInitialDataOptions<
-          Awaited<ReturnType<typeof getReasons>>,
+          Awaited<ReturnType<typeof getApiReasons>>,
           TError,
-          Awaited<ReturnType<typeof getReasons>>
+          Awaited<ReturnType<typeof getApiReasons>>
         > , 'initialData'
       >, request?: SecondParameter<typeof fetcher>}
  , queryClient?: QueryClient
   ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useGetReasons<TData = Awaited<ReturnType<typeof getReasons>>, TError = unknown>(
-  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getReasons>>, TError, TData>> & Pick<
+export function useGetApiReasons<TData = Awaited<ReturnType<typeof getApiReasons>>, TError = unknown>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiReasons>>, TError, TData>> & Pick<
         UndefinedInitialDataOptions<
-          Awaited<ReturnType<typeof getReasons>>,
+          Awaited<ReturnType<typeof getApiReasons>>,
           TError,
-          Awaited<ReturnType<typeof getReasons>>
+          Awaited<ReturnType<typeof getApiReasons>>
         > , 'initialData'
       >, request?: SecondParameter<typeof fetcher>}
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useGetReasons<TData = Awaited<ReturnType<typeof getReasons>>, TError = unknown>(
-  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getReasons>>, TError, TData>>, request?: SecondParameter<typeof fetcher>}
+export function useGetApiReasons<TData = Awaited<ReturnType<typeof getApiReasons>>, TError = unknown>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiReasons>>, TError, TData>>, request?: SecondParameter<typeof fetcher>}
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 
-export function useGetReasons<TData = Awaited<ReturnType<typeof getReasons>>, TError = unknown>(
-  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getReasons>>, TError, TData>>, request?: SecondParameter<typeof fetcher>}
+export function useGetApiReasons<TData = Awaited<ReturnType<typeof getApiReasons>>, TError = unknown>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiReasons>>, TError, TData>>, request?: SecondParameter<typeof fetcher>}
  , queryClient?: QueryClient 
  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
-  const queryOptions = getGetReasonsQueryOptions(options)
+  const queryOptions = getGetApiReasonsQueryOptions(options)
 
   const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
@@ -2180,7 +2180,7 @@ export function useGetReasons<TData = Awaited<ReturnType<typeof getReasons>>, TE
 
 
 
-export const getPostReasonsUrl = () => {
+export const getPostApiReasonsUrl = () => {
 
 
   
@@ -2188,9 +2188,9 @@ export const getPostReasonsUrl = () => {
   return `/api/Reasons`
 }
 
-export const postReasons = async (createReasonDto: CreateReasonDto, options?: RequestInit): Promise<ReasonDto> => {
+export const postApiReasons = async (createReasonDto: CreateReasonDto, options?: RequestInit): Promise<ReasonDto> => {
   
-  return fetcher<ReasonDto>(getPostReasonsUrl(),
+  return fetcher<ReasonDto>(getPostApiReasonsUrl(),
   {      
     ...options,
     method: 'POST',
@@ -2203,11 +2203,11 @@ export const postReasons = async (createReasonDto: CreateReasonDto, options?: Re
 
 
 
-export const getPostReasonsMutationOptions = <TError = unknown,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postReasons>>, TError,{data: CreateReasonDto}, TContext>, request?: SecondParameter<typeof fetcher>}
-): UseMutationOptions<Awaited<ReturnType<typeof postReasons>>, TError,{data: CreateReasonDto}, TContext> => {
+export const getPostApiReasonsMutationOptions = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiReasons>>, TError,{data: CreateReasonDto}, TContext>, request?: SecondParameter<typeof fetcher>}
+): UseMutationOptions<Awaited<ReturnType<typeof postApiReasons>>, TError,{data: CreateReasonDto}, TContext> => {
 
-const mutationKey = ['postReasons'];
+const mutationKey = ['postApiReasons'];
 const {mutation: mutationOptions, request: requestOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
@@ -2217,10 +2217,10 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
       
 
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof postReasons>>, {data: CreateReasonDto}> = (props) => {
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof postApiReasons>>, {data: CreateReasonDto}> = (props) => {
           const {data} = props ?? {};
 
-          return  postReasons(data,requestOptions)
+          return  postApiReasons(data,requestOptions)
         }
 
         
@@ -2228,25 +2228,25 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
 
   return  { mutationFn, ...mutationOptions }}
 
-    export type PostReasonsMutationResult = NonNullable<Awaited<ReturnType<typeof postReasons>>>
-    export type PostReasonsMutationBody = CreateReasonDto
-    export type PostReasonsMutationError = unknown
+    export type PostApiReasonsMutationResult = NonNullable<Awaited<ReturnType<typeof postApiReasons>>>
+    export type PostApiReasonsMutationBody = CreateReasonDto
+    export type PostApiReasonsMutationError = unknown
 
-    export const usePostReasons = <TError = unknown,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postReasons>>, TError,{data: CreateReasonDto}, TContext>, request?: SecondParameter<typeof fetcher>}
+    export const usePostApiReasons = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiReasons>>, TError,{data: CreateReasonDto}, TContext>, request?: SecondParameter<typeof fetcher>}
  , queryClient?: QueryClient): UseMutationResult<
-        Awaited<ReturnType<typeof postReasons>>,
+        Awaited<ReturnType<typeof postApiReasons>>,
         TError,
         {data: CreateReasonDto},
         TContext
       > => {
 
-      const mutationOptions = getPostReasonsMutationOptions(options);
+      const mutationOptions = getPostApiReasonsMutationOptions(options);
 
       return useMutation(mutationOptions, queryClient);
     }
     
-export const getGetReasonsIdUrl = (id: number,) => {
+export const getGetApiReasonsIdUrl = (id: number,) => {
 
 
   
@@ -2254,9 +2254,9 @@ export const getGetReasonsIdUrl = (id: number,) => {
   return `/api/Reasons/${id}`
 }
 
-export const getReasonsId = async (id: number, options?: RequestInit): Promise<ReasonDto> => {
+export const getApiReasonsId = async (id: number, options?: RequestInit): Promise<ReasonDto> => {
   
-  return fetcher<ReasonDto>(getGetReasonsIdUrl(id),
+  return fetcher<ReasonDto>(getGetApiReasonsIdUrl(id),
   {      
     ...options,
     method: 'GET'
@@ -2269,66 +2269,66 @@ export const getReasonsId = async (id: number, options?: RequestInit): Promise<R
 
 
 
-export const getGetReasonsIdQueryKey = (id?: number,) => {
+export const getGetApiReasonsIdQueryKey = (id?: number,) => {
     return [
     `/api/Reasons/${id}`
     ] as const;
     }
 
     
-export const getGetReasonsIdQueryOptions = <TData = Awaited<ReturnType<typeof getReasonsId>>, TError = unknown>(id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getReasonsId>>, TError, TData>>, request?: SecondParameter<typeof fetcher>}
+export const getGetApiReasonsIdQueryOptions = <TData = Awaited<ReturnType<typeof getApiReasonsId>>, TError = unknown>(id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiReasonsId>>, TError, TData>>, request?: SecondParameter<typeof fetcher>}
 ) => {
 
 const {query: queryOptions, request: requestOptions} = options ?? {};
 
-  const queryKey =  queryOptions?.queryKey ?? getGetReasonsIdQueryKey(id);
+  const queryKey =  queryOptions?.queryKey ?? getGetApiReasonsIdQueryKey(id);
 
   
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getReasonsId>>> = ({ signal }) => getReasonsId(id, { signal, ...requestOptions });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getApiReasonsId>>> = ({ signal }) => getApiReasonsId(id, { signal, ...requestOptions });
 
       
 
       
 
-   return  { queryKey, queryFn, enabled: !!(id), ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getReasonsId>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+   return  { queryKey, queryFn, enabled: !!(id), ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getApiReasonsId>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
 }
 
-export type GetReasonsIdQueryResult = NonNullable<Awaited<ReturnType<typeof getReasonsId>>>
-export type GetReasonsIdQueryError = unknown
+export type GetApiReasonsIdQueryResult = NonNullable<Awaited<ReturnType<typeof getApiReasonsId>>>
+export type GetApiReasonsIdQueryError = unknown
 
 
-export function useGetReasonsId<TData = Awaited<ReturnType<typeof getReasonsId>>, TError = unknown>(
- id: number, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getReasonsId>>, TError, TData>> & Pick<
+export function useGetApiReasonsId<TData = Awaited<ReturnType<typeof getApiReasonsId>>, TError = unknown>(
+ id: number, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiReasonsId>>, TError, TData>> & Pick<
         DefinedInitialDataOptions<
-          Awaited<ReturnType<typeof getReasonsId>>,
+          Awaited<ReturnType<typeof getApiReasonsId>>,
           TError,
-          Awaited<ReturnType<typeof getReasonsId>>
+          Awaited<ReturnType<typeof getApiReasonsId>>
         > , 'initialData'
       >, request?: SecondParameter<typeof fetcher>}
  , queryClient?: QueryClient
   ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useGetReasonsId<TData = Awaited<ReturnType<typeof getReasonsId>>, TError = unknown>(
- id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getReasonsId>>, TError, TData>> & Pick<
+export function useGetApiReasonsId<TData = Awaited<ReturnType<typeof getApiReasonsId>>, TError = unknown>(
+ id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiReasonsId>>, TError, TData>> & Pick<
         UndefinedInitialDataOptions<
-          Awaited<ReturnType<typeof getReasonsId>>,
+          Awaited<ReturnType<typeof getApiReasonsId>>,
           TError,
-          Awaited<ReturnType<typeof getReasonsId>>
+          Awaited<ReturnType<typeof getApiReasonsId>>
         > , 'initialData'
       >, request?: SecondParameter<typeof fetcher>}
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useGetReasonsId<TData = Awaited<ReturnType<typeof getReasonsId>>, TError = unknown>(
- id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getReasonsId>>, TError, TData>>, request?: SecondParameter<typeof fetcher>}
+export function useGetApiReasonsId<TData = Awaited<ReturnType<typeof getApiReasonsId>>, TError = unknown>(
+ id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiReasonsId>>, TError, TData>>, request?: SecondParameter<typeof fetcher>}
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 
-export function useGetReasonsId<TData = Awaited<ReturnType<typeof getReasonsId>>, TError = unknown>(
- id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getReasonsId>>, TError, TData>>, request?: SecondParameter<typeof fetcher>}
+export function useGetApiReasonsId<TData = Awaited<ReturnType<typeof getApiReasonsId>>, TError = unknown>(
+ id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiReasonsId>>, TError, TData>>, request?: SecondParameter<typeof fetcher>}
  , queryClient?: QueryClient 
  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
-  const queryOptions = getGetReasonsIdQueryOptions(id,options)
+  const queryOptions = getGetApiReasonsIdQueryOptions(id,options)
 
   const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
@@ -2341,7 +2341,7 @@ export function useGetReasonsId<TData = Awaited<ReturnType<typeof getReasonsId>>
 
 
 
-export const getPutReasonsIdUrl = (id: number,) => {
+export const getPutApiReasonsIdUrl = (id: number,) => {
 
 
   
@@ -2349,10 +2349,10 @@ export const getPutReasonsIdUrl = (id: number,) => {
   return `/api/Reasons/${id}`
 }
 
-export const putReasonsId = async (id: number,
+export const putApiReasonsId = async (id: number,
     updateReasonDto: UpdateReasonDto, options?: RequestInit): Promise<void> => {
   
-  return fetcher<void>(getPutReasonsIdUrl(id),
+  return fetcher<void>(getPutApiReasonsIdUrl(id),
   {      
     ...options,
     method: 'PUT',
@@ -2365,11 +2365,11 @@ export const putReasonsId = async (id: number,
 
 
 
-export const getPutReasonsIdMutationOptions = <TError = unknown,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof putReasonsId>>, TError,{id: number;data: UpdateReasonDto}, TContext>, request?: SecondParameter<typeof fetcher>}
-): UseMutationOptions<Awaited<ReturnType<typeof putReasonsId>>, TError,{id: number;data: UpdateReasonDto}, TContext> => {
+export const getPutApiReasonsIdMutationOptions = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof putApiReasonsId>>, TError,{id: number;data: UpdateReasonDto}, TContext>, request?: SecondParameter<typeof fetcher>}
+): UseMutationOptions<Awaited<ReturnType<typeof putApiReasonsId>>, TError,{id: number;data: UpdateReasonDto}, TContext> => {
 
-const mutationKey = ['putReasonsId'];
+const mutationKey = ['putApiReasonsId'];
 const {mutation: mutationOptions, request: requestOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
@@ -2379,10 +2379,10 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
       
 
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof putReasonsId>>, {id: number;data: UpdateReasonDto}> = (props) => {
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof putApiReasonsId>>, {id: number;data: UpdateReasonDto}> = (props) => {
           const {id,data} = props ?? {};
 
-          return  putReasonsId(id,data,requestOptions)
+          return  putApiReasonsId(id,data,requestOptions)
         }
 
         
@@ -2390,25 +2390,25 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
 
   return  { mutationFn, ...mutationOptions }}
 
-    export type PutReasonsIdMutationResult = NonNullable<Awaited<ReturnType<typeof putReasonsId>>>
-    export type PutReasonsIdMutationBody = UpdateReasonDto
-    export type PutReasonsIdMutationError = unknown
+    export type PutApiReasonsIdMutationResult = NonNullable<Awaited<ReturnType<typeof putApiReasonsId>>>
+    export type PutApiReasonsIdMutationBody = UpdateReasonDto
+    export type PutApiReasonsIdMutationError = unknown
 
-    export const usePutReasonsId = <TError = unknown,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof putReasonsId>>, TError,{id: number;data: UpdateReasonDto}, TContext>, request?: SecondParameter<typeof fetcher>}
+    export const usePutApiReasonsId = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof putApiReasonsId>>, TError,{id: number;data: UpdateReasonDto}, TContext>, request?: SecondParameter<typeof fetcher>}
  , queryClient?: QueryClient): UseMutationResult<
-        Awaited<ReturnType<typeof putReasonsId>>,
+        Awaited<ReturnType<typeof putApiReasonsId>>,
         TError,
         {id: number;data: UpdateReasonDto},
         TContext
       > => {
 
-      const mutationOptions = getPutReasonsIdMutationOptions(options);
+      const mutationOptions = getPutApiReasonsIdMutationOptions(options);
 
       return useMutation(mutationOptions, queryClient);
     }
     
-export const getDeleteReasonsIdUrl = (id: number,) => {
+export const getDeleteApiReasonsIdUrl = (id: number,) => {
 
 
   
@@ -2416,9 +2416,9 @@ export const getDeleteReasonsIdUrl = (id: number,) => {
   return `/api/Reasons/${id}`
 }
 
-export const deleteReasonsId = async (id: number, options?: RequestInit): Promise<void> => {
+export const deleteApiReasonsId = async (id: number, options?: RequestInit): Promise<void> => {
   
-  return fetcher<void>(getDeleteReasonsIdUrl(id),
+  return fetcher<void>(getDeleteApiReasonsIdUrl(id),
   {      
     ...options,
     method: 'DELETE'
@@ -2430,11 +2430,11 @@ export const deleteReasonsId = async (id: number, options?: RequestInit): Promis
 
 
 
-export const getDeleteReasonsIdMutationOptions = <TError = unknown,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteReasonsId>>, TError,{id: number}, TContext>, request?: SecondParameter<typeof fetcher>}
-): UseMutationOptions<Awaited<ReturnType<typeof deleteReasonsId>>, TError,{id: number}, TContext> => {
+export const getDeleteApiReasonsIdMutationOptions = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteApiReasonsId>>, TError,{id: number}, TContext>, request?: SecondParameter<typeof fetcher>}
+): UseMutationOptions<Awaited<ReturnType<typeof deleteApiReasonsId>>, TError,{id: number}, TContext> => {
 
-const mutationKey = ['deleteReasonsId'];
+const mutationKey = ['deleteApiReasonsId'];
 const {mutation: mutationOptions, request: requestOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
@@ -2444,10 +2444,10 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
       
 
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof deleteReasonsId>>, {id: number}> = (props) => {
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof deleteApiReasonsId>>, {id: number}> = (props) => {
           const {id} = props ?? {};
 
-          return  deleteReasonsId(id,requestOptions)
+          return  deleteApiReasonsId(id,requestOptions)
         }
 
         
@@ -2455,25 +2455,25 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
 
   return  { mutationFn, ...mutationOptions }}
 
-    export type DeleteReasonsIdMutationResult = NonNullable<Awaited<ReturnType<typeof deleteReasonsId>>>
+    export type DeleteApiReasonsIdMutationResult = NonNullable<Awaited<ReturnType<typeof deleteApiReasonsId>>>
     
-    export type DeleteReasonsIdMutationError = unknown
+    export type DeleteApiReasonsIdMutationError = unknown
 
-    export const useDeleteReasonsId = <TError = unknown,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteReasonsId>>, TError,{id: number}, TContext>, request?: SecondParameter<typeof fetcher>}
+    export const useDeleteApiReasonsId = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteApiReasonsId>>, TError,{id: number}, TContext>, request?: SecondParameter<typeof fetcher>}
  , queryClient?: QueryClient): UseMutationResult<
-        Awaited<ReturnType<typeof deleteReasonsId>>,
+        Awaited<ReturnType<typeof deleteApiReasonsId>>,
         TError,
         {id: number},
         TContext
       > => {
 
-      const mutationOptions = getDeleteReasonsIdMutationOptions(options);
+      const mutationOptions = getDeleteApiReasonsIdMutationOptions(options);
 
       return useMutation(mutationOptions, queryClient);
     }
     
-export const getGetReceiptsUrl = () => {
+export const getGetApiReceiptsUrl = () => {
 
 
   
@@ -2481,9 +2481,9 @@ export const getGetReceiptsUrl = () => {
   return `/api/Receipts`
 }
 
-export const getReceipts = async ( options?: RequestInit): Promise<Receipt[]> => {
+export const getApiReceipts = async ( options?: RequestInit): Promise<Receipt[]> => {
   
-  return fetcher<Receipt[]>(getGetReceiptsUrl(),
+  return fetcher<Receipt[]>(getGetApiReceiptsUrl(),
   {      
     ...options,
     method: 'GET'
@@ -2496,66 +2496,66 @@ export const getReceipts = async ( options?: RequestInit): Promise<Receipt[]> =>
 
 
 
-export const getGetReceiptsQueryKey = () => {
+export const getGetApiReceiptsQueryKey = () => {
     return [
     `/api/Receipts`
     ] as const;
     }
 
     
-export const getGetReceiptsQueryOptions = <TData = Awaited<ReturnType<typeof getReceipts>>, TError = unknown>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getReceipts>>, TError, TData>>, request?: SecondParameter<typeof fetcher>}
+export const getGetApiReceiptsQueryOptions = <TData = Awaited<ReturnType<typeof getApiReceipts>>, TError = unknown>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiReceipts>>, TError, TData>>, request?: SecondParameter<typeof fetcher>}
 ) => {
 
 const {query: queryOptions, request: requestOptions} = options ?? {};
 
-  const queryKey =  queryOptions?.queryKey ?? getGetReceiptsQueryKey();
+  const queryKey =  queryOptions?.queryKey ?? getGetApiReceiptsQueryKey();
 
   
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getReceipts>>> = ({ signal }) => getReceipts({ signal, ...requestOptions });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getApiReceipts>>> = ({ signal }) => getApiReceipts({ signal, ...requestOptions });
 
       
 
       
 
-   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getReceipts>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getApiReceipts>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
 }
 
-export type GetReceiptsQueryResult = NonNullable<Awaited<ReturnType<typeof getReceipts>>>
-export type GetReceiptsQueryError = unknown
+export type GetApiReceiptsQueryResult = NonNullable<Awaited<ReturnType<typeof getApiReceipts>>>
+export type GetApiReceiptsQueryError = unknown
 
 
-export function useGetReceipts<TData = Awaited<ReturnType<typeof getReceipts>>, TError = unknown>(
-  options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getReceipts>>, TError, TData>> & Pick<
+export function useGetApiReceipts<TData = Awaited<ReturnType<typeof getApiReceipts>>, TError = unknown>(
+  options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiReceipts>>, TError, TData>> & Pick<
         DefinedInitialDataOptions<
-          Awaited<ReturnType<typeof getReceipts>>,
+          Awaited<ReturnType<typeof getApiReceipts>>,
           TError,
-          Awaited<ReturnType<typeof getReceipts>>
+          Awaited<ReturnType<typeof getApiReceipts>>
         > , 'initialData'
       >, request?: SecondParameter<typeof fetcher>}
  , queryClient?: QueryClient
   ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useGetReceipts<TData = Awaited<ReturnType<typeof getReceipts>>, TError = unknown>(
-  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getReceipts>>, TError, TData>> & Pick<
+export function useGetApiReceipts<TData = Awaited<ReturnType<typeof getApiReceipts>>, TError = unknown>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiReceipts>>, TError, TData>> & Pick<
         UndefinedInitialDataOptions<
-          Awaited<ReturnType<typeof getReceipts>>,
+          Awaited<ReturnType<typeof getApiReceipts>>,
           TError,
-          Awaited<ReturnType<typeof getReceipts>>
+          Awaited<ReturnType<typeof getApiReceipts>>
         > , 'initialData'
       >, request?: SecondParameter<typeof fetcher>}
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useGetReceipts<TData = Awaited<ReturnType<typeof getReceipts>>, TError = unknown>(
-  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getReceipts>>, TError, TData>>, request?: SecondParameter<typeof fetcher>}
+export function useGetApiReceipts<TData = Awaited<ReturnType<typeof getApiReceipts>>, TError = unknown>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiReceipts>>, TError, TData>>, request?: SecondParameter<typeof fetcher>}
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 
-export function useGetReceipts<TData = Awaited<ReturnType<typeof getReceipts>>, TError = unknown>(
-  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getReceipts>>, TError, TData>>, request?: SecondParameter<typeof fetcher>}
+export function useGetApiReceipts<TData = Awaited<ReturnType<typeof getApiReceipts>>, TError = unknown>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiReceipts>>, TError, TData>>, request?: SecondParameter<typeof fetcher>}
  , queryClient?: QueryClient 
  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
-  const queryOptions = getGetReceiptsQueryOptions(options)
+  const queryOptions = getGetApiReceiptsQueryOptions(options)
 
   const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
@@ -2568,7 +2568,7 @@ export function useGetReceipts<TData = Awaited<ReturnType<typeof getReceipts>>, 
 
 
 
-export const getPostReceiptsUrl = () => {
+export const getPostApiReceiptsUrl = () => {
 
 
   
@@ -2576,22 +2576,22 @@ export const getPostReceiptsUrl = () => {
   return `/api/Receipts`
 }
 
-export const postReceipts = async (postReceiptsBody: PostReceiptsBody, options?: RequestInit): Promise<ReceiptDto> => {
+export const postApiReceipts = async (postApiReceiptsBody: PostApiReceiptsBody, options?: RequestInit): Promise<ReceiptDto> => {
     const formData = new FormData();
-if(postReceiptsBody.Name !== undefined) {
- formData.append(`Name`, postReceiptsBody.Name)
+if(postApiReceiptsBody.Name !== undefined) {
+ formData.append(`Name`, postApiReceiptsBody.Name)
  }
-if(postReceiptsBody.Date !== undefined) {
- formData.append(`Date`, postReceiptsBody.Date)
+if(postApiReceiptsBody.Date !== undefined) {
+ formData.append(`Date`, postApiReceiptsBody.Date)
  }
-if(postReceiptsBody.Category !== undefined) {
- formData.append(`Category`, postReceiptsBody.Category.toString())
+if(postApiReceiptsBody.Category !== undefined) {
+ formData.append(`Category`, postApiReceiptsBody.Category.toString())
  }
-if(postReceiptsBody.File !== undefined) {
- formData.append(`File`, postReceiptsBody.File)
+if(postApiReceiptsBody.File !== undefined) {
+ formData.append(`File`, postApiReceiptsBody.File)
  }
 
-  return fetcher<ReceiptDto>(getPostReceiptsUrl(),
+  return fetcher<ReceiptDto>(getPostApiReceiptsUrl(),
   {      
     ...options,
     method: 'POST'
@@ -2604,11 +2604,11 @@ if(postReceiptsBody.File !== undefined) {
 
 
 
-export const getPostReceiptsMutationOptions = <TError = unknown,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postReceipts>>, TError,{data: PostReceiptsBody}, TContext>, request?: SecondParameter<typeof fetcher>}
-): UseMutationOptions<Awaited<ReturnType<typeof postReceipts>>, TError,{data: PostReceiptsBody}, TContext> => {
+export const getPostApiReceiptsMutationOptions = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiReceipts>>, TError,{data: PostApiReceiptsBody}, TContext>, request?: SecondParameter<typeof fetcher>}
+): UseMutationOptions<Awaited<ReturnType<typeof postApiReceipts>>, TError,{data: PostApiReceiptsBody}, TContext> => {
 
-const mutationKey = ['postReceipts'];
+const mutationKey = ['postApiReceipts'];
 const {mutation: mutationOptions, request: requestOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
@@ -2618,10 +2618,10 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
       
 
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof postReceipts>>, {data: PostReceiptsBody}> = (props) => {
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof postApiReceipts>>, {data: PostApiReceiptsBody}> = (props) => {
           const {data} = props ?? {};
 
-          return  postReceipts(data,requestOptions)
+          return  postApiReceipts(data,requestOptions)
         }
 
         
@@ -2629,25 +2629,25 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
 
   return  { mutationFn, ...mutationOptions }}
 
-    export type PostReceiptsMutationResult = NonNullable<Awaited<ReturnType<typeof postReceipts>>>
-    export type PostReceiptsMutationBody = PostReceiptsBody
-    export type PostReceiptsMutationError = unknown
+    export type PostApiReceiptsMutationResult = NonNullable<Awaited<ReturnType<typeof postApiReceipts>>>
+    export type PostApiReceiptsMutationBody = PostApiReceiptsBody
+    export type PostApiReceiptsMutationError = unknown
 
-    export const usePostReceipts = <TError = unknown,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postReceipts>>, TError,{data: PostReceiptsBody}, TContext>, request?: SecondParameter<typeof fetcher>}
+    export const usePostApiReceipts = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiReceipts>>, TError,{data: PostApiReceiptsBody}, TContext>, request?: SecondParameter<typeof fetcher>}
  , queryClient?: QueryClient): UseMutationResult<
-        Awaited<ReturnType<typeof postReceipts>>,
+        Awaited<ReturnType<typeof postApiReceipts>>,
         TError,
-        {data: PostReceiptsBody},
+        {data: PostApiReceiptsBody},
         TContext
       > => {
 
-      const mutationOptions = getPostReceiptsMutationOptions(options);
+      const mutationOptions = getPostApiReceiptsMutationOptions(options);
 
       return useMutation(mutationOptions, queryClient);
     }
     
-export const getGetReceiptsIdUrl = (id: number,) => {
+export const getGetApiReceiptsIdUrl = (id: number,) => {
 
 
   
@@ -2655,9 +2655,9 @@ export const getGetReceiptsIdUrl = (id: number,) => {
   return `/api/Receipts/${id}`
 }
 
-export const getReceiptsId = async (id: number, options?: RequestInit): Promise<ReceiptDto> => {
+export const getApiReceiptsId = async (id: number, options?: RequestInit): Promise<ReceiptDto> => {
   
-  return fetcher<ReceiptDto>(getGetReceiptsIdUrl(id),
+  return fetcher<ReceiptDto>(getGetApiReceiptsIdUrl(id),
   {      
     ...options,
     method: 'GET'
@@ -2670,66 +2670,66 @@ export const getReceiptsId = async (id: number, options?: RequestInit): Promise<
 
 
 
-export const getGetReceiptsIdQueryKey = (id?: number,) => {
+export const getGetApiReceiptsIdQueryKey = (id?: number,) => {
     return [
     `/api/Receipts/${id}`
     ] as const;
     }
 
     
-export const getGetReceiptsIdQueryOptions = <TData = Awaited<ReturnType<typeof getReceiptsId>>, TError = unknown>(id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getReceiptsId>>, TError, TData>>, request?: SecondParameter<typeof fetcher>}
+export const getGetApiReceiptsIdQueryOptions = <TData = Awaited<ReturnType<typeof getApiReceiptsId>>, TError = unknown>(id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiReceiptsId>>, TError, TData>>, request?: SecondParameter<typeof fetcher>}
 ) => {
 
 const {query: queryOptions, request: requestOptions} = options ?? {};
 
-  const queryKey =  queryOptions?.queryKey ?? getGetReceiptsIdQueryKey(id);
+  const queryKey =  queryOptions?.queryKey ?? getGetApiReceiptsIdQueryKey(id);
 
   
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getReceiptsId>>> = ({ signal }) => getReceiptsId(id, { signal, ...requestOptions });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getApiReceiptsId>>> = ({ signal }) => getApiReceiptsId(id, { signal, ...requestOptions });
 
       
 
       
 
-   return  { queryKey, queryFn, enabled: !!(id), ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getReceiptsId>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+   return  { queryKey, queryFn, enabled: !!(id), ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getApiReceiptsId>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
 }
 
-export type GetReceiptsIdQueryResult = NonNullable<Awaited<ReturnType<typeof getReceiptsId>>>
-export type GetReceiptsIdQueryError = unknown
+export type GetApiReceiptsIdQueryResult = NonNullable<Awaited<ReturnType<typeof getApiReceiptsId>>>
+export type GetApiReceiptsIdQueryError = unknown
 
 
-export function useGetReceiptsId<TData = Awaited<ReturnType<typeof getReceiptsId>>, TError = unknown>(
- id: number, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getReceiptsId>>, TError, TData>> & Pick<
+export function useGetApiReceiptsId<TData = Awaited<ReturnType<typeof getApiReceiptsId>>, TError = unknown>(
+ id: number, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiReceiptsId>>, TError, TData>> & Pick<
         DefinedInitialDataOptions<
-          Awaited<ReturnType<typeof getReceiptsId>>,
+          Awaited<ReturnType<typeof getApiReceiptsId>>,
           TError,
-          Awaited<ReturnType<typeof getReceiptsId>>
+          Awaited<ReturnType<typeof getApiReceiptsId>>
         > , 'initialData'
       >, request?: SecondParameter<typeof fetcher>}
  , queryClient?: QueryClient
   ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useGetReceiptsId<TData = Awaited<ReturnType<typeof getReceiptsId>>, TError = unknown>(
- id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getReceiptsId>>, TError, TData>> & Pick<
+export function useGetApiReceiptsId<TData = Awaited<ReturnType<typeof getApiReceiptsId>>, TError = unknown>(
+ id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiReceiptsId>>, TError, TData>> & Pick<
         UndefinedInitialDataOptions<
-          Awaited<ReturnType<typeof getReceiptsId>>,
+          Awaited<ReturnType<typeof getApiReceiptsId>>,
           TError,
-          Awaited<ReturnType<typeof getReceiptsId>>
+          Awaited<ReturnType<typeof getApiReceiptsId>>
         > , 'initialData'
       >, request?: SecondParameter<typeof fetcher>}
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useGetReceiptsId<TData = Awaited<ReturnType<typeof getReceiptsId>>, TError = unknown>(
- id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getReceiptsId>>, TError, TData>>, request?: SecondParameter<typeof fetcher>}
+export function useGetApiReceiptsId<TData = Awaited<ReturnType<typeof getApiReceiptsId>>, TError = unknown>(
+ id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiReceiptsId>>, TError, TData>>, request?: SecondParameter<typeof fetcher>}
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 
-export function useGetReceiptsId<TData = Awaited<ReturnType<typeof getReceiptsId>>, TError = unknown>(
- id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getReceiptsId>>, TError, TData>>, request?: SecondParameter<typeof fetcher>}
+export function useGetApiReceiptsId<TData = Awaited<ReturnType<typeof getApiReceiptsId>>, TError = unknown>(
+ id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiReceiptsId>>, TError, TData>>, request?: SecondParameter<typeof fetcher>}
  , queryClient?: QueryClient 
  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
-  const queryOptions = getGetReceiptsIdQueryOptions(id,options)
+  const queryOptions = getGetApiReceiptsIdQueryOptions(id,options)
 
   const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
@@ -2742,7 +2742,7 @@ export function useGetReceiptsId<TData = Awaited<ReturnType<typeof getReceiptsId
 
 
 
-export const getDeleteReceiptsIdUrl = (id: number,) => {
+export const getDeleteApiReceiptsIdUrl = (id: number,) => {
 
 
   
@@ -2750,9 +2750,9 @@ export const getDeleteReceiptsIdUrl = (id: number,) => {
   return `/api/Receipts/${id}`
 }
 
-export const deleteReceiptsId = async (id: number, options?: RequestInit): Promise<void> => {
+export const deleteApiReceiptsId = async (id: number, options?: RequestInit): Promise<void> => {
   
-  return fetcher<void>(getDeleteReceiptsIdUrl(id),
+  return fetcher<void>(getDeleteApiReceiptsIdUrl(id),
   {      
     ...options,
     method: 'DELETE'
@@ -2764,11 +2764,11 @@ export const deleteReceiptsId = async (id: number, options?: RequestInit): Promi
 
 
 
-export const getDeleteReceiptsIdMutationOptions = <TError = unknown,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteReceiptsId>>, TError,{id: number}, TContext>, request?: SecondParameter<typeof fetcher>}
-): UseMutationOptions<Awaited<ReturnType<typeof deleteReceiptsId>>, TError,{id: number}, TContext> => {
+export const getDeleteApiReceiptsIdMutationOptions = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteApiReceiptsId>>, TError,{id: number}, TContext>, request?: SecondParameter<typeof fetcher>}
+): UseMutationOptions<Awaited<ReturnType<typeof deleteApiReceiptsId>>, TError,{id: number}, TContext> => {
 
-const mutationKey = ['deleteReceiptsId'];
+const mutationKey = ['deleteApiReceiptsId'];
 const {mutation: mutationOptions, request: requestOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
@@ -2778,10 +2778,10 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
       
 
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof deleteReceiptsId>>, {id: number}> = (props) => {
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof deleteApiReceiptsId>>, {id: number}> = (props) => {
           const {id} = props ?? {};
 
-          return  deleteReceiptsId(id,requestOptions)
+          return  deleteApiReceiptsId(id,requestOptions)
         }
 
         
@@ -2789,25 +2789,25 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
 
   return  { mutationFn, ...mutationOptions }}
 
-    export type DeleteReceiptsIdMutationResult = NonNullable<Awaited<ReturnType<typeof deleteReceiptsId>>>
+    export type DeleteApiReceiptsIdMutationResult = NonNullable<Awaited<ReturnType<typeof deleteApiReceiptsId>>>
     
-    export type DeleteReceiptsIdMutationError = unknown
+    export type DeleteApiReceiptsIdMutationError = unknown
 
-    export const useDeleteReceiptsId = <TError = unknown,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteReceiptsId>>, TError,{id: number}, TContext>, request?: SecondParameter<typeof fetcher>}
+    export const useDeleteApiReceiptsId = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteApiReceiptsId>>, TError,{id: number}, TContext>, request?: SecondParameter<typeof fetcher>}
  , queryClient?: QueryClient): UseMutationResult<
-        Awaited<ReturnType<typeof deleteReceiptsId>>,
+        Awaited<ReturnType<typeof deleteApiReceiptsId>>,
         TError,
         {id: number},
         TContext
       > => {
 
-      const mutationOptions = getDeleteReceiptsIdMutationOptions(options);
+      const mutationOptions = getDeleteApiReceiptsIdMutationOptions(options);
 
       return useMutation(mutationOptions, queryClient);
     }
     
-export const getPostReceiptsFuelUrl = () => {
+export const getPostApiReceiptsFuelUrl = () => {
 
 
   
@@ -2815,9 +2815,9 @@ export const getPostReceiptsFuelUrl = () => {
   return `/api/Receipts/fuel`
 }
 
-export const postReceiptsFuel = async (createFuelReceiptDto: CreateFuelReceiptDto, options?: RequestInit): Promise<ReceiptDto> => {
+export const postApiReceiptsFuel = async (createFuelReceiptDto: CreateFuelReceiptDto, options?: RequestInit): Promise<ReceiptDto> => {
   
-  return fetcher<ReceiptDto>(getPostReceiptsFuelUrl(),
+  return fetcher<ReceiptDto>(getPostApiReceiptsFuelUrl(),
   {      
     ...options,
     method: 'POST',
@@ -2830,11 +2830,11 @@ export const postReceiptsFuel = async (createFuelReceiptDto: CreateFuelReceiptDt
 
 
 
-export const getPostReceiptsFuelMutationOptions = <TError = unknown,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postReceiptsFuel>>, TError,{data: CreateFuelReceiptDto}, TContext>, request?: SecondParameter<typeof fetcher>}
-): UseMutationOptions<Awaited<ReturnType<typeof postReceiptsFuel>>, TError,{data: CreateFuelReceiptDto}, TContext> => {
+export const getPostApiReceiptsFuelMutationOptions = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiReceiptsFuel>>, TError,{data: CreateFuelReceiptDto}, TContext>, request?: SecondParameter<typeof fetcher>}
+): UseMutationOptions<Awaited<ReturnType<typeof postApiReceiptsFuel>>, TError,{data: CreateFuelReceiptDto}, TContext> => {
 
-const mutationKey = ['postReceiptsFuel'];
+const mutationKey = ['postApiReceiptsFuel'];
 const {mutation: mutationOptions, request: requestOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
@@ -2844,10 +2844,10 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
       
 
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof postReceiptsFuel>>, {data: CreateFuelReceiptDto}> = (props) => {
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof postApiReceiptsFuel>>, {data: CreateFuelReceiptDto}> = (props) => {
           const {data} = props ?? {};
 
-          return  postReceiptsFuel(data,requestOptions)
+          return  postApiReceiptsFuel(data,requestOptions)
         }
 
         
@@ -2855,25 +2855,25 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
 
   return  { mutationFn, ...mutationOptions }}
 
-    export type PostReceiptsFuelMutationResult = NonNullable<Awaited<ReturnType<typeof postReceiptsFuel>>>
-    export type PostReceiptsFuelMutationBody = CreateFuelReceiptDto
-    export type PostReceiptsFuelMutationError = unknown
+    export type PostApiReceiptsFuelMutationResult = NonNullable<Awaited<ReturnType<typeof postApiReceiptsFuel>>>
+    export type PostApiReceiptsFuelMutationBody = CreateFuelReceiptDto
+    export type PostApiReceiptsFuelMutationError = unknown
 
-    export const usePostReceiptsFuel = <TError = unknown,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postReceiptsFuel>>, TError,{data: CreateFuelReceiptDto}, TContext>, request?: SecondParameter<typeof fetcher>}
+    export const usePostApiReceiptsFuel = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiReceiptsFuel>>, TError,{data: CreateFuelReceiptDto}, TContext>, request?: SecondParameter<typeof fetcher>}
  , queryClient?: QueryClient): UseMutationResult<
-        Awaited<ReturnType<typeof postReceiptsFuel>>,
+        Awaited<ReturnType<typeof postApiReceiptsFuel>>,
         TError,
         {data: CreateFuelReceiptDto},
         TContext
       > => {
 
-      const mutationOptions = getPostReceiptsFuelMutationOptions(options);
+      const mutationOptions = getPostApiReceiptsFuelMutationOptions(options);
 
       return useMutation(mutationOptions, queryClient);
     }
     
-export const getPostReceiptsPurchaseUrl = () => {
+export const getPostApiReceiptsPurchaseUrl = () => {
 
 
   
@@ -2881,9 +2881,9 @@ export const getPostReceiptsPurchaseUrl = () => {
   return `/api/Receipts/purchase`
 }
 
-export const postReceiptsPurchase = async (createPurchaseReceiptDto: CreatePurchaseReceiptDto, options?: RequestInit): Promise<ReceiptDto> => {
+export const postApiReceiptsPurchase = async (createPurchaseReceiptDto: CreatePurchaseReceiptDto, options?: RequestInit): Promise<ReceiptDto> => {
   
-  return fetcher<ReceiptDto>(getPostReceiptsPurchaseUrl(),
+  return fetcher<ReceiptDto>(getPostApiReceiptsPurchaseUrl(),
   {      
     ...options,
     method: 'POST',
@@ -2896,11 +2896,11 @@ export const postReceiptsPurchase = async (createPurchaseReceiptDto: CreatePurch
 
 
 
-export const getPostReceiptsPurchaseMutationOptions = <TError = unknown,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postReceiptsPurchase>>, TError,{data: CreatePurchaseReceiptDto}, TContext>, request?: SecondParameter<typeof fetcher>}
-): UseMutationOptions<Awaited<ReturnType<typeof postReceiptsPurchase>>, TError,{data: CreatePurchaseReceiptDto}, TContext> => {
+export const getPostApiReceiptsPurchaseMutationOptions = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiReceiptsPurchase>>, TError,{data: CreatePurchaseReceiptDto}, TContext>, request?: SecondParameter<typeof fetcher>}
+): UseMutationOptions<Awaited<ReturnType<typeof postApiReceiptsPurchase>>, TError,{data: CreatePurchaseReceiptDto}, TContext> => {
 
-const mutationKey = ['postReceiptsPurchase'];
+const mutationKey = ['postApiReceiptsPurchase'];
 const {mutation: mutationOptions, request: requestOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
@@ -2910,10 +2910,10 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
       
 
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof postReceiptsPurchase>>, {data: CreatePurchaseReceiptDto}> = (props) => {
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof postApiReceiptsPurchase>>, {data: CreatePurchaseReceiptDto}> = (props) => {
           const {data} = props ?? {};
 
-          return  postReceiptsPurchase(data,requestOptions)
+          return  postApiReceiptsPurchase(data,requestOptions)
         }
 
         
@@ -2921,25 +2921,25 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
 
   return  { mutationFn, ...mutationOptions }}
 
-    export type PostReceiptsPurchaseMutationResult = NonNullable<Awaited<ReturnType<typeof postReceiptsPurchase>>>
-    export type PostReceiptsPurchaseMutationBody = CreatePurchaseReceiptDto
-    export type PostReceiptsPurchaseMutationError = unknown
+    export type PostApiReceiptsPurchaseMutationResult = NonNullable<Awaited<ReturnType<typeof postApiReceiptsPurchase>>>
+    export type PostApiReceiptsPurchaseMutationBody = CreatePurchaseReceiptDto
+    export type PostApiReceiptsPurchaseMutationError = unknown
 
-    export const usePostReceiptsPurchase = <TError = unknown,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postReceiptsPurchase>>, TError,{data: CreatePurchaseReceiptDto}, TContext>, request?: SecondParameter<typeof fetcher>}
+    export const usePostApiReceiptsPurchase = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiReceiptsPurchase>>, TError,{data: CreatePurchaseReceiptDto}, TContext>, request?: SecondParameter<typeof fetcher>}
  , queryClient?: QueryClient): UseMutationResult<
-        Awaited<ReturnType<typeof postReceiptsPurchase>>,
+        Awaited<ReturnType<typeof postApiReceiptsPurchase>>,
         TError,
         {data: CreatePurchaseReceiptDto},
         TContext
       > => {
 
-      const mutationOptions = getPostReceiptsPurchaseMutationOptions(options);
+      const mutationOptions = getPostApiReceiptsPurchaseMutationOptions(options);
 
       return useMutation(mutationOptions, queryClient);
     }
     
-export const getPostReceiptsOcrUrl = () => {
+export const getPostApiReceiptsOcrUrl = () => {
 
 
   
@@ -2947,13 +2947,13 @@ export const getPostReceiptsOcrUrl = () => {
   return `/api/Receipts/ocr`
 }
 
-export const postReceiptsOcr = async (postReceiptsOcrBody: PostReceiptsOcrBody, options?: RequestInit): Promise<ReceiptOcrResultDto> => {
+export const postApiReceiptsOcr = async (postApiReceiptsOcrBody: PostApiReceiptsOcrBody, options?: RequestInit): Promise<ReceiptOcrResultDto> => {
     const formData = new FormData();
-if(postReceiptsOcrBody.File !== undefined) {
- formData.append(`File`, postReceiptsOcrBody.File)
+if(postApiReceiptsOcrBody.File !== undefined) {
+ formData.append(`File`, postApiReceiptsOcrBody.File)
  }
 
-  return fetcher<ReceiptOcrResultDto>(getPostReceiptsOcrUrl(),
+  return fetcher<ReceiptOcrResultDto>(getPostApiReceiptsOcrUrl(),
   {      
     ...options,
     method: 'POST'
@@ -2966,11 +2966,11 @@ if(postReceiptsOcrBody.File !== undefined) {
 
 
 
-export const getPostReceiptsOcrMutationOptions = <TError = unknown,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postReceiptsOcr>>, TError,{data: PostReceiptsOcrBody}, TContext>, request?: SecondParameter<typeof fetcher>}
-): UseMutationOptions<Awaited<ReturnType<typeof postReceiptsOcr>>, TError,{data: PostReceiptsOcrBody}, TContext> => {
+export const getPostApiReceiptsOcrMutationOptions = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiReceiptsOcr>>, TError,{data: PostApiReceiptsOcrBody}, TContext>, request?: SecondParameter<typeof fetcher>}
+): UseMutationOptions<Awaited<ReturnType<typeof postApiReceiptsOcr>>, TError,{data: PostApiReceiptsOcrBody}, TContext> => {
 
-const mutationKey = ['postReceiptsOcr'];
+const mutationKey = ['postApiReceiptsOcr'];
 const {mutation: mutationOptions, request: requestOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
@@ -2980,10 +2980,10 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
       
 
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof postReceiptsOcr>>, {data: PostReceiptsOcrBody}> = (props) => {
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof postApiReceiptsOcr>>, {data: PostApiReceiptsOcrBody}> = (props) => {
           const {data} = props ?? {};
 
-          return  postReceiptsOcr(data,requestOptions)
+          return  postApiReceiptsOcr(data,requestOptions)
         }
 
         
@@ -2991,25 +2991,25 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
 
   return  { mutationFn, ...mutationOptions }}
 
-    export type PostReceiptsOcrMutationResult = NonNullable<Awaited<ReturnType<typeof postReceiptsOcr>>>
-    export type PostReceiptsOcrMutationBody = PostReceiptsOcrBody
-    export type PostReceiptsOcrMutationError = unknown
+    export type PostApiReceiptsOcrMutationResult = NonNullable<Awaited<ReturnType<typeof postApiReceiptsOcr>>>
+    export type PostApiReceiptsOcrMutationBody = PostApiReceiptsOcrBody
+    export type PostApiReceiptsOcrMutationError = unknown
 
-    export const usePostReceiptsOcr = <TError = unknown,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postReceiptsOcr>>, TError,{data: PostReceiptsOcrBody}, TContext>, request?: SecondParameter<typeof fetcher>}
+    export const usePostApiReceiptsOcr = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiReceiptsOcr>>, TError,{data: PostApiReceiptsOcrBody}, TContext>, request?: SecondParameter<typeof fetcher>}
  , queryClient?: QueryClient): UseMutationResult<
-        Awaited<ReturnType<typeof postReceiptsOcr>>,
+        Awaited<ReturnType<typeof postApiReceiptsOcr>>,
         TError,
-        {data: PostReceiptsOcrBody},
+        {data: PostApiReceiptsOcrBody},
         TContext
       > => {
 
-      const mutationOptions = getPostReceiptsOcrMutationOptions(options);
+      const mutationOptions = getPostApiReceiptsOcrMutationOptions(options);
 
       return useMutation(mutationOptions, queryClient);
     }
     
-export const getGetReportUrl = () => {
+export const getGetApiReportUrl = () => {
 
 
   
@@ -3017,9 +3017,9 @@ export const getGetReportUrl = () => {
   return `/api/Report`
 }
 
-export const getReport = async ( options?: RequestInit): Promise<ReportDto[]> => {
+export const getApiReport = async ( options?: RequestInit): Promise<ReportDto[]> => {
   
-  return fetcher<ReportDto[]>(getGetReportUrl(),
+  return fetcher<ReportDto[]>(getGetApiReportUrl(),
   {      
     ...options,
     method: 'GET'
@@ -3032,66 +3032,66 @@ export const getReport = async ( options?: RequestInit): Promise<ReportDto[]> =>
 
 
 
-export const getGetReportQueryKey = () => {
+export const getGetApiReportQueryKey = () => {
     return [
     `/api/Report`
     ] as const;
     }
 
     
-export const getGetReportQueryOptions = <TData = Awaited<ReturnType<typeof getReport>>, TError = unknown>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getReport>>, TError, TData>>, request?: SecondParameter<typeof fetcher>}
+export const getGetApiReportQueryOptions = <TData = Awaited<ReturnType<typeof getApiReport>>, TError = unknown>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiReport>>, TError, TData>>, request?: SecondParameter<typeof fetcher>}
 ) => {
 
 const {query: queryOptions, request: requestOptions} = options ?? {};
 
-  const queryKey =  queryOptions?.queryKey ?? getGetReportQueryKey();
+  const queryKey =  queryOptions?.queryKey ?? getGetApiReportQueryKey();
 
   
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getReport>>> = ({ signal }) => getReport({ signal, ...requestOptions });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getApiReport>>> = ({ signal }) => getApiReport({ signal, ...requestOptions });
 
       
 
       
 
-   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getReport>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getApiReport>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
 }
 
-export type GetReportQueryResult = NonNullable<Awaited<ReturnType<typeof getReport>>>
-export type GetReportQueryError = unknown
+export type GetApiReportQueryResult = NonNullable<Awaited<ReturnType<typeof getApiReport>>>
+export type GetApiReportQueryError = unknown
 
 
-export function useGetReport<TData = Awaited<ReturnType<typeof getReport>>, TError = unknown>(
-  options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getReport>>, TError, TData>> & Pick<
+export function useGetApiReport<TData = Awaited<ReturnType<typeof getApiReport>>, TError = unknown>(
+  options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiReport>>, TError, TData>> & Pick<
         DefinedInitialDataOptions<
-          Awaited<ReturnType<typeof getReport>>,
+          Awaited<ReturnType<typeof getApiReport>>,
           TError,
-          Awaited<ReturnType<typeof getReport>>
+          Awaited<ReturnType<typeof getApiReport>>
         > , 'initialData'
       >, request?: SecondParameter<typeof fetcher>}
  , queryClient?: QueryClient
   ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useGetReport<TData = Awaited<ReturnType<typeof getReport>>, TError = unknown>(
-  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getReport>>, TError, TData>> & Pick<
+export function useGetApiReport<TData = Awaited<ReturnType<typeof getApiReport>>, TError = unknown>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiReport>>, TError, TData>> & Pick<
         UndefinedInitialDataOptions<
-          Awaited<ReturnType<typeof getReport>>,
+          Awaited<ReturnType<typeof getApiReport>>,
           TError,
-          Awaited<ReturnType<typeof getReport>>
+          Awaited<ReturnType<typeof getApiReport>>
         > , 'initialData'
       >, request?: SecondParameter<typeof fetcher>}
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useGetReport<TData = Awaited<ReturnType<typeof getReport>>, TError = unknown>(
-  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getReport>>, TError, TData>>, request?: SecondParameter<typeof fetcher>}
+export function useGetApiReport<TData = Awaited<ReturnType<typeof getApiReport>>, TError = unknown>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiReport>>, TError, TData>>, request?: SecondParameter<typeof fetcher>}
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 
-export function useGetReport<TData = Awaited<ReturnType<typeof getReport>>, TError = unknown>(
-  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getReport>>, TError, TData>>, request?: SecondParameter<typeof fetcher>}
+export function useGetApiReport<TData = Awaited<ReturnType<typeof getApiReport>>, TError = unknown>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiReport>>, TError, TData>>, request?: SecondParameter<typeof fetcher>}
  , queryClient?: QueryClient 
  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
-  const queryOptions = getGetReportQueryOptions(options)
+  const queryOptions = getGetApiReportQueryOptions(options)
 
   const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
@@ -3104,7 +3104,7 @@ export function useGetReport<TData = Awaited<ReturnType<typeof getReport>>, TErr
 
 
 
-export const getPostReportUrl = (params?: PostReportParams,) => {
+export const getPostApiReportUrl = (params?: PostApiReportParams,) => {
   const normalizedParams = new URLSearchParams();
 
   Object.entries(params || {}).forEach(([key, value]) => {
@@ -3119,9 +3119,9 @@ export const getPostReportUrl = (params?: PostReportParams,) => {
   return stringifiedParams.length > 0 ? `/api/Report?${stringifiedParams}` : `/api/Report`
 }
 
-export const postReport = async (params?: PostReportParams, options?: RequestInit): Promise<GenerateReportDto> => {
+export const postApiReport = async (params?: PostApiReportParams, options?: RequestInit): Promise<GenerateReportDto> => {
   
-  return fetcher<GenerateReportDto>(getPostReportUrl(params),
+  return fetcher<GenerateReportDto>(getPostApiReportUrl(params),
   {      
     ...options,
     method: 'POST'
@@ -3133,11 +3133,11 @@ export const postReport = async (params?: PostReportParams, options?: RequestIni
 
 
 
-export const getPostReportMutationOptions = <TError = unknown,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postReport>>, TError,{params?: PostReportParams}, TContext>, request?: SecondParameter<typeof fetcher>}
-): UseMutationOptions<Awaited<ReturnType<typeof postReport>>, TError,{params?: PostReportParams}, TContext> => {
+export const getPostApiReportMutationOptions = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiReport>>, TError,{params?: PostApiReportParams}, TContext>, request?: SecondParameter<typeof fetcher>}
+): UseMutationOptions<Awaited<ReturnType<typeof postApiReport>>, TError,{params?: PostApiReportParams}, TContext> => {
 
-const mutationKey = ['postReport'];
+const mutationKey = ['postApiReport'];
 const {mutation: mutationOptions, request: requestOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
@@ -3147,10 +3147,10 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
       
 
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof postReport>>, {params?: PostReportParams}> = (props) => {
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof postApiReport>>, {params?: PostApiReportParams}> = (props) => {
           const {params} = props ?? {};
 
-          return  postReport(params,requestOptions)
+          return  postApiReport(params,requestOptions)
         }
 
         
@@ -3158,25 +3158,25 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
 
   return  { mutationFn, ...mutationOptions }}
 
-    export type PostReportMutationResult = NonNullable<Awaited<ReturnType<typeof postReport>>>
+    export type PostApiReportMutationResult = NonNullable<Awaited<ReturnType<typeof postApiReport>>>
     
-    export type PostReportMutationError = unknown
+    export type PostApiReportMutationError = unknown
 
-    export const usePostReport = <TError = unknown,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postReport>>, TError,{params?: PostReportParams}, TContext>, request?: SecondParameter<typeof fetcher>}
+    export const usePostApiReport = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiReport>>, TError,{params?: PostApiReportParams}, TContext>, request?: SecondParameter<typeof fetcher>}
  , queryClient?: QueryClient): UseMutationResult<
-        Awaited<ReturnType<typeof postReport>>,
+        Awaited<ReturnType<typeof postApiReport>>,
         TError,
-        {params?: PostReportParams},
+        {params?: PostApiReportParams},
         TContext
       > => {
 
-      const mutationOptions = getPostReportMutationOptions(options);
+      const mutationOptions = getPostApiReportMutationOptions(options);
 
       return useMutation(mutationOptions, queryClient);
     }
     
-export const getDeleteReportIdUrl = (id: string,) => {
+export const getDeleteApiReportIdUrl = (id: string,) => {
 
 
   
@@ -3184,9 +3184,9 @@ export const getDeleteReportIdUrl = (id: string,) => {
   return `/api/Report/${id}`
 }
 
-export const deleteReportId = async (id: string, options?: RequestInit): Promise<void> => {
+export const deleteApiReportId = async (id: string, options?: RequestInit): Promise<void> => {
   
-  return fetcher<void>(getDeleteReportIdUrl(id),
+  return fetcher<void>(getDeleteApiReportIdUrl(id),
   {      
     ...options,
     method: 'DELETE'
@@ -3198,11 +3198,11 @@ export const deleteReportId = async (id: string, options?: RequestInit): Promise
 
 
 
-export const getDeleteReportIdMutationOptions = <TError = unknown,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteReportId>>, TError,{id: string}, TContext>, request?: SecondParameter<typeof fetcher>}
-): UseMutationOptions<Awaited<ReturnType<typeof deleteReportId>>, TError,{id: string}, TContext> => {
+export const getDeleteApiReportIdMutationOptions = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteApiReportId>>, TError,{id: string}, TContext>, request?: SecondParameter<typeof fetcher>}
+): UseMutationOptions<Awaited<ReturnType<typeof deleteApiReportId>>, TError,{id: string}, TContext> => {
 
-const mutationKey = ['deleteReportId'];
+const mutationKey = ['deleteApiReportId'];
 const {mutation: mutationOptions, request: requestOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
@@ -3212,10 +3212,10 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
       
 
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof deleteReportId>>, {id: string}> = (props) => {
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof deleteApiReportId>>, {id: string}> = (props) => {
           const {id} = props ?? {};
 
-          return  deleteReportId(id,requestOptions)
+          return  deleteApiReportId(id,requestOptions)
         }
 
         
@@ -3223,25 +3223,25 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
 
   return  { mutationFn, ...mutationOptions }}
 
-    export type DeleteReportIdMutationResult = NonNullable<Awaited<ReturnType<typeof deleteReportId>>>
+    export type DeleteApiReportIdMutationResult = NonNullable<Awaited<ReturnType<typeof deleteApiReportId>>>
     
-    export type DeleteReportIdMutationError = unknown
+    export type DeleteApiReportIdMutationError = unknown
 
-    export const useDeleteReportId = <TError = unknown,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteReportId>>, TError,{id: string}, TContext>, request?: SecondParameter<typeof fetcher>}
+    export const useDeleteApiReportId = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteApiReportId>>, TError,{id: string}, TContext>, request?: SecondParameter<typeof fetcher>}
  , queryClient?: QueryClient): UseMutationResult<
-        Awaited<ReturnType<typeof deleteReportId>>,
+        Awaited<ReturnType<typeof deleteApiReportId>>,
         TError,
         {id: string},
         TContext
       > => {
 
-      const mutationOptions = getDeleteReportIdMutationOptions(options);
+      const mutationOptions = getDeleteApiReportIdMutationOptions(options);
 
       return useMutation(mutationOptions, queryClient);
     }
     
-export const getGetReportIdUrl = (id: string,) => {
+export const getGetApiReportIdUrl = (id: string,) => {
 
 
   
@@ -3249,9 +3249,9 @@ export const getGetReportIdUrl = (id: string,) => {
   return `/api/Report/${id}`
 }
 
-export const getReportId = async (id: string, options?: RequestInit): Promise<ReportPreviewDto> => {
+export const getApiReportId = async (id: string, options?: RequestInit): Promise<ReportPreviewDto> => {
   
-  return fetcher<ReportPreviewDto>(getGetReportIdUrl(id),
+  return fetcher<ReportPreviewDto>(getGetApiReportIdUrl(id),
   {      
     ...options,
     method: 'GET'
@@ -3264,66 +3264,66 @@ export const getReportId = async (id: string, options?: RequestInit): Promise<Re
 
 
 
-export const getGetReportIdQueryKey = (id?: string,) => {
+export const getGetApiReportIdQueryKey = (id?: string,) => {
     return [
     `/api/Report/${id}`
     ] as const;
     }
 
     
-export const getGetReportIdQueryOptions = <TData = Awaited<ReturnType<typeof getReportId>>, TError = unknown>(id: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getReportId>>, TError, TData>>, request?: SecondParameter<typeof fetcher>}
+export const getGetApiReportIdQueryOptions = <TData = Awaited<ReturnType<typeof getApiReportId>>, TError = unknown>(id: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiReportId>>, TError, TData>>, request?: SecondParameter<typeof fetcher>}
 ) => {
 
 const {query: queryOptions, request: requestOptions} = options ?? {};
 
-  const queryKey =  queryOptions?.queryKey ?? getGetReportIdQueryKey(id);
+  const queryKey =  queryOptions?.queryKey ?? getGetApiReportIdQueryKey(id);
 
   
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getReportId>>> = ({ signal }) => getReportId(id, { signal, ...requestOptions });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getApiReportId>>> = ({ signal }) => getApiReportId(id, { signal, ...requestOptions });
 
       
 
       
 
-   return  { queryKey, queryFn, enabled: !!(id), ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getReportId>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+   return  { queryKey, queryFn, enabled: !!(id), ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getApiReportId>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
 }
 
-export type GetReportIdQueryResult = NonNullable<Awaited<ReturnType<typeof getReportId>>>
-export type GetReportIdQueryError = unknown
+export type GetApiReportIdQueryResult = NonNullable<Awaited<ReturnType<typeof getApiReportId>>>
+export type GetApiReportIdQueryError = unknown
 
 
-export function useGetReportId<TData = Awaited<ReturnType<typeof getReportId>>, TError = unknown>(
- id: string, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getReportId>>, TError, TData>> & Pick<
+export function useGetApiReportId<TData = Awaited<ReturnType<typeof getApiReportId>>, TError = unknown>(
+ id: string, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiReportId>>, TError, TData>> & Pick<
         DefinedInitialDataOptions<
-          Awaited<ReturnType<typeof getReportId>>,
+          Awaited<ReturnType<typeof getApiReportId>>,
           TError,
-          Awaited<ReturnType<typeof getReportId>>
+          Awaited<ReturnType<typeof getApiReportId>>
         > , 'initialData'
       >, request?: SecondParameter<typeof fetcher>}
  , queryClient?: QueryClient
   ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useGetReportId<TData = Awaited<ReturnType<typeof getReportId>>, TError = unknown>(
- id: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getReportId>>, TError, TData>> & Pick<
+export function useGetApiReportId<TData = Awaited<ReturnType<typeof getApiReportId>>, TError = unknown>(
+ id: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiReportId>>, TError, TData>> & Pick<
         UndefinedInitialDataOptions<
-          Awaited<ReturnType<typeof getReportId>>,
+          Awaited<ReturnType<typeof getApiReportId>>,
           TError,
-          Awaited<ReturnType<typeof getReportId>>
+          Awaited<ReturnType<typeof getApiReportId>>
         > , 'initialData'
       >, request?: SecondParameter<typeof fetcher>}
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useGetReportId<TData = Awaited<ReturnType<typeof getReportId>>, TError = unknown>(
- id: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getReportId>>, TError, TData>>, request?: SecondParameter<typeof fetcher>}
+export function useGetApiReportId<TData = Awaited<ReturnType<typeof getApiReportId>>, TError = unknown>(
+ id: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiReportId>>, TError, TData>>, request?: SecondParameter<typeof fetcher>}
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 
-export function useGetReportId<TData = Awaited<ReturnType<typeof getReportId>>, TError = unknown>(
- id: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getReportId>>, TError, TData>>, request?: SecondParameter<typeof fetcher>}
+export function useGetApiReportId<TData = Awaited<ReturnType<typeof getApiReportId>>, TError = unknown>(
+ id: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiReportId>>, TError, TData>>, request?: SecondParameter<typeof fetcher>}
  , queryClient?: QueryClient 
  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
-  const queryOptions = getGetReportIdQueryOptions(id,options)
+  const queryOptions = getGetApiReportIdQueryOptions(id,options)
 
   const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
@@ -3336,7 +3336,7 @@ export function useGetReportId<TData = Awaited<ReturnType<typeof getReportId>>, 
 
 
 
-export const getGetJourneysJourneyIdTripsUrl = (journeyId: number,) => {
+export const getGetApiJourneysJourneyIdTripsUrl = (journeyId: number,) => {
 
 
   
@@ -3344,9 +3344,9 @@ export const getGetJourneysJourneyIdTripsUrl = (journeyId: number,) => {
   return `/api/journeys/${journeyId}/Trips`
 }
 
-export const getJourneysJourneyIdTrips = async (journeyId: number, options?: RequestInit): Promise<TripDto[]> => {
+export const getApiJourneysJourneyIdTrips = async (journeyId: number, options?: RequestInit): Promise<TripDto[]> => {
   
-  return fetcher<TripDto[]>(getGetJourneysJourneyIdTripsUrl(journeyId),
+  return fetcher<TripDto[]>(getGetApiJourneysJourneyIdTripsUrl(journeyId),
   {      
     ...options,
     method: 'GET'
@@ -3359,66 +3359,66 @@ export const getJourneysJourneyIdTrips = async (journeyId: number, options?: Req
 
 
 
-export const getGetJourneysJourneyIdTripsQueryKey = (journeyId?: number,) => {
+export const getGetApiJourneysJourneyIdTripsQueryKey = (journeyId?: number,) => {
     return [
     `/api/journeys/${journeyId}/Trips`
     ] as const;
     }
 
     
-export const getGetJourneysJourneyIdTripsQueryOptions = <TData = Awaited<ReturnType<typeof getJourneysJourneyIdTrips>>, TError = unknown>(journeyId: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getJourneysJourneyIdTrips>>, TError, TData>>, request?: SecondParameter<typeof fetcher>}
+export const getGetApiJourneysJourneyIdTripsQueryOptions = <TData = Awaited<ReturnType<typeof getApiJourneysJourneyIdTrips>>, TError = unknown>(journeyId: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiJourneysJourneyIdTrips>>, TError, TData>>, request?: SecondParameter<typeof fetcher>}
 ) => {
 
 const {query: queryOptions, request: requestOptions} = options ?? {};
 
-  const queryKey =  queryOptions?.queryKey ?? getGetJourneysJourneyIdTripsQueryKey(journeyId);
+  const queryKey =  queryOptions?.queryKey ?? getGetApiJourneysJourneyIdTripsQueryKey(journeyId);
 
   
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getJourneysJourneyIdTrips>>> = ({ signal }) => getJourneysJourneyIdTrips(journeyId, { signal, ...requestOptions });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getApiJourneysJourneyIdTrips>>> = ({ signal }) => getApiJourneysJourneyIdTrips(journeyId, { signal, ...requestOptions });
 
       
 
       
 
-   return  { queryKey, queryFn, enabled: !!(journeyId), ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getJourneysJourneyIdTrips>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+   return  { queryKey, queryFn, enabled: !!(journeyId), ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getApiJourneysJourneyIdTrips>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
 }
 
-export type GetJourneysJourneyIdTripsQueryResult = NonNullable<Awaited<ReturnType<typeof getJourneysJourneyIdTrips>>>
-export type GetJourneysJourneyIdTripsQueryError = unknown
+export type GetApiJourneysJourneyIdTripsQueryResult = NonNullable<Awaited<ReturnType<typeof getApiJourneysJourneyIdTrips>>>
+export type GetApiJourneysJourneyIdTripsQueryError = unknown
 
 
-export function useGetJourneysJourneyIdTrips<TData = Awaited<ReturnType<typeof getJourneysJourneyIdTrips>>, TError = unknown>(
- journeyId: number, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getJourneysJourneyIdTrips>>, TError, TData>> & Pick<
+export function useGetApiJourneysJourneyIdTrips<TData = Awaited<ReturnType<typeof getApiJourneysJourneyIdTrips>>, TError = unknown>(
+ journeyId: number, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiJourneysJourneyIdTrips>>, TError, TData>> & Pick<
         DefinedInitialDataOptions<
-          Awaited<ReturnType<typeof getJourneysJourneyIdTrips>>,
+          Awaited<ReturnType<typeof getApiJourneysJourneyIdTrips>>,
           TError,
-          Awaited<ReturnType<typeof getJourneysJourneyIdTrips>>
+          Awaited<ReturnType<typeof getApiJourneysJourneyIdTrips>>
         > , 'initialData'
       >, request?: SecondParameter<typeof fetcher>}
  , queryClient?: QueryClient
   ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useGetJourneysJourneyIdTrips<TData = Awaited<ReturnType<typeof getJourneysJourneyIdTrips>>, TError = unknown>(
- journeyId: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getJourneysJourneyIdTrips>>, TError, TData>> & Pick<
+export function useGetApiJourneysJourneyIdTrips<TData = Awaited<ReturnType<typeof getApiJourneysJourneyIdTrips>>, TError = unknown>(
+ journeyId: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiJourneysJourneyIdTrips>>, TError, TData>> & Pick<
         UndefinedInitialDataOptions<
-          Awaited<ReturnType<typeof getJourneysJourneyIdTrips>>,
+          Awaited<ReturnType<typeof getApiJourneysJourneyIdTrips>>,
           TError,
-          Awaited<ReturnType<typeof getJourneysJourneyIdTrips>>
+          Awaited<ReturnType<typeof getApiJourneysJourneyIdTrips>>
         > , 'initialData'
       >, request?: SecondParameter<typeof fetcher>}
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useGetJourneysJourneyIdTrips<TData = Awaited<ReturnType<typeof getJourneysJourneyIdTrips>>, TError = unknown>(
- journeyId: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getJourneysJourneyIdTrips>>, TError, TData>>, request?: SecondParameter<typeof fetcher>}
+export function useGetApiJourneysJourneyIdTrips<TData = Awaited<ReturnType<typeof getApiJourneysJourneyIdTrips>>, TError = unknown>(
+ journeyId: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiJourneysJourneyIdTrips>>, TError, TData>>, request?: SecondParameter<typeof fetcher>}
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 
-export function useGetJourneysJourneyIdTrips<TData = Awaited<ReturnType<typeof getJourneysJourneyIdTrips>>, TError = unknown>(
- journeyId: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getJourneysJourneyIdTrips>>, TError, TData>>, request?: SecondParameter<typeof fetcher>}
+export function useGetApiJourneysJourneyIdTrips<TData = Awaited<ReturnType<typeof getApiJourneysJourneyIdTrips>>, TError = unknown>(
+ journeyId: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiJourneysJourneyIdTrips>>, TError, TData>>, request?: SecondParameter<typeof fetcher>}
  , queryClient?: QueryClient 
  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
-  const queryOptions = getGetJourneysJourneyIdTripsQueryOptions(journeyId,options)
+  const queryOptions = getGetApiJourneysJourneyIdTripsQueryOptions(journeyId,options)
 
   const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
@@ -3431,7 +3431,7 @@ export function useGetJourneysJourneyIdTrips<TData = Awaited<ReturnType<typeof g
 
 
 
-export const getPostJourneysJourneyIdTripsUrl = (journeyId: number,) => {
+export const getPostApiJourneysJourneyIdTripsUrl = (journeyId: number,) => {
 
 
   
@@ -3439,10 +3439,10 @@ export const getPostJourneysJourneyIdTripsUrl = (journeyId: number,) => {
   return `/api/journeys/${journeyId}/Trips`
 }
 
-export const postJourneysJourneyIdTrips = async (journeyId: number,
+export const postApiJourneysJourneyIdTrips = async (journeyId: number,
     createTripDto: CreateTripDto, options?: RequestInit): Promise<TripDto> => {
   
-  return fetcher<TripDto>(getPostJourneysJourneyIdTripsUrl(journeyId),
+  return fetcher<TripDto>(getPostApiJourneysJourneyIdTripsUrl(journeyId),
   {      
     ...options,
     method: 'POST',
@@ -3455,11 +3455,11 @@ export const postJourneysJourneyIdTrips = async (journeyId: number,
 
 
 
-export const getPostJourneysJourneyIdTripsMutationOptions = <TError = unknown,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postJourneysJourneyIdTrips>>, TError,{journeyId: number;data: CreateTripDto}, TContext>, request?: SecondParameter<typeof fetcher>}
-): UseMutationOptions<Awaited<ReturnType<typeof postJourneysJourneyIdTrips>>, TError,{journeyId: number;data: CreateTripDto}, TContext> => {
+export const getPostApiJourneysJourneyIdTripsMutationOptions = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiJourneysJourneyIdTrips>>, TError,{journeyId: number;data: CreateTripDto}, TContext>, request?: SecondParameter<typeof fetcher>}
+): UseMutationOptions<Awaited<ReturnType<typeof postApiJourneysJourneyIdTrips>>, TError,{journeyId: number;data: CreateTripDto}, TContext> => {
 
-const mutationKey = ['postJourneysJourneyIdTrips'];
+const mutationKey = ['postApiJourneysJourneyIdTrips'];
 const {mutation: mutationOptions, request: requestOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
@@ -3469,10 +3469,10 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
       
 
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof postJourneysJourneyIdTrips>>, {journeyId: number;data: CreateTripDto}> = (props) => {
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof postApiJourneysJourneyIdTrips>>, {journeyId: number;data: CreateTripDto}> = (props) => {
           const {journeyId,data} = props ?? {};
 
-          return  postJourneysJourneyIdTrips(journeyId,data,requestOptions)
+          return  postApiJourneysJourneyIdTrips(journeyId,data,requestOptions)
         }
 
         
@@ -3480,25 +3480,25 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
 
   return  { mutationFn, ...mutationOptions }}
 
-    export type PostJourneysJourneyIdTripsMutationResult = NonNullable<Awaited<ReturnType<typeof postJourneysJourneyIdTrips>>>
-    export type PostJourneysJourneyIdTripsMutationBody = CreateTripDto
-    export type PostJourneysJourneyIdTripsMutationError = unknown
+    export type PostApiJourneysJourneyIdTripsMutationResult = NonNullable<Awaited<ReturnType<typeof postApiJourneysJourneyIdTrips>>>
+    export type PostApiJourneysJourneyIdTripsMutationBody = CreateTripDto
+    export type PostApiJourneysJourneyIdTripsMutationError = unknown
 
-    export const usePostJourneysJourneyIdTrips = <TError = unknown,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postJourneysJourneyIdTrips>>, TError,{journeyId: number;data: CreateTripDto}, TContext>, request?: SecondParameter<typeof fetcher>}
+    export const usePostApiJourneysJourneyIdTrips = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiJourneysJourneyIdTrips>>, TError,{journeyId: number;data: CreateTripDto}, TContext>, request?: SecondParameter<typeof fetcher>}
  , queryClient?: QueryClient): UseMutationResult<
-        Awaited<ReturnType<typeof postJourneysJourneyIdTrips>>,
+        Awaited<ReturnType<typeof postApiJourneysJourneyIdTrips>>,
         TError,
         {journeyId: number;data: CreateTripDto},
         TContext
       > => {
 
-      const mutationOptions = getPostJourneysJourneyIdTripsMutationOptions(options);
+      const mutationOptions = getPostApiJourneysJourneyIdTripsMutationOptions(options);
 
       return useMutation(mutationOptions, queryClient);
     }
     
-export const getGetJourneysJourneyIdTripsTripIdUrl = (journeyId: number,
+export const getGetApiJourneysJourneyIdTripsTripIdUrl = (journeyId: number,
     tripId: number,) => {
 
 
@@ -3507,10 +3507,10 @@ export const getGetJourneysJourneyIdTripsTripIdUrl = (journeyId: number,
   return `/api/journeys/${journeyId}/Trips/${tripId}`
 }
 
-export const getJourneysJourneyIdTripsTripId = async (journeyId: number,
+export const getApiJourneysJourneyIdTripsTripId = async (journeyId: number,
     tripId: number, options?: RequestInit): Promise<TripDto> => {
   
-  return fetcher<TripDto>(getGetJourneysJourneyIdTripsTripIdUrl(journeyId,tripId),
+  return fetcher<TripDto>(getGetApiJourneysJourneyIdTripsTripIdUrl(journeyId,tripId),
   {      
     ...options,
     method: 'GET'
@@ -3523,7 +3523,7 @@ export const getJourneysJourneyIdTripsTripId = async (journeyId: number,
 
 
 
-export const getGetJourneysJourneyIdTripsTripIdQueryKey = (journeyId?: number,
+export const getGetApiJourneysJourneyIdTripsTripIdQueryKey = (journeyId?: number,
     tripId?: number,) => {
     return [
     `/api/journeys/${journeyId}/Trips/${tripId}`
@@ -3531,64 +3531,64 @@ export const getGetJourneysJourneyIdTripsTripIdQueryKey = (journeyId?: number,
     }
 
     
-export const getGetJourneysJourneyIdTripsTripIdQueryOptions = <TData = Awaited<ReturnType<typeof getJourneysJourneyIdTripsTripId>>, TError = unknown>(journeyId: number,
-    tripId: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getJourneysJourneyIdTripsTripId>>, TError, TData>>, request?: SecondParameter<typeof fetcher>}
+export const getGetApiJourneysJourneyIdTripsTripIdQueryOptions = <TData = Awaited<ReturnType<typeof getApiJourneysJourneyIdTripsTripId>>, TError = unknown>(journeyId: number,
+    tripId: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiJourneysJourneyIdTripsTripId>>, TError, TData>>, request?: SecondParameter<typeof fetcher>}
 ) => {
 
 const {query: queryOptions, request: requestOptions} = options ?? {};
 
-  const queryKey =  queryOptions?.queryKey ?? getGetJourneysJourneyIdTripsTripIdQueryKey(journeyId,tripId);
+  const queryKey =  queryOptions?.queryKey ?? getGetApiJourneysJourneyIdTripsTripIdQueryKey(journeyId,tripId);
 
   
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getJourneysJourneyIdTripsTripId>>> = ({ signal }) => getJourneysJourneyIdTripsTripId(journeyId,tripId, { signal, ...requestOptions });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getApiJourneysJourneyIdTripsTripId>>> = ({ signal }) => getApiJourneysJourneyIdTripsTripId(journeyId,tripId, { signal, ...requestOptions });
 
       
 
       
 
-   return  { queryKey, queryFn, enabled: !!(journeyId && tripId), ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getJourneysJourneyIdTripsTripId>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+   return  { queryKey, queryFn, enabled: !!(journeyId && tripId), ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getApiJourneysJourneyIdTripsTripId>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
 }
 
-export type GetJourneysJourneyIdTripsTripIdQueryResult = NonNullable<Awaited<ReturnType<typeof getJourneysJourneyIdTripsTripId>>>
-export type GetJourneysJourneyIdTripsTripIdQueryError = unknown
+export type GetApiJourneysJourneyIdTripsTripIdQueryResult = NonNullable<Awaited<ReturnType<typeof getApiJourneysJourneyIdTripsTripId>>>
+export type GetApiJourneysJourneyIdTripsTripIdQueryError = unknown
 
 
-export function useGetJourneysJourneyIdTripsTripId<TData = Awaited<ReturnType<typeof getJourneysJourneyIdTripsTripId>>, TError = unknown>(
+export function useGetApiJourneysJourneyIdTripsTripId<TData = Awaited<ReturnType<typeof getApiJourneysJourneyIdTripsTripId>>, TError = unknown>(
  journeyId: number,
-    tripId: number, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getJourneysJourneyIdTripsTripId>>, TError, TData>> & Pick<
+    tripId: number, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiJourneysJourneyIdTripsTripId>>, TError, TData>> & Pick<
         DefinedInitialDataOptions<
-          Awaited<ReturnType<typeof getJourneysJourneyIdTripsTripId>>,
+          Awaited<ReturnType<typeof getApiJourneysJourneyIdTripsTripId>>,
           TError,
-          Awaited<ReturnType<typeof getJourneysJourneyIdTripsTripId>>
+          Awaited<ReturnType<typeof getApiJourneysJourneyIdTripsTripId>>
         > , 'initialData'
       >, request?: SecondParameter<typeof fetcher>}
  , queryClient?: QueryClient
   ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useGetJourneysJourneyIdTripsTripId<TData = Awaited<ReturnType<typeof getJourneysJourneyIdTripsTripId>>, TError = unknown>(
+export function useGetApiJourneysJourneyIdTripsTripId<TData = Awaited<ReturnType<typeof getApiJourneysJourneyIdTripsTripId>>, TError = unknown>(
  journeyId: number,
-    tripId: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getJourneysJourneyIdTripsTripId>>, TError, TData>> & Pick<
+    tripId: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiJourneysJourneyIdTripsTripId>>, TError, TData>> & Pick<
         UndefinedInitialDataOptions<
-          Awaited<ReturnType<typeof getJourneysJourneyIdTripsTripId>>,
+          Awaited<ReturnType<typeof getApiJourneysJourneyIdTripsTripId>>,
           TError,
-          Awaited<ReturnType<typeof getJourneysJourneyIdTripsTripId>>
+          Awaited<ReturnType<typeof getApiJourneysJourneyIdTripsTripId>>
         > , 'initialData'
       >, request?: SecondParameter<typeof fetcher>}
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useGetJourneysJourneyIdTripsTripId<TData = Awaited<ReturnType<typeof getJourneysJourneyIdTripsTripId>>, TError = unknown>(
+export function useGetApiJourneysJourneyIdTripsTripId<TData = Awaited<ReturnType<typeof getApiJourneysJourneyIdTripsTripId>>, TError = unknown>(
  journeyId: number,
-    tripId: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getJourneysJourneyIdTripsTripId>>, TError, TData>>, request?: SecondParameter<typeof fetcher>}
+    tripId: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiJourneysJourneyIdTripsTripId>>, TError, TData>>, request?: SecondParameter<typeof fetcher>}
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 
-export function useGetJourneysJourneyIdTripsTripId<TData = Awaited<ReturnType<typeof getJourneysJourneyIdTripsTripId>>, TError = unknown>(
+export function useGetApiJourneysJourneyIdTripsTripId<TData = Awaited<ReturnType<typeof getApiJourneysJourneyIdTripsTripId>>, TError = unknown>(
  journeyId: number,
-    tripId: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getJourneysJourneyIdTripsTripId>>, TError, TData>>, request?: SecondParameter<typeof fetcher>}
+    tripId: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiJourneysJourneyIdTripsTripId>>, TError, TData>>, request?: SecondParameter<typeof fetcher>}
  , queryClient?: QueryClient 
  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
-  const queryOptions = getGetJourneysJourneyIdTripsTripIdQueryOptions(journeyId,tripId,options)
+  const queryOptions = getGetApiJourneysJourneyIdTripsTripIdQueryOptions(journeyId,tripId,options)
 
   const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
@@ -3601,7 +3601,7 @@ export function useGetJourneysJourneyIdTripsTripId<TData = Awaited<ReturnType<ty
 
 
 
-export const getPutJourneysJourneyIdTripsTripIdUrl = (journeyId: number,
+export const getPutApiJourneysJourneyIdTripsTripIdUrl = (journeyId: number,
     tripId: number,) => {
 
 
@@ -3610,11 +3610,11 @@ export const getPutJourneysJourneyIdTripsTripIdUrl = (journeyId: number,
   return `/api/journeys/${journeyId}/Trips/${tripId}`
 }
 
-export const putJourneysJourneyIdTripsTripId = async (journeyId: number,
+export const putApiJourneysJourneyIdTripsTripId = async (journeyId: number,
     tripId: number,
     updateTripDto: UpdateTripDto, options?: RequestInit): Promise<void> => {
   
-  return fetcher<void>(getPutJourneysJourneyIdTripsTripIdUrl(journeyId,tripId),
+  return fetcher<void>(getPutApiJourneysJourneyIdTripsTripIdUrl(journeyId,tripId),
   {      
     ...options,
     method: 'PUT',
@@ -3627,11 +3627,11 @@ export const putJourneysJourneyIdTripsTripId = async (journeyId: number,
 
 
 
-export const getPutJourneysJourneyIdTripsTripIdMutationOptions = <TError = unknown,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof putJourneysJourneyIdTripsTripId>>, TError,{journeyId: number;tripId: number;data: UpdateTripDto}, TContext>, request?: SecondParameter<typeof fetcher>}
-): UseMutationOptions<Awaited<ReturnType<typeof putJourneysJourneyIdTripsTripId>>, TError,{journeyId: number;tripId: number;data: UpdateTripDto}, TContext> => {
+export const getPutApiJourneysJourneyIdTripsTripIdMutationOptions = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof putApiJourneysJourneyIdTripsTripId>>, TError,{journeyId: number;tripId: number;data: UpdateTripDto}, TContext>, request?: SecondParameter<typeof fetcher>}
+): UseMutationOptions<Awaited<ReturnType<typeof putApiJourneysJourneyIdTripsTripId>>, TError,{journeyId: number;tripId: number;data: UpdateTripDto}, TContext> => {
 
-const mutationKey = ['putJourneysJourneyIdTripsTripId'];
+const mutationKey = ['putApiJourneysJourneyIdTripsTripId'];
 const {mutation: mutationOptions, request: requestOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
@@ -3641,10 +3641,10 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
       
 
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof putJourneysJourneyIdTripsTripId>>, {journeyId: number;tripId: number;data: UpdateTripDto}> = (props) => {
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof putApiJourneysJourneyIdTripsTripId>>, {journeyId: number;tripId: number;data: UpdateTripDto}> = (props) => {
           const {journeyId,tripId,data} = props ?? {};
 
-          return  putJourneysJourneyIdTripsTripId(journeyId,tripId,data,requestOptions)
+          return  putApiJourneysJourneyIdTripsTripId(journeyId,tripId,data,requestOptions)
         }
 
         
@@ -3652,25 +3652,25 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
 
   return  { mutationFn, ...mutationOptions }}
 
-    export type PutJourneysJourneyIdTripsTripIdMutationResult = NonNullable<Awaited<ReturnType<typeof putJourneysJourneyIdTripsTripId>>>
-    export type PutJourneysJourneyIdTripsTripIdMutationBody = UpdateTripDto
-    export type PutJourneysJourneyIdTripsTripIdMutationError = unknown
+    export type PutApiJourneysJourneyIdTripsTripIdMutationResult = NonNullable<Awaited<ReturnType<typeof putApiJourneysJourneyIdTripsTripId>>>
+    export type PutApiJourneysJourneyIdTripsTripIdMutationBody = UpdateTripDto
+    export type PutApiJourneysJourneyIdTripsTripIdMutationError = unknown
 
-    export const usePutJourneysJourneyIdTripsTripId = <TError = unknown,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof putJourneysJourneyIdTripsTripId>>, TError,{journeyId: number;tripId: number;data: UpdateTripDto}, TContext>, request?: SecondParameter<typeof fetcher>}
+    export const usePutApiJourneysJourneyIdTripsTripId = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof putApiJourneysJourneyIdTripsTripId>>, TError,{journeyId: number;tripId: number;data: UpdateTripDto}, TContext>, request?: SecondParameter<typeof fetcher>}
  , queryClient?: QueryClient): UseMutationResult<
-        Awaited<ReturnType<typeof putJourneysJourneyIdTripsTripId>>,
+        Awaited<ReturnType<typeof putApiJourneysJourneyIdTripsTripId>>,
         TError,
         {journeyId: number;tripId: number;data: UpdateTripDto},
         TContext
       > => {
 
-      const mutationOptions = getPutJourneysJourneyIdTripsTripIdMutationOptions(options);
+      const mutationOptions = getPutApiJourneysJourneyIdTripsTripIdMutationOptions(options);
 
       return useMutation(mutationOptions, queryClient);
     }
     
-export const getDeleteJourneysJourneyIdTripsTripIdUrl = (journeyId: number,
+export const getDeleteApiJourneysJourneyIdTripsTripIdUrl = (journeyId: number,
     tripId: number,) => {
 
 
@@ -3679,10 +3679,10 @@ export const getDeleteJourneysJourneyIdTripsTripIdUrl = (journeyId: number,
   return `/api/journeys/${journeyId}/Trips/${tripId}`
 }
 
-export const deleteJourneysJourneyIdTripsTripId = async (journeyId: number,
+export const deleteApiJourneysJourneyIdTripsTripId = async (journeyId: number,
     tripId: number, options?: RequestInit): Promise<void> => {
   
-  return fetcher<void>(getDeleteJourneysJourneyIdTripsTripIdUrl(journeyId,tripId),
+  return fetcher<void>(getDeleteApiJourneysJourneyIdTripsTripIdUrl(journeyId,tripId),
   {      
     ...options,
     method: 'DELETE'
@@ -3694,11 +3694,11 @@ export const deleteJourneysJourneyIdTripsTripId = async (journeyId: number,
 
 
 
-export const getDeleteJourneysJourneyIdTripsTripIdMutationOptions = <TError = unknown,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteJourneysJourneyIdTripsTripId>>, TError,{journeyId: number;tripId: number}, TContext>, request?: SecondParameter<typeof fetcher>}
-): UseMutationOptions<Awaited<ReturnType<typeof deleteJourneysJourneyIdTripsTripId>>, TError,{journeyId: number;tripId: number}, TContext> => {
+export const getDeleteApiJourneysJourneyIdTripsTripIdMutationOptions = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteApiJourneysJourneyIdTripsTripId>>, TError,{journeyId: number;tripId: number}, TContext>, request?: SecondParameter<typeof fetcher>}
+): UseMutationOptions<Awaited<ReturnType<typeof deleteApiJourneysJourneyIdTripsTripId>>, TError,{journeyId: number;tripId: number}, TContext> => {
 
-const mutationKey = ['deleteJourneysJourneyIdTripsTripId'];
+const mutationKey = ['deleteApiJourneysJourneyIdTripsTripId'];
 const {mutation: mutationOptions, request: requestOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
@@ -3708,10 +3708,10 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
       
 
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof deleteJourneysJourneyIdTripsTripId>>, {journeyId: number;tripId: number}> = (props) => {
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof deleteApiJourneysJourneyIdTripsTripId>>, {journeyId: number;tripId: number}> = (props) => {
           const {journeyId,tripId} = props ?? {};
 
-          return  deleteJourneysJourneyIdTripsTripId(journeyId,tripId,requestOptions)
+          return  deleteApiJourneysJourneyIdTripsTripId(journeyId,tripId,requestOptions)
         }
 
         
@@ -3719,20 +3719,20 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
 
   return  { mutationFn, ...mutationOptions }}
 
-    export type DeleteJourneysJourneyIdTripsTripIdMutationResult = NonNullable<Awaited<ReturnType<typeof deleteJourneysJourneyIdTripsTripId>>>
+    export type DeleteApiJourneysJourneyIdTripsTripIdMutationResult = NonNullable<Awaited<ReturnType<typeof deleteApiJourneysJourneyIdTripsTripId>>>
     
-    export type DeleteJourneysJourneyIdTripsTripIdMutationError = unknown
+    export type DeleteApiJourneysJourneyIdTripsTripIdMutationError = unknown
 
-    export const useDeleteJourneysJourneyIdTripsTripId = <TError = unknown,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteJourneysJourneyIdTripsTripId>>, TError,{journeyId: number;tripId: number}, TContext>, request?: SecondParameter<typeof fetcher>}
+    export const useDeleteApiJourneysJourneyIdTripsTripId = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteApiJourneysJourneyIdTripsTripId>>, TError,{journeyId: number;tripId: number}, TContext>, request?: SecondParameter<typeof fetcher>}
  , queryClient?: QueryClient): UseMutationResult<
-        Awaited<ReturnType<typeof deleteJourneysJourneyIdTripsTripId>>,
+        Awaited<ReturnType<typeof deleteApiJourneysJourneyIdTripsTripId>>,
         TError,
         {journeyId: number;tripId: number},
         TContext
       > => {
 
-      const mutationOptions = getDeleteJourneysJourneyIdTripsTripIdMutationOptions(options);
+      const mutationOptions = getDeleteApiJourneysJourneyIdTripsTripIdMutationOptions(options);
 
       return useMutation(mutationOptions, queryClient);
     }

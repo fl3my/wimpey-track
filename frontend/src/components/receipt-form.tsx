@@ -1,11 +1,11 @@
 import { useForm } from "@mantine/form";
 import { Button, FileInput, Select, TextInput } from "@mantine/core";
 import { DateInput } from "@mantine/dates";
-import { postReceiptsBody } from "@/api/zod.gen.ts";
+import { postApiReceiptsBody } from "@/api/zod.gen.ts";
 import z from "zod";
 import { zod4Resolver } from "mantine-form-zod-resolver";
 
-export type ReceiptFormValues = z.infer<typeof postReceiptsBody>;
+export type ReceiptFormValues = z.infer<typeof postApiReceiptsBody>;
 
 type ReceiptFormProps = {
   onSubmit: (values: ReceiptFormValues) => void | Promise<void>;
@@ -25,7 +25,7 @@ export function ReceiptForm({
       Category: initialValues?.Category ?? 0,
       File: undefined as File | undefined,
     },
-    validate: zod4Resolver(postReceiptsBody),
+    validate: zod4Resolver(postApiReceiptsBody),
   });
   return (
     <form onSubmit={form.onSubmit(onSubmit)}>

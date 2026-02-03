@@ -6,7 +6,7 @@ using WimpeyTrack.Api.Models;
 
 namespace WimpeyTrack.Api.Controllers
 {
-    [Route("Purchases/{purchaseId}/[controller]")]
+    [Route("api/Purchases/{purchaseId}/[controller]")]
     [ApiController]
     public class ItemsController : ControllerBase
     {

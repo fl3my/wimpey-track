@@ -2,10 +2,10 @@ import { useForm } from "@mantine/form";
 import { Button, Group, NumberInput, Stack, TextInput } from "@mantine/core";
 import { DateInput } from "@mantine/dates";
 import { zod4Resolver } from "mantine-form-zod-resolver";
-import { postPurchasesBody } from "@/api/zod.gen.ts";
+import { postApiPurchasesBody } from "@/api/zod.gen.ts";
 import z from "zod";
 
-export type PurchaseFormValues = z.infer<typeof postPurchasesBody>;
+export type PurchaseFormValues = z.infer<typeof postApiPurchasesBody>;
 
 type PurchaseFormProps = {
   onSubmit: (values: PurchaseFormValues) => void | Promise<void>;
@@ -32,7 +32,7 @@ export function PurchaseForm({
         },
       ],
     },
-    validate: zod4Resolver(postPurchasesBody),
+    validate: zod4Resolver(postApiPurchasesBody),
   });
 
   return (

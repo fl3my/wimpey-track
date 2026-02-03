@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useGetLocationsId } from "@/api/api-client.gen.ts";
+import { useGetApiLocationsId } from "@/api/api-client.gen.ts";
 import { Loader, Stack, Text } from "@mantine/core";
 
 export const Route = createFileRoute("/Locations/$locationId/")({
@@ -13,7 +13,7 @@ function RouteComponent() {
     isLoading,
     isError,
     error,
-  } = useGetLocationsId(Number(locationId));
+  } = useGetApiLocationsId(Number(locationId));
 
   if (isLoading) return <Loader size="xl" />;
   if (isError)

@@ -6,7 +6,7 @@
  */
 import * as zod from 'zod';
 
-export const getDashboardResponse = zod.object({
+export const getApiDashboardResponse = zod.object({
   "summary": zod.object({
   "totalClaimedThisTaxYear": zod.coerce.number().optional(),
   "totalClaimedThisMonth": zod.coerce.number().optional(),
@@ -25,45 +25,45 @@ export const getDashboardResponse = zod.object({
 })
 
 
-export const getPurchasesPurchaseIdItemsParams = zod.object({
+export const getApiPurchasesPurchaseIdItemsParams = zod.object({
   "purchaseId": zod.coerce.string()
 })
 
-export const getPurchasesPurchaseIdItemsResponseItem = zod.object({
+export const getApiPurchasesPurchaseIdItemsResponseItem = zod.object({
   "id": zod.coerce.number().optional(),
   "name": zod.coerce.string().optional(),
   "quantity": zod.coerce.number().optional(),
   "cost": zod.coerce.number().optional(),
   "reason": zod.coerce.string().optional()
 })
-export const getPurchasesPurchaseIdItemsResponse = zod.array(getPurchasesPurchaseIdItemsResponseItem)
+export const getApiPurchasesPurchaseIdItemsResponse = zod.array(getApiPurchasesPurchaseIdItemsResponseItem)
 
 
-export const postPurchasesPurchaseIdItemsParams = zod.object({
+export const postApiPurchasesPurchaseIdItemsParams = zod.object({
   "purchaseId": zod.coerce.number()
 })
 
-export const postPurchasesPurchaseIdItemsBodyNameMin = 3;
-export const postPurchasesPurchaseIdItemsBodyNameMax = 50;
+export const postApiPurchasesPurchaseIdItemsBodyNameMin = 3;
+export const postApiPurchasesPurchaseIdItemsBodyNameMax = 50;
 
-export const postPurchasesPurchaseIdItemsBodyQuantityMax = 10;
+export const postApiPurchasesPurchaseIdItemsBodyQuantityMax = 10;
 
-export const postPurchasesPurchaseIdItemsBodyCostMin = 0.01;
-export const postPurchasesPurchaseIdItemsBodyCostMax = 100;
+export const postApiPurchasesPurchaseIdItemsBodyCostMin = 0.01;
+export const postApiPurchasesPurchaseIdItemsBodyCostMax = 100;
 
-export const postPurchasesPurchaseIdItemsBodyReasonMin = 3;
-export const postPurchasesPurchaseIdItemsBodyReasonMax = 50;
+export const postApiPurchasesPurchaseIdItemsBodyReasonMin = 3;
+export const postApiPurchasesPurchaseIdItemsBodyReasonMax = 50;
 
 
 
-export const postPurchasesPurchaseIdItemsBody = zod.object({
-  "name": zod.coerce.string().min(postPurchasesPurchaseIdItemsBodyNameMin).max(postPurchasesPurchaseIdItemsBodyNameMax),
-  "quantity": zod.coerce.number().min(1).max(postPurchasesPurchaseIdItemsBodyQuantityMax),
-  "cost": zod.coerce.number().min(postPurchasesPurchaseIdItemsBodyCostMin).max(postPurchasesPurchaseIdItemsBodyCostMax),
-  "reason": zod.coerce.string().min(postPurchasesPurchaseIdItemsBodyReasonMin).max(postPurchasesPurchaseIdItemsBodyReasonMax)
+export const postApiPurchasesPurchaseIdItemsBody = zod.object({
+  "name": zod.coerce.string().min(postApiPurchasesPurchaseIdItemsBodyNameMin).max(postApiPurchasesPurchaseIdItemsBodyNameMax),
+  "quantity": zod.coerce.number().min(1).max(postApiPurchasesPurchaseIdItemsBodyQuantityMax),
+  "cost": zod.coerce.number().min(postApiPurchasesPurchaseIdItemsBodyCostMin).max(postApiPurchasesPurchaseIdItemsBodyCostMax),
+  "reason": zod.coerce.string().min(postApiPurchasesPurchaseIdItemsBodyReasonMin).max(postApiPurchasesPurchaseIdItemsBodyReasonMax)
 })
 
-export const postPurchasesPurchaseIdItemsResponse = zod.object({
+export const postApiPurchasesPurchaseIdItemsResponse = zod.object({
   "id": zod.coerce.number().optional(),
   "name": zod.coerce.string().optional(),
   "quantity": zod.coerce.number().optional(),
@@ -72,12 +72,12 @@ export const postPurchasesPurchaseIdItemsResponse = zod.object({
 })
 
 
-export const getPurchasesPurchaseIdItemsItemIdParams = zod.object({
+export const getApiPurchasesPurchaseIdItemsItemIdParams = zod.object({
   "purchaseId": zod.coerce.number(),
   "itemId": zod.coerce.number()
 })
 
-export const getPurchasesPurchaseIdItemsItemIdResponse = zod.object({
+export const getApiPurchasesPurchaseIdItemsItemIdResponse = zod.object({
   "id": zod.coerce.number().optional(),
   "name": zod.coerce.string().optional(),
   "quantity": zod.coerce.number().optional(),
@@ -86,45 +86,45 @@ export const getPurchasesPurchaseIdItemsItemIdResponse = zod.object({
 })
 
 
-export const putPurchasesPurchaseIdItemsItemIdParams = zod.object({
+export const putApiPurchasesPurchaseIdItemsItemIdParams = zod.object({
   "purchaseId": zod.coerce.number(),
   "itemId": zod.coerce.number()
 })
 
-export const putPurchasesPurchaseIdItemsItemIdBodyNameMin = 3;
-export const putPurchasesPurchaseIdItemsItemIdBodyNameMax = 50;
+export const putApiPurchasesPurchaseIdItemsItemIdBodyNameMin = 3;
+export const putApiPurchasesPurchaseIdItemsItemIdBodyNameMax = 50;
 
-export const putPurchasesPurchaseIdItemsItemIdBodyQuantityMin = 0.01;
-export const putPurchasesPurchaseIdItemsItemIdBodyQuantityMax = 10;
+export const putApiPurchasesPurchaseIdItemsItemIdBodyQuantityMin = 0.01;
+export const putApiPurchasesPurchaseIdItemsItemIdBodyQuantityMax = 10;
 
-export const putPurchasesPurchaseIdItemsItemIdBodyCostMin = 0.01;
-export const putPurchasesPurchaseIdItemsItemIdBodyCostMax = 100;
+export const putApiPurchasesPurchaseIdItemsItemIdBodyCostMin = 0.01;
+export const putApiPurchasesPurchaseIdItemsItemIdBodyCostMax = 100;
 
-export const putPurchasesPurchaseIdItemsItemIdBodyReasonMin = 3;
-export const putPurchasesPurchaseIdItemsItemIdBodyReasonMax = 50;
+export const putApiPurchasesPurchaseIdItemsItemIdBodyReasonMin = 3;
+export const putApiPurchasesPurchaseIdItemsItemIdBodyReasonMax = 50;
 
 
 
-export const putPurchasesPurchaseIdItemsItemIdBody = zod.object({
+export const putApiPurchasesPurchaseIdItemsItemIdBody = zod.object({
   "id": zod.coerce.number(),
-  "name": zod.coerce.string().min(putPurchasesPurchaseIdItemsItemIdBodyNameMin).max(putPurchasesPurchaseIdItemsItemIdBodyNameMax),
-  "quantity": zod.coerce.number().min(putPurchasesPurchaseIdItemsItemIdBodyQuantityMin).max(putPurchasesPurchaseIdItemsItemIdBodyQuantityMax),
-  "cost": zod.coerce.number().min(putPurchasesPurchaseIdItemsItemIdBodyCostMin).max(putPurchasesPurchaseIdItemsItemIdBodyCostMax),
-  "reason": zod.coerce.string().min(putPurchasesPurchaseIdItemsItemIdBodyReasonMin).max(putPurchasesPurchaseIdItemsItemIdBodyReasonMax)
+  "name": zod.coerce.string().min(putApiPurchasesPurchaseIdItemsItemIdBodyNameMin).max(putApiPurchasesPurchaseIdItemsItemIdBodyNameMax),
+  "quantity": zod.coerce.number().min(putApiPurchasesPurchaseIdItemsItemIdBodyQuantityMin).max(putApiPurchasesPurchaseIdItemsItemIdBodyQuantityMax),
+  "cost": zod.coerce.number().min(putApiPurchasesPurchaseIdItemsItemIdBodyCostMin).max(putApiPurchasesPurchaseIdItemsItemIdBodyCostMax),
+  "reason": zod.coerce.string().min(putApiPurchasesPurchaseIdItemsItemIdBodyReasonMin).max(putApiPurchasesPurchaseIdItemsItemIdBodyReasonMax)
 })
 
 
-export const deletePurchasesPurchaseIdItemsItemIdParams = zod.object({
+export const deleteApiPurchasesPurchaseIdItemsItemIdParams = zod.object({
   "purchaseId": zod.coerce.number(),
   "itemId": zod.coerce.number()
 })
 
 
-export const getJourneysQueryParams = zod.object({
+export const getApiJourneysQueryParams = zod.object({
   "weekStart": zod.iso.date().optional()
 })
 
-export const getJourneysResponse = zod.object({
+export const getApiJourneysResponse = zod.object({
   "weekStart": zod.iso.date(),
   "prevWeekStart": zod.iso.date(),
   "nextWeekStart": zod.iso.date(),
@@ -146,19 +146,19 @@ export const getJourneysResponse = zod.object({
 })
 
 
-export const postJourneysBodyTripsMax = 10;
+export const postApiJourneysBodyTripsMax = 10;
 
 
 
-export const postJourneysBody = zod.object({
+export const postApiJourneysBody = zod.object({
   "date": zod.iso.date(),
   "trips": zod.array(zod.object({
   "locationId": zod.coerce.number(),
   "reasonId": zod.coerce.number()
-})).min(1).max(postJourneysBodyTripsMax)
+})).min(1).max(postApiJourneysBodyTripsMax)
 })
 
-export const postJourneysResponse = zod.object({
+export const postApiJourneysResponse = zod.object({
   "id": zod.coerce.number().optional(),
   "date": zod.iso.date().optional(),
   "totalMiles": zod.coerce.number().optional(),
@@ -172,11 +172,11 @@ export const postJourneysResponse = zod.object({
 })
 
 
-export const getJourneysIdParams = zod.object({
+export const getApiJourneysIdParams = zod.object({
   "id": zod.coerce.number()
 })
 
-export const getJourneysIdResponse = zod.object({
+export const getApiJourneysIdResponse = zod.object({
   "id": zod.coerce.number().optional(),
   "date": zod.iso.date().optional(),
   "totalMiles": zod.coerce.number().optional(),
@@ -190,67 +190,55 @@ export const getJourneysIdResponse = zod.object({
 })
 
 
-export const putJourneysIdParams = zod.object({
+export const putApiJourneysIdParams = zod.object({
   "id": zod.coerce.number()
 })
 
-export const putJourneysIdBodyTotalMilesMax = 300;
+export const putApiJourneysIdBodyTotalMilesMax = 300;
 
 
 
-export const putJourneysIdBody = zod.object({
+export const putApiJourneysIdBody = zod.object({
   "id": zod.coerce.number(),
   "date": zod.iso.date(),
-  "totalMiles": zod.coerce.number().min(1).max(putJourneysIdBodyTotalMilesMax),
+  "totalMiles": zod.coerce.number().min(1).max(putApiJourneysIdBodyTotalMilesMax),
   "isManualMiles": zod.coerce.boolean(),
   "homeLocationId": zod.coerce.number()
 })
 
 
-export const deleteJourneysIdParams = zod.object({
+export const deleteApiJourneysIdParams = zod.object({
   "id": zod.coerce.number()
 })
 
 
-export const getLocationsResponseItem = zod.object({
+export const getApiLocationsResponseItem = zod.object({
   "id": zod.coerce.number().optional(),
   "name": zod.coerce.string().optional(),
   "latitude": zod.coerce.number().optional(),
   "longitude": zod.coerce.number().optional()
 })
-export const getLocationsResponse = zod.array(getLocationsResponseItem)
+export const getApiLocationsResponse = zod.array(getApiLocationsResponseItem)
 
 
-export const postLocationsBodyNameMin = 3;
-export const postLocationsBodyNameMax = 50;
+export const postApiLocationsBodyNameMin = 3;
+export const postApiLocationsBodyNameMax = 50;
 
-export const postLocationsBodyLatitudeMin = 55.3669;
-export const postLocationsBodyLatitudeMax = 56.1059;
+export const postApiLocationsBodyLatitudeMin = 55.3669;
+export const postApiLocationsBodyLatitudeMax = 56.1059;
 
-export const postLocationsBodyLongitudeMin = -4.9821;
-export const postLocationsBodyLongitudeMax = -2.6953;
+export const postApiLocationsBodyLongitudeMin = -4.9821;
+export const postApiLocationsBodyLongitudeMax = -2.6953;
 
 
 
-export const postLocationsBody = zod.object({
-  "name": zod.coerce.string().min(postLocationsBodyNameMin).max(postLocationsBodyNameMax),
-  "latitude": zod.coerce.number().min(postLocationsBodyLatitudeMin).max(postLocationsBodyLatitudeMax),
-  "longitude": zod.coerce.number().min(postLocationsBodyLongitudeMin).max(postLocationsBodyLongitudeMax)
+export const postApiLocationsBody = zod.object({
+  "name": zod.coerce.string().min(postApiLocationsBodyNameMin).max(postApiLocationsBodyNameMax),
+  "latitude": zod.coerce.number().min(postApiLocationsBodyLatitudeMin).max(postApiLocationsBodyLatitudeMax),
+  "longitude": zod.coerce.number().min(postApiLocationsBodyLongitudeMin).max(postApiLocationsBodyLongitudeMax)
 })
 
-export const postLocationsResponse = zod.object({
-  "id": zod.coerce.number().optional(),
-  "name": zod.coerce.string().optional(),
-  "latitude": zod.coerce.number().optional(),
-  "longitude": zod.coerce.number().optional()
-})
-
-
-export const getLocationsIdParams = zod.object({
-  "id": zod.coerce.number()
-})
-
-export const getLocationsIdResponse = zod.object({
+export const postApiLocationsResponse = zod.object({
   "id": zod.coerce.number().optional(),
   "name": zod.coerce.string().optional(),
   "latitude": zod.coerce.number().optional(),
@@ -258,35 +246,47 @@ export const getLocationsIdResponse = zod.object({
 })
 
 
-export const putLocationsIdParams = zod.object({
+export const getApiLocationsIdParams = zod.object({
   "id": zod.coerce.number()
 })
 
-export const putLocationsIdBodyNameMin = 3;
-export const putLocationsIdBodyNameMax = 50;
-
-export const putLocationsIdBodyLatitudeMin = 55.3669;
-export const putLocationsIdBodyLatitudeMax = 56.1059;
-
-export const putLocationsIdBodyLongitudeMin = -4.9821;
-export const putLocationsIdBodyLongitudeMax = -2.6953;
+export const getApiLocationsIdResponse = zod.object({
+  "id": zod.coerce.number().optional(),
+  "name": zod.coerce.string().optional(),
+  "latitude": zod.coerce.number().optional(),
+  "longitude": zod.coerce.number().optional()
+})
 
 
+export const putApiLocationsIdParams = zod.object({
+  "id": zod.coerce.number()
+})
 
-export const putLocationsIdBody = zod.object({
+export const putApiLocationsIdBodyNameMin = 3;
+export const putApiLocationsIdBodyNameMax = 50;
+
+export const putApiLocationsIdBodyLatitudeMin = 55.3669;
+export const putApiLocationsIdBodyLatitudeMax = 56.1059;
+
+export const putApiLocationsIdBodyLongitudeMin = -4.9821;
+export const putApiLocationsIdBodyLongitudeMax = -2.6953;
+
+
+
+export const putApiLocationsIdBody = zod.object({
   "id": zod.coerce.number(),
-  "name": zod.coerce.string().min(putLocationsIdBodyNameMin).max(putLocationsIdBodyNameMax),
-  "latitude": zod.coerce.number().min(putLocationsIdBodyLatitudeMin).max(putLocationsIdBodyLatitudeMax),
-  "longitude": zod.coerce.number().min(putLocationsIdBodyLongitudeMin).max(putLocationsIdBodyLongitudeMax)
+  "name": zod.coerce.string().min(putApiLocationsIdBodyNameMin).max(putApiLocationsIdBodyNameMax),
+  "latitude": zod.coerce.number().min(putApiLocationsIdBodyLatitudeMin).max(putApiLocationsIdBodyLatitudeMax),
+  "longitude": zod.coerce.number().min(putApiLocationsIdBodyLongitudeMin).max(putApiLocationsIdBodyLongitudeMax)
 })
 
 
-export const deleteLocationsIdParams = zod.object({
+export const deleteApiLocationsIdParams = zod.object({
   "id": zod.coerce.number()
 })
 
 
-export const getPurchasesResponseItem = zod.object({
+export const getApiPurchasesResponseItem = zod.object({
   "id": zod.coerce.number().optional(),
   "date": zod.iso.date().optional(),
   "storeName": zod.coerce.string().optional(),
@@ -298,39 +298,39 @@ export const getPurchasesResponseItem = zod.object({
   "reason": zod.coerce.string().optional()
 })).optional()
 })
-export const getPurchasesResponse = zod.array(getPurchasesResponseItem)
+export const getApiPurchasesResponse = zod.array(getApiPurchasesResponseItem)
 
 
-export const postPurchasesBodyStoreNameMin = 3;
-export const postPurchasesBodyStoreNameMax = 50;
+export const postApiPurchasesBodyStoreNameMin = 3;
+export const postApiPurchasesBodyStoreNameMax = 50;
 
-export const postPurchasesBodyItemsItemNameMin = 3;
-export const postPurchasesBodyItemsItemNameMax = 50;
+export const postApiPurchasesBodyItemsItemNameMin = 3;
+export const postApiPurchasesBodyItemsItemNameMax = 50;
 
-export const postPurchasesBodyItemsItemQuantityMax = 10;
+export const postApiPurchasesBodyItemsItemQuantityMax = 10;
 
-export const postPurchasesBodyItemsItemCostMin = 0.01;
-export const postPurchasesBodyItemsItemCostMax = 100;
+export const postApiPurchasesBodyItemsItemCostMin = 0.01;
+export const postApiPurchasesBodyItemsItemCostMax = 100;
 
-export const postPurchasesBodyItemsItemReasonMin = 3;
-export const postPurchasesBodyItemsItemReasonMax = 50;
-
-
+export const postApiPurchasesBodyItemsItemReasonMin = 3;
+export const postApiPurchasesBodyItemsItemReasonMax = 50;
 
 
-export const postPurchasesBody = zod.object({
+
+
+export const postApiPurchasesBody = zod.object({
   "date": zod.iso.date(),
-  "storeName": zod.coerce.string().min(postPurchasesBodyStoreNameMin).max(postPurchasesBodyStoreNameMax),
+  "storeName": zod.coerce.string().min(postApiPurchasesBodyStoreNameMin).max(postApiPurchasesBodyStoreNameMax),
   "receiptId": zod.coerce.number().nullish(),
   "items": zod.array(zod.object({
-  "name": zod.coerce.string().min(postPurchasesBodyItemsItemNameMin).max(postPurchasesBodyItemsItemNameMax),
-  "quantity": zod.coerce.number().min(1).max(postPurchasesBodyItemsItemQuantityMax),
-  "cost": zod.coerce.number().min(postPurchasesBodyItemsItemCostMin).max(postPurchasesBodyItemsItemCostMax),
-  "reason": zod.coerce.string().min(postPurchasesBodyItemsItemReasonMin).max(postPurchasesBodyItemsItemReasonMax)
+  "name": zod.coerce.string().min(postApiPurchasesBodyItemsItemNameMin).max(postApiPurchasesBodyItemsItemNameMax),
+  "quantity": zod.coerce.number().min(1).max(postApiPurchasesBodyItemsItemQuantityMax),
+  "cost": zod.coerce.number().min(postApiPurchasesBodyItemsItemCostMin).max(postApiPurchasesBodyItemsItemCostMax),
+  "reason": zod.coerce.string().min(postApiPurchasesBodyItemsItemReasonMin).max(postApiPurchasesBodyItemsItemReasonMax)
 })).min(1)
 })
 
-export const postPurchasesResponse = zod.object({
+export const postApiPurchasesResponse = zod.object({
   "id": zod.coerce.number().optional(),
   "date": zod.iso.date().optional(),
   "storeName": zod.coerce.string().optional(),
@@ -344,11 +344,11 @@ export const postPurchasesResponse = zod.object({
 })
 
 
-export const getPurchasesIdParams = zod.object({
+export const getApiPurchasesIdParams = zod.object({
   "id": zod.coerce.number()
 })
 
-export const getPurchasesIdResponse = zod.object({
+export const getApiPurchasesIdResponse = zod.object({
   "id": zod.coerce.number().optional(),
   "date": zod.iso.date().optional(),
   "storeName": zod.coerce.string().optional(),
@@ -362,80 +362,80 @@ export const getPurchasesIdResponse = zod.object({
 })
 
 
-export const putPurchasesIdParams = zod.object({
+export const putApiPurchasesIdParams = zod.object({
   "id": zod.coerce.number()
 })
 
-export const putPurchasesIdBodyStoreNameMin = 3;
-export const putPurchasesIdBodyStoreNameMax = 50;
+export const putApiPurchasesIdBodyStoreNameMin = 3;
+export const putApiPurchasesIdBodyStoreNameMax = 50;
 
 
 
-export const putPurchasesIdBody = zod.object({
+export const putApiPurchasesIdBody = zod.object({
   "id": zod.coerce.number(),
   "date": zod.iso.date(),
-  "storeName": zod.coerce.string().min(putPurchasesIdBodyStoreNameMin).max(putPurchasesIdBodyStoreNameMax)
+  "storeName": zod.coerce.string().min(putApiPurchasesIdBodyStoreNameMin).max(putApiPurchasesIdBodyStoreNameMax)
 })
 
 
-export const deletePurchasesIdParams = zod.object({
+export const deleteApiPurchasesIdParams = zod.object({
   "id": zod.coerce.number()
 })
 
 
-export const getReasonsResponseItem = zod.object({
+export const getApiReasonsResponseItem = zod.object({
   "id": zod.coerce.number().optional(),
   "name": zod.coerce.string().optional()
 })
-export const getReasonsResponse = zod.array(getReasonsResponseItem)
+export const getApiReasonsResponse = zod.array(getApiReasonsResponseItem)
 
 
-export const postReasonsBodyNameMin = 2;
-export const postReasonsBodyNameMax = 50;
+export const postApiReasonsBodyNameMin = 2;
+export const postApiReasonsBodyNameMax = 50;
 
 
 
-export const postReasonsBody = zod.object({
-  "name": zod.coerce.string().min(postReasonsBodyNameMin).max(postReasonsBodyNameMax)
+export const postApiReasonsBody = zod.object({
+  "name": zod.coerce.string().min(postApiReasonsBodyNameMin).max(postApiReasonsBodyNameMax)
 })
 
-export const postReasonsResponse = zod.object({
-  "id": zod.coerce.number().optional(),
-  "name": zod.coerce.string().optional()
-})
-
-
-export const getReasonsIdParams = zod.object({
-  "id": zod.coerce.number()
-})
-
-export const getReasonsIdResponse = zod.object({
+export const postApiReasonsResponse = zod.object({
   "id": zod.coerce.number().optional(),
   "name": zod.coerce.string().optional()
 })
 
 
-export const putReasonsIdParams = zod.object({
+export const getApiReasonsIdParams = zod.object({
   "id": zod.coerce.number()
 })
 
-export const putReasonsIdBodyNameMin = 2;
-export const putReasonsIdBodyNameMax = 50;
-
-
-
-export const putReasonsIdBody = zod.object({
+export const getApiReasonsIdResponse = zod.object({
   "id": zod.coerce.number().optional(),
-  "name": zod.coerce.string().min(putReasonsIdBodyNameMin).max(putReasonsIdBodyNameMax)
+  "name": zod.coerce.string().optional()
 })
 
 
-export const deleteReasonsIdParams = zod.object({
+export const putApiReasonsIdParams = zod.object({
+  "id": zod.coerce.number()
+})
+
+export const putApiReasonsIdBodyNameMin = 2;
+export const putApiReasonsIdBodyNameMax = 50;
+
+
+
+export const putApiReasonsIdBody = zod.object({
+  "id": zod.coerce.number().optional(),
+  "name": zod.coerce.string().min(putApiReasonsIdBodyNameMin).max(putApiReasonsIdBodyNameMax)
+})
+
+
+export const deleteApiReasonsIdParams = zod.object({
   "id": zod.coerce.number()
 })
 
 
-export const getReceiptsResponseItem = zod.object({
+export const getApiReceiptsResponseItem = zod.object({
   "id": zod.coerce.number().optional(),
   "name": zod.coerce.string().optional(),
   "category": zod.coerce.number().optional(),
@@ -458,22 +458,22 @@ export const getReceiptsResponseItem = zod.object({
   "receipt": zod.union([zod.null(),zod.unknown()]).optional()
 })]).optional()
 })
-export const getReceiptsResponse = zod.array(getReceiptsResponseItem)
+export const getApiReceiptsResponse = zod.array(getApiReceiptsResponseItem)
 
 
-export const postReceiptsBodyNameMin = 2;
-export const postReceiptsBodyNameMax = 50;
+export const postApiReceiptsBodyNameMin = 2;
+export const postApiReceiptsBodyNameMax = 50;
 
 
 
-export const postReceiptsBody = zod.object({
-  "Name": zod.coerce.string().min(postReceiptsBodyNameMin).max(postReceiptsBodyNameMax).optional(),
+export const postApiReceiptsBody = zod.object({
+  "Name": zod.coerce.string().min(postApiReceiptsBodyNameMin).max(postApiReceiptsBodyNameMax).optional(),
   "Date": zod.iso.date().optional(),
   "Category": zod.coerce.number().optional(),
   "File": zod.instanceof(File).optional()
 })
 
-export const postReceiptsResponse = zod.object({
+export const postApiReceiptsResponse = zod.object({
   "id": zod.coerce.number().optional(),
   "name": zod.coerce.string().optional(),
   "date": zod.iso.date().optional(),
@@ -483,11 +483,11 @@ export const postReceiptsResponse = zod.object({
 })
 
 
-export const getReceiptsIdParams = zod.object({
+export const getApiReceiptsIdParams = zod.object({
   "id": zod.coerce.number()
 })
 
-export const getReceiptsIdResponse = zod.object({
+export const getApiReceiptsIdResponse = zod.object({
   "id": zod.coerce.number().optional(),
   "name": zod.coerce.string().optional(),
   "date": zod.iso.date().optional(),
@@ -497,23 +497,23 @@ export const getReceiptsIdResponse = zod.object({
 })
 
 
-export const deleteReceiptsIdParams = zod.object({
+export const deleteApiReceiptsIdParams = zod.object({
   "id": zod.coerce.number()
 })
 
 
-export const postReceiptsFuelBodyNameMin = 2;
-export const postReceiptsFuelBodyNameMax = 50;
+export const postApiReceiptsFuelBodyNameMin = 2;
+export const postApiReceiptsFuelBodyNameMax = 50;
 
 
 
-export const postReceiptsFuelBody = zod.object({
-  "name": zod.coerce.string().min(postReceiptsFuelBodyNameMin).max(postReceiptsFuelBodyNameMax),
+export const postApiReceiptsFuelBody = zod.object({
+  "name": zod.coerce.string().min(postApiReceiptsFuelBodyNameMin).max(postApiReceiptsFuelBodyNameMax),
   "date": zod.iso.date(),
   "base64Content": zod.coerce.string()
 })
 
-export const postReceiptsFuelResponse = zod.object({
+export const postApiReceiptsFuelResponse = zod.object({
   "id": zod.coerce.number().optional(),
   "name": zod.coerce.string().optional(),
   "date": zod.iso.date().optional(),
@@ -523,44 +523,44 @@ export const postReceiptsFuelResponse = zod.object({
 })
 
 
-export const postReceiptsPurchaseBodyPurchaseStoreNameMin = 3;
-export const postReceiptsPurchaseBodyPurchaseStoreNameMax = 50;
+export const postApiReceiptsPurchaseBodyPurchaseStoreNameMin = 3;
+export const postApiReceiptsPurchaseBodyPurchaseStoreNameMax = 50;
 
-export const postReceiptsPurchaseBodyPurchaseItemsItemNameMin = 3;
-export const postReceiptsPurchaseBodyPurchaseItemsItemNameMax = 50;
+export const postApiReceiptsPurchaseBodyPurchaseItemsItemNameMin = 3;
+export const postApiReceiptsPurchaseBodyPurchaseItemsItemNameMax = 50;
 
-export const postReceiptsPurchaseBodyPurchaseItemsItemQuantityMax = 10;
+export const postApiReceiptsPurchaseBodyPurchaseItemsItemQuantityMax = 10;
 
-export const postReceiptsPurchaseBodyPurchaseItemsItemCostMin = 0.01;
-export const postReceiptsPurchaseBodyPurchaseItemsItemCostMax = 100;
+export const postApiReceiptsPurchaseBodyPurchaseItemsItemCostMin = 0.01;
+export const postApiReceiptsPurchaseBodyPurchaseItemsItemCostMax = 100;
 
-export const postReceiptsPurchaseBodyPurchaseItemsItemReasonMin = 3;
-export const postReceiptsPurchaseBodyPurchaseItemsItemReasonMax = 50;
-
-
-export const postReceiptsPurchaseBodyNameMin = 2;
-export const postReceiptsPurchaseBodyNameMax = 50;
+export const postApiReceiptsPurchaseBodyPurchaseItemsItemReasonMin = 3;
+export const postApiReceiptsPurchaseBodyPurchaseItemsItemReasonMax = 50;
 
 
+export const postApiReceiptsPurchaseBodyNameMin = 2;
+export const postApiReceiptsPurchaseBodyNameMax = 50;
 
-export const postReceiptsPurchaseBody = zod.object({
+
+
+export const postApiReceiptsPurchaseBody = zod.object({
   "purchase": zod.object({
   "date": zod.iso.date(),
-  "storeName": zod.coerce.string().min(postReceiptsPurchaseBodyPurchaseStoreNameMin).max(postReceiptsPurchaseBodyPurchaseStoreNameMax),
+  "storeName": zod.coerce.string().min(postApiReceiptsPurchaseBodyPurchaseStoreNameMin).max(postApiReceiptsPurchaseBodyPurchaseStoreNameMax),
   "receiptId": zod.coerce.number().nullish(),
   "items": zod.array(zod.object({
-  "name": zod.coerce.string().min(postReceiptsPurchaseBodyPurchaseItemsItemNameMin).max(postReceiptsPurchaseBodyPurchaseItemsItemNameMax),
-  "quantity": zod.coerce.number().min(1).max(postReceiptsPurchaseBodyPurchaseItemsItemQuantityMax),
-  "cost": zod.coerce.number().min(postReceiptsPurchaseBodyPurchaseItemsItemCostMin).max(postReceiptsPurchaseBodyPurchaseItemsItemCostMax),
-  "reason": zod.coerce.string().min(postReceiptsPurchaseBodyPurchaseItemsItemReasonMin).max(postReceiptsPurchaseBodyPurchaseItemsItemReasonMax)
+  "name": zod.coerce.string().min(postApiReceiptsPurchaseBodyPurchaseItemsItemNameMin).max(postApiReceiptsPurchaseBodyPurchaseItemsItemNameMax),
+  "quantity": zod.coerce.number().min(1).max(postApiReceiptsPurchaseBodyPurchaseItemsItemQuantityMax),
+  "cost": zod.coerce.number().min(postApiReceiptsPurchaseBodyPurchaseItemsItemCostMin).max(postApiReceiptsPurchaseBodyPurchaseItemsItemCostMax),
+  "reason": zod.coerce.string().min(postApiReceiptsPurchaseBodyPurchaseItemsItemReasonMin).max(postApiReceiptsPurchaseBodyPurchaseItemsItemReasonMax)
 })).min(1)
 }).optional(),
-  "name": zod.coerce.string().min(postReceiptsPurchaseBodyNameMin).max(postReceiptsPurchaseBodyNameMax),
+  "name": zod.coerce.string().min(postApiReceiptsPurchaseBodyNameMin).max(postApiReceiptsPurchaseBodyNameMax),
   "date": zod.iso.date(),
   "base64Content": zod.coerce.string()
 })
 
-export const postReceiptsPurchaseResponse = zod.object({
+export const postApiReceiptsPurchaseResponse = zod.object({
   "id": zod.coerce.number().optional(),
   "name": zod.coerce.string().optional(),
   "date": zod.iso.date().optional(),
@@ -570,11 +570,11 @@ export const postReceiptsPurchaseResponse = zod.object({
 })
 
 
-export const postReceiptsOcrBody = zod.object({
+export const postApiReceiptsOcrBody = zod.object({
   "File": zod.instanceof(File).optional()
 })
 
-export const postReceiptsOcrResponse = zod.object({
+export const postApiReceiptsOcrResponse = zod.object({
   "imageBase64": zod.coerce.string().optional(),
   "receiptData": zod.array(zod.object({
   "storeName": zod.coerce.string().optional(),
@@ -595,36 +595,36 @@ export const postReceiptsOcrResponse = zod.object({
 })
 
 
-export const getReportResponseItem = zod.object({
+export const getApiReportResponseItem = zod.object({
   "id": zod.uuid().optional(),
   "startDate": zod.iso.date().optional(),
   "endDate": zod.iso.date().optional(),
   "generatedAtUtc": zod.iso.datetime({}).optional(),
   "folderPath": zod.coerce.string().optional()
 })
-export const getReportResponse = zod.array(getReportResponseItem)
+export const getApiReportResponse = zod.array(getApiReportResponseItem)
 
 
-export const postReportQueryParams = zod.object({
+export const postApiReportQueryParams = zod.object({
   "startDate": zod.iso.date().optional(),
   "endDate": zod.iso.date().optional()
 })
 
-export const postReportResponse = zod.object({
+export const postApiReportResponse = zod.object({
   "reportId": zod.coerce.string().optional()
 })
 
 
-export const deleteReportIdParams = zod.object({
+export const deleteApiReportIdParams = zod.object({
   "id": zod.uuid()
 })
 
 
-export const getReportIdParams = zod.object({
+export const getApiReportIdParams = zod.object({
   "id": zod.uuid()
 })
 
-export const getReportIdResponse = zod.object({
+export const getApiReportIdResponse = zod.object({
   "reportId": zod.uuid().optional(),
   "expenseDocuments": zod.array(zod.object({
   "fileName": zod.coerce.string().optional(),
@@ -637,59 +637,59 @@ export const getReportIdResponse = zod.object({
 })
 
 
-export const getJourneysJourneyIdTripsParams = zod.object({
+export const getApiJourneysJourneyIdTripsParams = zod.object({
   "journeyId": zod.coerce.number()
 })
 
-export const getJourneysJourneyIdTripsResponseItem = zod.object({
+export const getApiJourneysJourneyIdTripsResponseItem = zod.object({
   "id": zod.coerce.number().optional(),
   "locationId": zod.coerce.number().optional(),
   "reasonId": zod.coerce.number().optional()
 })
-export const getJourneysJourneyIdTripsResponse = zod.array(getJourneysJourneyIdTripsResponseItem)
+export const getApiJourneysJourneyIdTripsResponse = zod.array(getApiJourneysJourneyIdTripsResponseItem)
 
 
-export const postJourneysJourneyIdTripsParams = zod.object({
+export const postApiJourneysJourneyIdTripsParams = zod.object({
   "journeyId": zod.coerce.number()
 })
 
-export const postJourneysJourneyIdTripsBody = zod.object({
+export const postApiJourneysJourneyIdTripsBody = zod.object({
   "locationId": zod.coerce.number(),
   "reasonId": zod.coerce.number()
 })
 
-export const postJourneysJourneyIdTripsResponse = zod.object({
+export const postApiJourneysJourneyIdTripsResponse = zod.object({
   "id": zod.coerce.number().optional(),
   "locationId": zod.coerce.number().optional(),
   "reasonId": zod.coerce.number().optional()
 })
 
 
-export const getJourneysJourneyIdTripsTripIdParams = zod.object({
+export const getApiJourneysJourneyIdTripsTripIdParams = zod.object({
   "journeyId": zod.coerce.number(),
   "tripId": zod.coerce.number()
 })
 
-export const getJourneysJourneyIdTripsTripIdResponse = zod.object({
+export const getApiJourneysJourneyIdTripsTripIdResponse = zod.object({
   "id": zod.coerce.number().optional(),
   "locationId": zod.coerce.number().optional(),
   "reasonId": zod.coerce.number().optional()
 })
 
 
-export const putJourneysJourneyIdTripsTripIdParams = zod.object({
+export const putApiJourneysJourneyIdTripsTripIdParams = zod.object({
   "journeyId": zod.coerce.number(),
   "tripId": zod.coerce.number()
 })
 
-export const putJourneysJourneyIdTripsTripIdBody = zod.object({
+export const putApiJourneysJourneyIdTripsTripIdBody = zod.object({
   "id": zod.coerce.number(),
   "locationId": zod.coerce.number(),
   "reasonId": zod.coerce.number()
 })
 
 
-export const deleteJourneysJourneyIdTripsTripIdParams = zod.object({
+export const deleteApiJourneysJourneyIdTripsTripIdParams = zod.object({
   "journeyId": zod.coerce.number(),
   "tripId": zod.coerce.number()
 })

@@ -1,14 +1,14 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Card, SimpleGrid, Text, Title } from "@mantine/core";
 import { LineChart, BarChart } from "@mantine/charts";
-import { useGetDashboard } from "@/api/api-client.gen.ts";
+import { useGetApiDashboard } from "@/api/api-client.gen.ts";
 
 export const Route = createFileRoute("/")({
   component: Home,
 });
 
 function Home() {
-  const { data: dashboard, isLoading } = useGetDashboard();
+  const { data: dashboard, isLoading } = useGetApiDashboard();
 
   if (isLoading || !dashboard) return <div>Loading</div>;
 

@@ -1,5 +1,8 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { useGetJourneysId, usePutJourneysId } from "@/api/api-client.gen.ts";
+import {
+  useGetApiJourneysId,
+  usePutApiJourneysId,
+} from "@/api/api-client.gen.ts";
 import { useForm } from "@mantine/form";
 import {
   Alert,
@@ -31,7 +34,7 @@ function RouteComponent() {
     data: journey,
     isLoading,
     isError,
-  } = useGetJourneysId(Number(journeyId));
+  } = useGetApiJourneysId(Number(journeyId));
 
   const form = useForm({
     mode: "uncontrolled",
@@ -54,7 +57,7 @@ function RouteComponent() {
     });
   }, [journey]);
 
-  const updateJourney = usePutJourneysId();
+  const updateJourney = usePutApiJourneysId();
 
   const handleSubmit = async (values: typeof form.values) => {
     try {
