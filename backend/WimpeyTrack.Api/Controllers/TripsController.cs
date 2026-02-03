@@ -7,7 +7,7 @@ using WimpeyTrack.Api.Services;
 
 namespace WimpeyTrack.Api.Controllers
 {
-    [Route("journeys/{journeyId}/[controller]")]
+    [Route("api/journeys/{journeyId}/[controller]")]
     [ApiController]
     public class TripsController : ControllerBase
     {

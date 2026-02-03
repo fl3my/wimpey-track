@@ -1,5 +1,8 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useDeleteLocationsId, useGetLocations } from "@/api/api-client.gen.ts";
+import {
+  useDeleteApiLocationsId,
+  useGetApiLocations,
+} from "@/api/api-client.gen.ts";
 import { Button, Loader, Table, Text } from "@mantine/core";
 
 export const Route = createFileRoute("/Locations/")({
@@ -13,8 +16,8 @@ function RouteComponent() {
     isError,
     error,
     refetch,
-  } = useGetLocations();
-  const deleteLocation = useDeleteLocationsId();
+  } = useGetApiLocations();
+  const deleteLocation = useDeleteApiLocationsId();
 
   if (isLoading) return <Loader />;
   if (isError)

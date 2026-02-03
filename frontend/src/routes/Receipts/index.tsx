@@ -1,5 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useDeleteReceiptsId, useGetReceipts } from "@/api/api-client.gen.ts";
+import {
+  useDeleteApiReceiptsId,
+  useGetApiReceipts,
+} from "@/api/api-client.gen.ts";
 import { Button, Group, Loader, Table, Text } from "@mantine/core";
 import { CustomButtonLink } from "@/components/custom-button-link.tsx";
 
@@ -14,8 +17,8 @@ function RouteComponent() {
     isError,
     error,
     refetch,
-  } = useGetReceipts();
-  const deleteReceipt = useDeleteReceiptsId();
+  } = useGetApiReceipts();
+  const deleteReceipt = useDeleteApiReceiptsId();
 
   if (isLoading) return <Loader />;
   if (isError)

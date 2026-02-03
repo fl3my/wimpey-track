@@ -2,7 +2,7 @@ import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useForm } from "@mantine/form";
 import { MonthPickerInput } from "@mantine/dates";
 import { Button, Group } from "@mantine/core";
-import { usePostReport } from "@/api/api-client.gen.ts";
+import { usePostApiReport } from "@/api/api-client.gen.ts";
 import { useServerErrors } from "@/hooks/use-server-errors.ts";
 import { ServerErrorAlert } from "@/components/server-error-alert.tsx";
 
@@ -14,7 +14,7 @@ function RouteComponent() {
   const navigate = useNavigate();
   const serverErrors = useServerErrors();
 
-  const mutation = usePostReport({
+  const mutation = usePostApiReport({
     mutation: {
       onError: (error) => {
         serverErrors.setFromApiError(error);

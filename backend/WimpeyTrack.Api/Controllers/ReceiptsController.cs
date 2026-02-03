@@ -9,7 +9,7 @@ using WimpeyTrack.Api.Services;
 
 namespace WimpeyTrack.Api.Controllers;
 
-[Route("[controller]")]
+[Route("api/[controller]")]
 [ApiController]
 public class ReceiptsController : ControllerBase
 {

@@ -1,9 +1,9 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useForm } from "@mantine/form";
-import { usePostLocations } from "@/api/api-client.gen.ts";
+import { usePostApiLocations } from "@/api/api-client.gen.ts";
 import { Button, NumberInput, TextInput } from "@mantine/core";
 import { zod4Resolver } from "mantine-form-zod-resolver";
-import { postLocationsBody } from "@/api/zod.gen.ts";
+import { postApiLocationsBody } from "@/api/zod.gen.ts";
 import { useServerErrors } from "@/hooks/use-server-errors.ts";
 import { ServerErrorAlert } from "@/components/server-error-alert.tsx";
 import z from "zod";
@@ -17,16 +17,16 @@ function RouteComponent() {
 
   const serverErrors = useServerErrors();
 
-  const form = useForm<z.infer<typeof postLocationsBody>>({
+  const form = useForm<z.infer<typeof postApiLocationsBody>>({
     initialValues: {
       latitude: 0,
       longitude: 0,
       name: "",
     },
-    validate: zod4Resolver(postLocationsBody),
+    validate: zod4Resolver(postApiLocationsBody),
   });
 
-  const mutation = usePostLocations({
+  const mutation = usePostApiLocations({
     mutation: {
       onError: (error) => {
         serverErrors.setFromApiError(error);

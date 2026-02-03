@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useGetReceiptsId } from "@/api/api-client.gen.ts";
+import { useGetApiReceiptsId } from "@/api/api-client.gen.ts";
 import { Loader, Stack, Text, Image } from "@mantine/core";
 
 export const Route = createFileRoute("/Receipts/$receiptId/")({
@@ -13,7 +13,7 @@ function RouteComponent() {
     isLoading,
     isError,
     error,
-  } = useGetReceiptsId(Number(receiptId));
+  } = useGetApiReceiptsId(Number(receiptId));
 
   if (isLoading) return <Loader size="xl" />;
   if (isError)

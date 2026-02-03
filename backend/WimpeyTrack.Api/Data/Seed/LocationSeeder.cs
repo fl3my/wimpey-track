@@ -15,8 +15,8 @@ public static class LocationSeeder
         
         var path = Path.Combine(
             env.ContentRootPath,
-            "Data",
-            "SeedData",
+            "app",
+            "seed",
             "central-belt-locations.tsv"
         );
         

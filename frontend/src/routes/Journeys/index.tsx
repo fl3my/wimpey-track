@@ -12,11 +12,11 @@ import {
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import {
-  useDeleteJourneysId,
-  useGetJourneys,
-  useGetLocations,
-  useGetReasons,
-  usePostJourneys,
+  useDeleteApiJourneysId,
+  useGetApiJourneys,
+  useGetApiLocations,
+  useGetApiReasons,
+  usePostApiJourneys,
 } from "@/api/api-client.gen.ts";
 import { useState } from "react";
 import z from "zod";
@@ -58,11 +58,11 @@ function RouteComponent() {
     validate: zod4Resolver(journeySchema),
   });
 
-  const journeysByWeek = useGetJourneys({ weekStart });
-  const locationsQuery = useGetLocations();
-  const reasonsQuery = useGetReasons();
-  const createJourney = usePostJourneys();
-  const deleteJourney = useDeleteJourneysId();
+  const journeysByWeek = useGetApiJourneys({ weekStart });
+  const locationsQuery = useGetApiLocations();
+  const reasonsQuery = useGetApiReasons();
+  const createJourney = usePostApiJourneys();
+  const deleteJourney = useDeleteApiJourneysId();
 
   const locationOptions =
     locationsQuery.data?.map((l) => ({

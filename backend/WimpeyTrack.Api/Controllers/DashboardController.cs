@@ -5,7 +5,7 @@ using WimpeyTrack.Api.Services;
 namespace WimpeyTrack.Api.Controllers;
 
 [ApiController]
-[Route("[controller]")]
+[Route("api/[controller]")]
 public class DashboardController : ControllerBase
 {
     private readonly IDashboardService _dashboardService;

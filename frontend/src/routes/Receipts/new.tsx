@@ -1,5 +1,5 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { usePostReceipts } from "@/api/api-client.gen.ts";
+import { usePostApiReceipts } from "@/api/api-client.gen.ts";
 import { CustomButtonLink } from "@/components/custom-button-link.tsx";
 import {
   ReceiptForm,
@@ -17,7 +17,7 @@ function RouteComponent() {
   const navigate = useNavigate();
   const serverErrors = useServerErrors();
 
-  const mutate = usePostReceipts({
+  const mutate = usePostApiReceipts({
     mutation: {
       onError: (error) => {
         serverErrors.setFromApiError(error);
