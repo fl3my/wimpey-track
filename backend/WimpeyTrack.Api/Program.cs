@@ -76,8 +76,6 @@ await DatabaseInitializer.InitializeAsync(app.Services);
 app.UseStaticFiles();
 app.MapFallbackToFile("index.html");
 
-app.UseHttpsRedirection();
-
 app.UseAuthorization();
 
 app.MapControllers();
