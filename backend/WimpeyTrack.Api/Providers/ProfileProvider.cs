@@ -29,6 +29,7 @@ public class ProfileProvider : IProfileProvider
                 p.VehicleEngineSize,
                 p.VehicleRegistration,
                 p.VehicleMake,
+                p.HomePostcode,
                 p.HomeLocationId
             ))
             .FirstAsync();

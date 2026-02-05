@@ -21,5 +21,7 @@ public class CreateProfileDto
     [Required]
     public string VehicleMake { get; set; } = string.Empty;
     [Required]
+    public string HomePostcode { get; set; } = string.Empty;
+    [Required]
     public int HomeLocationId { get; set; }
 }

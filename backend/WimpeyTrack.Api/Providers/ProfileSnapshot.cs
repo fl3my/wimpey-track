@@ -9,5 +9,6 @@ public record ProfileSnapshot(
     int VehicleEngineSize,
     string VehicleRegistration,
     string VehicleMake,
+    string HomePostcode,
     int HomeLocationId
 );

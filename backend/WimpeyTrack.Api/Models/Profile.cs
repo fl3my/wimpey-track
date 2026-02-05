@@ -11,6 +11,7 @@ public class Profile
     public int VehicleEngineSize {get; set;}
     public string VehicleRegistration { get; set; } = string.Empty;
     public string VehicleMake { get; set; } = string.Empty;
+    public string HomePostcode { get; set; } = string.Empty;
     public int HomeLocationId { get; set; }
     public Location HomeLocation { get; set; } = null!;
 }

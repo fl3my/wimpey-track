@@ -31,6 +31,7 @@ public class ProfileController : ControllerBase
             VehicleEngineSize = profile.VehicleEngineSize,
             VehicleRegistration = profile.VehicleRegistration,
             VehicleMake = profile.VehicleMake,
+            HomePostcode = profile.HomePostcode,
             HomeLocationId = profile.HomeLocationId,
         };
 
@@ -57,6 +58,7 @@ public class ProfileController : ControllerBase
         profile.VehicleEngineSize = dto.VehicleEngineSize;
         profile.VehicleRegistration = dto.VehicleRegistration;
         profile.VehicleMake = dto.VehicleMake;
+        profile.HomePostcode = dto.HomePostcode;
         profile.HomeLocationId = profile.HomeLocationId;
         
         // Save

@@ -25,6 +25,7 @@ public static class ProfileSeeder
             VehicleEngineSize = 0,
             VehicleRegistration = "",
             VehicleMake = "",
+            HomePostcode = "",
             HomeLocationId = homeLocation.Id,
         };
         
