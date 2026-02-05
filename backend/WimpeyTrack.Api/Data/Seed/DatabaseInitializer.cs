@@ -11,5 +11,6 @@ public static class DatabaseInitializer
 
         await PreferenceSeeder.SeedAsync(context);
         await LocationSeeder.SeedAsync(context, env);
+        await ProfileSeeder.SeedAsync(context);
     }
 }

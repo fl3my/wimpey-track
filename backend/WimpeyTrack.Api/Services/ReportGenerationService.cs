@@ -3,6 +3,7 @@ using PdfSharp.Pdf.IO;
 using WimpeyTrack.Api.Domain;
 using WimpeyTrack.Api.Dtos.Book;
 using WimpeyTrack.Api.Dtos.ReportGeneration;
+using WimpeyTrack.Api.Providers;
 
 namespace WimpeyTrack.Api.Services;
 

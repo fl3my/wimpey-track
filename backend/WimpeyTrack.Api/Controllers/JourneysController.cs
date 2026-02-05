@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using WimpeyTrack.Api.Data;
 using WimpeyTrack.Api.Dtos.Journey;
 using WimpeyTrack.Api.Models;
+using WimpeyTrack.Api.Providers;
 using WimpeyTrack.Api.Services;
 
 namespace WimpeyTrack.Api.Controllers
@@ -14,11 +15,13 @@ namespace WimpeyTrack.Api.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly IJourneyDistanceService _distanceService;
+        private readonly IProfileProvider _profileProvider;
 
-        public JourneysController(ApplicationDbContext context, IJourneyDistanceService distanceService)
+        public JourneysController(ApplicationDbContext context, IJourneyDistanceService distanceService, IProfileProvider profileProvider)
         {
             _context = context;
             _distanceService = distanceService;
+            _profileProvider = profileProvider;
         }
 
         // GET: api/Journeys
@@ -166,7 +169,7 @@ namespace WimpeyTrack.Api.Controllers
         [HttpPost]
         public async Task<ActionResult<JourneyDto>> PostJourney(CreateJourneyDto dto)
         {
-            var homeLocationId = 7;
+            var homeLocationId = await _profileProvider.GetHomeLocationIdAsync();
             
             // Do not allow journeys with the same date
             if (await _context.Journeys.AnyAsync(j => j.Date == dto.Date))

@@ -1,8 +1,9 @@
 using Microsoft.EntityFrameworkCore;
 using WimpeyTrack.Api.Data;
 using WimpeyTrack.Api.Dtos.Receipt;
+using WimpeyTrack.Api.Services;
 
-namespace WimpeyTrack.Api.Services;
+namespace WimpeyTrack.Api.Providers;
 
 /// <summary>
 /// Returns images of receipts from a specific date range.

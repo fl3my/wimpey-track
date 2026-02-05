@@ -4,6 +4,7 @@ using Scalar.AspNetCore;
 using WimpeyTrack.Api.Data;
 using WimpeyTrack.Api.Data.Seed;
 using WimpeyTrack.Api.Domain;
+using WimpeyTrack.Api.Providers;
 using WimpeyTrack.Api.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -42,6 +43,7 @@ builder.Services.AddScoped<IReportStorageService, ReportStorageService>();
 builder.Services.AddScoped<IDashboardService, DashboardService>();
 builder.Services.AddScoped<IJourneyDistanceService, JourneyDistanceService>();
 builder.Services.AddScoped<IPreferenceProvider, PreferenceProvider>();
+builder.Services.AddScoped<IProfileProvider, ProfileProvider>();
 
 
 

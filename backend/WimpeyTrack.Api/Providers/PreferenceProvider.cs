@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using WimpeyTrack.Api.Data;
 
-namespace WimpeyTrack.Api.Services;
+namespace WimpeyTrack.Api.Providers;
 
 public interface IPreferenceProvider
 {
