@@ -7,6 +7,7 @@ import {
   IconMap2,
   IconReceipt,
   IconRoute,
+  IconSettings,
   IconZoomQuestion,
 } from "@tabler/icons-react";
 
@@ -21,15 +22,15 @@ export function Navigation() {
       />
       <NavLink
         component={Link}
-        to={"/receipts"}
-        label={"Receipts"}
-        leftSection={<IconReceipt size={16} stroke={1.5} />}
-      />
-      <NavLink
-        component={Link}
         to="/journeys"
         label={"Journeys"}
         leftSection={<IconRoute size={16} stroke={1.5} />}
+      />
+      <NavLink
+        component={Link}
+        to={"/receipts"}
+        label={"Receipts"}
+        leftSection={<IconReceipt size={16} stroke={1.5} />}
       />
       <NavLink
         component={Link}
@@ -54,6 +55,12 @@ export function Navigation() {
         to="/Reports"
         label={"Reports"}
         leftSection={<IconFileExport size={16} stroke={1.5} />}
+      />
+      <NavLink
+        component={Link}
+        to="/Preferences"
+        label={"Preferences"}
+        leftSection={<IconSettings size={16} stroke={1.5} />}
       />
     </>
   );

@@ -286,6 +286,21 @@ export const deleteApiLocationsIdParams = zod.object({
 })
 
 
+export const getApiPreferenceResponse = zod.object({
+  "milesAdjustmentFactor": zod.coerce.number()
+})
+
+
+export const putApiPreferenceBodyMilesAdjustmentFactorMin = 0.5;
+export const putApiPreferenceBodyMilesAdjustmentFactorMax = 2;
+
+
+
+export const putApiPreferenceBody = zod.object({
+  "milesAdjustmentFactor": zod.coerce.number().min(putApiPreferenceBodyMilesAdjustmentFactorMin).max(putApiPreferenceBodyMilesAdjustmentFactorMax)
+})
+
+
 export const getApiPurchasesResponseItem = zod.object({
   "id": zod.coerce.number().optional(),
   "date": zod.iso.date().optional(),

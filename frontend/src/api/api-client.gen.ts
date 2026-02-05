@@ -91,6 +91,14 @@ export interface CreateLocationDto {
   longitude: number;
 }
 
+export interface CreatePreferenceDto {
+  /**
+   * @minimum 0.5
+   * @maximum 2
+   */
+  milesAdjustmentFactor: number;
+}
+
 export type CreatePurchaseDtoReceiptId = null | number;
 
 export interface CreatePurchaseDto {
@@ -210,6 +218,10 @@ export interface MonthlyMilesDto {
   month?: string;
   miles?: number;
   claim?: number;
+}
+
+export interface PreferenceDto {
+  milesAdjustmentFactor: number;
 }
 
 export type PurchaseReceiptId = null | number;
@@ -1693,6 +1705,167 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
       > => {
 
       const mutationOptions = getDeleteApiLocationsIdMutationOptions(options);
+
+      return useMutation(mutationOptions, queryClient);
+    }
+    
+export const getGetApiPreferenceUrl = () => {
+
+
+  
+
+  return `/api/Preference`
+}
+
+export const getApiPreference = async ( options?: RequestInit): Promise<PreferenceDto> => {
+  
+  return fetcher<PreferenceDto>(getGetApiPreferenceUrl(),
+  {      
+    ...options,
+    method: 'GET'
+    
+    
+  }
+);}
+
+
+
+
+
+export const getGetApiPreferenceQueryKey = () => {
+    return [
+    `/api/Preference`
+    ] as const;
+    }
+
+    
+export const getGetApiPreferenceQueryOptions = <TData = Awaited<ReturnType<typeof getApiPreference>>, TError = unknown>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiPreference>>, TError, TData>>, request?: SecondParameter<typeof fetcher>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetApiPreferenceQueryKey();
+
+  
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getApiPreference>>> = ({ signal }) => getApiPreference({ signal, ...requestOptions });
+
+      
+
+      
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getApiPreference>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type GetApiPreferenceQueryResult = NonNullable<Awaited<ReturnType<typeof getApiPreference>>>
+export type GetApiPreferenceQueryError = unknown
+
+
+export function useGetApiPreference<TData = Awaited<ReturnType<typeof getApiPreference>>, TError = unknown>(
+  options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiPreference>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getApiPreference>>,
+          TError,
+          Awaited<ReturnType<typeof getApiPreference>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof fetcher>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetApiPreference<TData = Awaited<ReturnType<typeof getApiPreference>>, TError = unknown>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiPreference>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getApiPreference>>,
+          TError,
+          Awaited<ReturnType<typeof getApiPreference>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof fetcher>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetApiPreference<TData = Awaited<ReturnType<typeof getApiPreference>>, TError = unknown>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiPreference>>, TError, TData>>, request?: SecondParameter<typeof fetcher>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+
+export function useGetApiPreference<TData = Awaited<ReturnType<typeof getApiPreference>>, TError = unknown>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiPreference>>, TError, TData>>, request?: SecondParameter<typeof fetcher>}
+ , queryClient?: QueryClient 
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getGetApiPreferenceQueryOptions(options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  query.queryKey = queryOptions.queryKey ;
+
+  return query;
+}
+
+
+
+
+
+export const getPutApiPreferenceUrl = () => {
+
+
+  
+
+  return `/api/Preference`
+}
+
+export const putApiPreference = async (createPreferenceDto: CreatePreferenceDto, options?: RequestInit): Promise<void> => {
+  
+  return fetcher<void>(getPutApiPreferenceUrl(),
+  {      
+    ...options,
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(
+      createPreferenceDto,)
+  }
+);}
+
+
+
+
+export const getPutApiPreferenceMutationOptions = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof putApiPreference>>, TError,{data: CreatePreferenceDto}, TContext>, request?: SecondParameter<typeof fetcher>}
+): UseMutationOptions<Awaited<ReturnType<typeof putApiPreference>>, TError,{data: CreatePreferenceDto}, TContext> => {
+
+const mutationKey = ['putApiPreference'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+      
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof putApiPreference>>, {data: CreatePreferenceDto}> = (props) => {
+          const {data} = props ?? {};
+
+          return  putApiPreference(data,requestOptions)
+        }
+
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type PutApiPreferenceMutationResult = NonNullable<Awaited<ReturnType<typeof putApiPreference>>>
+    export type PutApiPreferenceMutationBody = CreatePreferenceDto
+    export type PutApiPreferenceMutationError = unknown
+
+    export const usePutApiPreference = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof putApiPreference>>, TError,{data: CreatePreferenceDto}, TContext>, request?: SecondParameter<typeof fetcher>}
+ , queryClient?: QueryClient): UseMutationResult<
+        Awaited<ReturnType<typeof putApiPreference>>,
+        TError,
+        {data: CreatePreferenceDto},
+        TContext
+      > => {
+
+      const mutationOptions = getPutApiPreferenceMutationOptions(options);
 
       return useMutation(mutationOptions, queryClient);
     }
