@@ -15,4 +15,5 @@ public class ApplicationDbContext : DbContext
     public DbSet<Item> Items { get; set; }
     public DbSet<Receipt> Receipts { get; set; }
     public DbSet<Report> Reports { get; set; }
+    public DbSet<Preference> Preferences { get; set; }
 }

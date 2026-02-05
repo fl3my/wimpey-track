@@ -9,6 +9,7 @@ public static class DatabaseInitializer
         var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
         var env = scope.ServiceProvider.GetRequiredService<IWebHostEnvironment>();
 
+        await PreferenceSeeder.SeedAsync(context);
         await LocationSeeder.SeedAsync(context, env);
     }
 }

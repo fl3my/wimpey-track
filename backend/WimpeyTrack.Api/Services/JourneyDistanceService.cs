@@ -15,12 +15,13 @@ public class JourneyDistanceService : IJourneyDistanceService
 {
     private readonly ApplicationDbContext _context;
     private readonly IRouteService _routeService;
-    private double AdjustmentFactor = 1.2;
+    private readonly IPreferenceProvider _preferences;
 
-    public JourneyDistanceService(ApplicationDbContext context, IRouteService routeService)
+    public JourneyDistanceService(ApplicationDbContext context, IRouteService routeService, IPreferenceProvider preferences)
     {
         _context = context;
         _routeService = routeService;
+        _preferences = preferences;
     }
 
     public async Task RecalculateMilesAsync(int journeyId)
@@ -53,14 +54,18 @@ public class JourneyDistanceService : IJourneyDistanceService
             return;
         }
 
+        // Create a list of coordinates in order
         var home = (journey.HomeLocation.Latitude, journey.HomeLocation.Longitude);
         var route = new List<(double, double)> { home };
         route.AddRange(coordinates.Select(c => (c.Latitude, c.Longitude)));
         route.Add(home);
         
         var distance = await _routeService.CalculateAllTripsDistancesAsync(route);
+
+        // Alter the percentage of the returned distance to reflect more accurate distance
+        var adjustmentFactor = await _preferences.GetMilesAdjustmentFactorAsync();
         
-        journey.TotalMiles = (int)Math.Round(distance * AdjustmentFactor, 0);
+        journey.TotalMiles = (int)Math.Round(distance * adjustmentFactor, 0);
         
         await _context.SaveChangesAsync();
     }

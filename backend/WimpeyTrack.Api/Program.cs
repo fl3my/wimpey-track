@@ -41,6 +41,8 @@ builder.Services.AddScoped<IReportService, ReportService>();
 builder.Services.AddScoped<IReportStorageService, ReportStorageService>();
 builder.Services.AddScoped<IDashboardService, DashboardService>();
 builder.Services.AddScoped<IJourneyDistanceService, JourneyDistanceService>();
+builder.Services.AddScoped<IPreferenceProvider, PreferenceProvider>();
+
 
 
 // Add custom vision service
