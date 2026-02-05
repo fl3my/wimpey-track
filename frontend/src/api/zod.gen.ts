@@ -301,6 +301,34 @@ export const putApiPreferenceBody = zod.object({
 })
 
 
+export const getApiProfileResponse = zod.object({
+  "fullName": zod.coerce.string(),
+  "staffNumber": zod.coerce.string(),
+  "businessUnit": zod.coerce.string(),
+  "departmentSiteName": zod.coerce.string(),
+  "vehicleFuelType": zod.coerce.string(),
+  "vehicleEngineSize": zod.coerce.number(),
+  "vehicleRegistration": zod.coerce.string(),
+  "vehicleMake": zod.coerce.string(),
+  "homePostcode": zod.coerce.string(),
+  "homeLocationId": zod.coerce.number()
+})
+
+
+export const putApiProfileBody = zod.object({
+  "fullName": zod.coerce.string(),
+  "staffNumber": zod.coerce.string(),
+  "businessUnit": zod.coerce.string(),
+  "departmentSiteName": zod.coerce.string(),
+  "vehicleFuelType": zod.coerce.string(),
+  "vehicleEngineSize": zod.coerce.number(),
+  "vehicleRegistration": zod.coerce.string(),
+  "vehicleMake": zod.coerce.string(),
+  "homePostcode": zod.coerce.string(),
+  "homeLocationId": zod.coerce.number()
+})
+
+
 export const getApiPurchasesResponseItem = zod.object({
   "id": zod.coerce.number().optional(),
   "date": zod.iso.date().optional(),

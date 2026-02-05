@@ -8,9 +8,9 @@ import { useForm } from "@mantine/form";
 import { putApiPreferenceBody } from "@/api/zod.gen.ts";
 import { zod4Resolver } from "mantine-form-zod-resolver";
 import z from "zod";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { ServerErrorAlert } from "@/components/server-error-alert.tsx";
-import { Button, NumberInput } from "@mantine/core";
+import { Alert, Button, NumberInput, Title } from "@mantine/core";
 
 export const Route = createFileRoute("/Preferences/")({
   component: RouteComponent,
@@ -18,6 +18,7 @@ export const Route = createFileRoute("/Preferences/")({
 
 function RouteComponent() {
   const serverErrors = useServerErrors();
+  const [saved, setSaved] = useState(false);
 
   const preferences = useGetApiPreference();
 
@@ -39,14 +40,17 @@ function RouteComponent() {
     mutation: {
       onError: (error) => {
         serverErrors.setFromApiError(error);
+        setSaved(false);
       },
       onSuccess: async () => {
         serverErrors.clear();
+        setSaved(true);
       },
     },
   });
 
   const handleSubmit = (values: typeof form.values) => {
+    setSaved(false);
     form.clearErrors();
     mutation.mutate({
       data: {
@@ -56,25 +60,36 @@ function RouteComponent() {
   };
 
   return (
-    <form onSubmit={form.onSubmit(handleSubmit)}>
-      <ServerErrorAlert errors={serverErrors.errors} />
-      <NumberInput
-        min={0.5}
-        max={2}
-        label={"Miles Adjustment Factor"}
-        description={
-          "This setting is used to adjust the calculated distance between trips"
-        }
-        key={form.key("milesAdjustmentFactor")}
-        {...form.getInputProps("milesAdjustmentFactor")}
-      />
-      <Button
-        type="submit"
-        loading={mutation.isPending}
-        disabled={mutation.isPending}
-      >
-        Submit
-      </Button>
-    </form>
+    <>
+      <Title order={2} mb={"md"}>
+        Edit Preferences
+      </Title>
+
+      <form onSubmit={form.onSubmit(handleSubmit)}>
+        <ServerErrorAlert errors={serverErrors.errors} />
+        {saved && (
+          <Alert color="green" mb="md">
+            Preferences saved successfully
+          </Alert>
+        )}
+        <NumberInput
+          min={0.5}
+          max={2}
+          label={"Miles Adjustment Factor"}
+          description={
+            "This setting is used to adjust the calculated distance between trips"
+          }
+          key={form.key("milesAdjustmentFactor")}
+          {...form.getInputProps("milesAdjustmentFactor")}
+        />
+        <Button
+          type="submit"
+          loading={mutation.isPending}
+          disabled={mutation.isPending}
+        >
+          Submit
+        </Button>
+      </form>
+    </>
   );
 }

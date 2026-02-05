@@ -1,5 +1,3 @@
-import { NavLink } from "@mantine/core";
-import { Link } from "@tanstack/react-router";
 import {
   IconCash,
   IconFileExport,
@@ -8,59 +6,59 @@ import {
   IconReceipt,
   IconRoute,
   IconSettings,
+  IconUser,
   IconZoomQuestion,
 } from "@tabler/icons-react";
+import { CustomNavLink } from "@/components/custom-navlink.tsx";
 
 export function Navigation() {
   return (
     <>
-      <NavLink
-        component={Link}
+      <CustomNavLink
         to="/"
         label={"Home"}
         leftSection={<IconHome2 size={16} stroke={1.5} />}
       />
-      <NavLink
-        component={Link}
-        to="/journeys"
+      <CustomNavLink
+        to="/Journeys"
         label={"Journeys"}
         leftSection={<IconRoute size={16} stroke={1.5} />}
+        search={{ weekStart: "" }}
       />
-      <NavLink
-        component={Link}
-        to={"/receipts"}
+      <CustomNavLink
+        to={"/Receipts"}
         label={"Receipts"}
         leftSection={<IconReceipt size={16} stroke={1.5} />}
       />
-      <NavLink
-        component={Link}
-        to="/purchases"
+      <CustomNavLink
+        to="/Purchases"
         label={"Purchases"}
         leftSection={<IconCash size={16} stroke={1.5} />}
       />
-      <NavLink
-        component={Link}
-        to="/locations"
+      <CustomNavLink
+        to="/Locations"
         label={"Locations"}
         leftSection={<IconMap2 size={16} stroke={1.5} />}
       />
-      <NavLink
-        component={Link}
-        to="/reasons"
+      <CustomNavLink
+        to="/Reasons"
         label={"Reasons"}
         leftSection={<IconZoomQuestion size={16} stroke={1.5} />}
       />
-      <NavLink
-        component={Link}
+      <CustomNavLink
         to="/Reports"
         label={"Reports"}
         leftSection={<IconFileExport size={16} stroke={1.5} />}
       />
-      <NavLink
-        component={Link}
+      <CustomNavLink
         to="/Preferences"
         label={"Preferences"}
         leftSection={<IconSettings size={16} stroke={1.5} />}
+      />
+      <CustomNavLink
+        to="/Profile"
+        label={"Profile"}
+        leftSection={<IconUser size={16} stroke={1.5} />}
       />
     </>
   );

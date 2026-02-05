@@ -99,6 +99,19 @@ export interface CreatePreferenceDto {
   milesAdjustmentFactor: number;
 }
 
+export interface CreateProfileDto {
+  fullName: string;
+  staffNumber: string;
+  businessUnit: string;
+  departmentSiteName: string;
+  vehicleFuelType: string;
+  vehicleEngineSize: number;
+  vehicleRegistration: string;
+  vehicleMake: string;
+  homePostcode: string;
+  homeLocationId: number;
+}
+
 export type CreatePurchaseDtoReceiptId = null | number;
 
 export interface CreatePurchaseDto {
@@ -222,6 +235,19 @@ export interface MonthlyMilesDto {
 
 export interface PreferenceDto {
   milesAdjustmentFactor: number;
+}
+
+export interface ProfileDto {
+  fullName: string;
+  staffNumber: string;
+  businessUnit: string;
+  departmentSiteName: string;
+  vehicleFuelType: string;
+  vehicleEngineSize: number;
+  vehicleRegistration: string;
+  vehicleMake: string;
+  homePostcode: string;
+  homeLocationId: number;
 }
 
 export type PurchaseReceiptId = null | number;
@@ -1866,6 +1892,167 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
       > => {
 
       const mutationOptions = getPutApiPreferenceMutationOptions(options);
+
+      return useMutation(mutationOptions, queryClient);
+    }
+    
+export const getGetApiProfileUrl = () => {
+
+
+  
+
+  return `/api/Profile`
+}
+
+export const getApiProfile = async ( options?: RequestInit): Promise<ProfileDto> => {
+  
+  return fetcher<ProfileDto>(getGetApiProfileUrl(),
+  {      
+    ...options,
+    method: 'GET'
+    
+    
+  }
+);}
+
+
+
+
+
+export const getGetApiProfileQueryKey = () => {
+    return [
+    `/api/Profile`
+    ] as const;
+    }
+
+    
+export const getGetApiProfileQueryOptions = <TData = Awaited<ReturnType<typeof getApiProfile>>, TError = unknown>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiProfile>>, TError, TData>>, request?: SecondParameter<typeof fetcher>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetApiProfileQueryKey();
+
+  
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getApiProfile>>> = ({ signal }) => getApiProfile({ signal, ...requestOptions });
+
+      
+
+      
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getApiProfile>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type GetApiProfileQueryResult = NonNullable<Awaited<ReturnType<typeof getApiProfile>>>
+export type GetApiProfileQueryError = unknown
+
+
+export function useGetApiProfile<TData = Awaited<ReturnType<typeof getApiProfile>>, TError = unknown>(
+  options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiProfile>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getApiProfile>>,
+          TError,
+          Awaited<ReturnType<typeof getApiProfile>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof fetcher>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetApiProfile<TData = Awaited<ReturnType<typeof getApiProfile>>, TError = unknown>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiProfile>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getApiProfile>>,
+          TError,
+          Awaited<ReturnType<typeof getApiProfile>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof fetcher>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetApiProfile<TData = Awaited<ReturnType<typeof getApiProfile>>, TError = unknown>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiProfile>>, TError, TData>>, request?: SecondParameter<typeof fetcher>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+
+export function useGetApiProfile<TData = Awaited<ReturnType<typeof getApiProfile>>, TError = unknown>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiProfile>>, TError, TData>>, request?: SecondParameter<typeof fetcher>}
+ , queryClient?: QueryClient 
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getGetApiProfileQueryOptions(options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  query.queryKey = queryOptions.queryKey ;
+
+  return query;
+}
+
+
+
+
+
+export const getPutApiProfileUrl = () => {
+
+
+  
+
+  return `/api/Profile`
+}
+
+export const putApiProfile = async (createProfileDto: CreateProfileDto, options?: RequestInit): Promise<void> => {
+  
+  return fetcher<void>(getPutApiProfileUrl(),
+  {      
+    ...options,
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(
+      createProfileDto,)
+  }
+);}
+
+
+
+
+export const getPutApiProfileMutationOptions = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof putApiProfile>>, TError,{data: CreateProfileDto}, TContext>, request?: SecondParameter<typeof fetcher>}
+): UseMutationOptions<Awaited<ReturnType<typeof putApiProfile>>, TError,{data: CreateProfileDto}, TContext> => {
+
+const mutationKey = ['putApiProfile'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+      
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof putApiProfile>>, {data: CreateProfileDto}> = (props) => {
+          const {data} = props ?? {};
+
+          return  putApiProfile(data,requestOptions)
+        }
+
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type PutApiProfileMutationResult = NonNullable<Awaited<ReturnType<typeof putApiProfile>>>
+    export type PutApiProfileMutationBody = CreateProfileDto
+    export type PutApiProfileMutationError = unknown
+
+    export const usePutApiProfile = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof putApiProfile>>, TError,{data: CreateProfileDto}, TContext>, request?: SecondParameter<typeof fetcher>}
+ , queryClient?: QueryClient): UseMutationResult<
+        Awaited<ReturnType<typeof putApiProfile>>,
+        TError,
+        {data: CreateProfileDto},
+        TContext
+      > => {
+
+      const mutationOptions = getPutApiProfileMutationOptions(options);
 
       return useMutation(mutationOptions, queryClient);
     }

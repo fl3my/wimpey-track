@@ -41,7 +41,7 @@ namespace WimpeyTrack.Api.Controllers
                 .ThenInclude(t => t.Location)
                 .Include(j => j.Trips)
                 .ThenInclude(t => t.Reason)
-                .Where(j => j.Date >= weekStart && j.Date < weekEnd)
+                .Where(j => j.Date >= resolvedWeekStart && j.Date < weekEnd)
                 .OrderBy(j => j.Date)
                 .Select(j => new JourneyDto() 
                 { 

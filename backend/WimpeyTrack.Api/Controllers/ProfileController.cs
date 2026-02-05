@@ -59,7 +59,7 @@ public class ProfileController : ControllerBase
         profile.VehicleRegistration = dto.VehicleRegistration;
         profile.VehicleMake = dto.VehicleMake;
         profile.HomePostcode = dto.HomePostcode;
-        profile.HomeLocationId = profile.HomeLocationId;
+        profile.HomeLocationId = dto.HomeLocationId;
         
         // Save
         await _context.SaveChangesAsync();

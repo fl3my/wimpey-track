@@ -14,6 +14,7 @@ import { Route as ReportsIndexRouteImport } from './routes/Reports/index'
 import { Route as ReceiptsIndexRouteImport } from './routes/Receipts/index'
 import { Route as ReasonsIndexRouteImport } from './routes/Reasons/index'
 import { Route as PurchasesIndexRouteImport } from './routes/Purchases/index'
+import { Route as ProfileIndexRouteImport } from './routes/Profile/index'
 import { Route as PreferencesIndexRouteImport } from './routes/Preferences/index'
 import { Route as LocationsIndexRouteImport } from './routes/Locations/index'
 import { Route as JourneysIndexRouteImport } from './routes/Journeys/index'
@@ -22,7 +23,6 @@ import { Route as ReceiptsOcrRouteImport } from './routes/Receipts/ocr'
 import { Route as ReceiptsNewRouteImport } from './routes/Receipts/new'
 import { Route as ReasonsNewRouteImport } from './routes/Reasons/new'
 import { Route as PurchasesNewRouteImport } from './routes/Purchases/new'
-import { Route as PreferencesEditRouteImport } from './routes/Preferences/edit'
 import { Route as LocationsNewRouteImport } from './routes/Locations/new'
 import { Route as ReportsReportIdIndexRouteImport } from './routes/Reports/$reportId/index'
 import { Route as ReceiptsReceiptIdIndexRouteImport } from './routes/Receipts/$receiptId/index'
@@ -54,6 +54,11 @@ const ReasonsIndexRoute = ReasonsIndexRouteImport.update({
 const PurchasesIndexRoute = PurchasesIndexRouteImport.update({
   id: '/Purchases/',
   path: '/Purchases/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProfileIndexRoute = ProfileIndexRouteImport.update({
+  id: '/Profile/',
+  path: '/Profile/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PreferencesIndexRoute = PreferencesIndexRouteImport.update({
@@ -94,11 +99,6 @@ const ReasonsNewRoute = ReasonsNewRouteImport.update({
 const PurchasesNewRoute = PurchasesNewRouteImport.update({
   id: '/Purchases/new',
   path: '/Purchases/new',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const PreferencesEditRoute = PreferencesEditRouteImport.update({
-  id: '/Preferences/edit',
-  path: '/Preferences/edit',
   getParentRoute: () => rootRouteImport,
 } as any)
 const LocationsNewRoute = LocationsNewRouteImport.update({
@@ -142,7 +142,6 @@ const JourneysJourneyIdEditRoute = JourneysJourneyIdEditRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/Locations/new': typeof LocationsNewRoute
-  '/Preferences/edit': typeof PreferencesEditRoute
   '/Purchases/new': typeof PurchasesNewRoute
   '/Reasons/new': typeof ReasonsNewRoute
   '/Receipts/new': typeof ReceiptsNewRoute
@@ -151,6 +150,7 @@ export interface FileRoutesByFullPath {
   '/Journeys': typeof JourneysIndexRoute
   '/Locations': typeof LocationsIndexRoute
   '/Preferences': typeof PreferencesIndexRoute
+  '/Profile': typeof ProfileIndexRoute
   '/Purchases': typeof PurchasesIndexRoute
   '/Reasons': typeof ReasonsIndexRoute
   '/Receipts': typeof ReceiptsIndexRoute
@@ -165,7 +165,6 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/Locations/new': typeof LocationsNewRoute
-  '/Preferences/edit': typeof PreferencesEditRoute
   '/Purchases/new': typeof PurchasesNewRoute
   '/Reasons/new': typeof ReasonsNewRoute
   '/Receipts/new': typeof ReceiptsNewRoute
@@ -174,6 +173,7 @@ export interface FileRoutesByTo {
   '/Journeys': typeof JourneysIndexRoute
   '/Locations': typeof LocationsIndexRoute
   '/Preferences': typeof PreferencesIndexRoute
+  '/Profile': typeof ProfileIndexRoute
   '/Purchases': typeof PurchasesIndexRoute
   '/Reasons': typeof ReasonsIndexRoute
   '/Receipts': typeof ReceiptsIndexRoute
@@ -189,7 +189,6 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/Locations/new': typeof LocationsNewRoute
-  '/Preferences/edit': typeof PreferencesEditRoute
   '/Purchases/new': typeof PurchasesNewRoute
   '/Reasons/new': typeof ReasonsNewRoute
   '/Receipts/new': typeof ReceiptsNewRoute
@@ -198,6 +197,7 @@ export interface FileRoutesById {
   '/Journeys/': typeof JourneysIndexRoute
   '/Locations/': typeof LocationsIndexRoute
   '/Preferences/': typeof PreferencesIndexRoute
+  '/Profile/': typeof ProfileIndexRoute
   '/Purchases/': typeof PurchasesIndexRoute
   '/Reasons/': typeof ReasonsIndexRoute
   '/Receipts/': typeof ReceiptsIndexRoute
@@ -214,7 +214,6 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/Locations/new'
-    | '/Preferences/edit'
     | '/Purchases/new'
     | '/Reasons/new'
     | '/Receipts/new'
@@ -223,6 +222,7 @@ export interface FileRouteTypes {
     | '/Journeys'
     | '/Locations'
     | '/Preferences'
+    | '/Profile'
     | '/Purchases'
     | '/Reasons'
     | '/Receipts'
@@ -237,7 +237,6 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/Locations/new'
-    | '/Preferences/edit'
     | '/Purchases/new'
     | '/Reasons/new'
     | '/Receipts/new'
@@ -246,6 +245,7 @@ export interface FileRouteTypes {
     | '/Journeys'
     | '/Locations'
     | '/Preferences'
+    | '/Profile'
     | '/Purchases'
     | '/Reasons'
     | '/Receipts'
@@ -260,7 +260,6 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/Locations/new'
-    | '/Preferences/edit'
     | '/Purchases/new'
     | '/Reasons/new'
     | '/Receipts/new'
@@ -269,6 +268,7 @@ export interface FileRouteTypes {
     | '/Journeys/'
     | '/Locations/'
     | '/Preferences/'
+    | '/Profile/'
     | '/Purchases/'
     | '/Reasons/'
     | '/Receipts/'
@@ -284,7 +284,6 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   LocationsNewRoute: typeof LocationsNewRoute
-  PreferencesEditRoute: typeof PreferencesEditRoute
   PurchasesNewRoute: typeof PurchasesNewRoute
   ReasonsNewRoute: typeof ReasonsNewRoute
   ReceiptsNewRoute: typeof ReceiptsNewRoute
@@ -293,6 +292,7 @@ export interface RootRouteChildren {
   JourneysIndexRoute: typeof JourneysIndexRoute
   LocationsIndexRoute: typeof LocationsIndexRoute
   PreferencesIndexRoute: typeof PreferencesIndexRoute
+  ProfileIndexRoute: typeof ProfileIndexRoute
   PurchasesIndexRoute: typeof PurchasesIndexRoute
   ReasonsIndexRoute: typeof ReasonsIndexRoute
   ReceiptsIndexRoute: typeof ReceiptsIndexRoute
@@ -340,6 +340,13 @@ declare module '@tanstack/react-router' {
       path: '/Purchases'
       fullPath: '/Purchases'
       preLoaderRoute: typeof PurchasesIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/Profile/': {
+      id: '/Profile/'
+      path: '/Profile'
+      fullPath: '/Profile'
+      preLoaderRoute: typeof ProfileIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/Preferences/': {
@@ -398,13 +405,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PurchasesNewRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/Preferences/edit': {
-      id: '/Preferences/edit'
-      path: '/Preferences/edit'
-      fullPath: '/Preferences/edit'
-      preLoaderRoute: typeof PreferencesEditRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/Locations/new': {
       id: '/Locations/new'
       path: '/Locations/new'
@@ -460,7 +460,6 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   LocationsNewRoute: LocationsNewRoute,
-  PreferencesEditRoute: PreferencesEditRoute,
   PurchasesNewRoute: PurchasesNewRoute,
   ReasonsNewRoute: ReasonsNewRoute,
   ReceiptsNewRoute: ReceiptsNewRoute,
@@ -469,6 +468,7 @@ const rootRouteChildren: RootRouteChildren = {
   JourneysIndexRoute: JourneysIndexRoute,
   LocationsIndexRoute: LocationsIndexRoute,
   PreferencesIndexRoute: PreferencesIndexRoute,
+  ProfileIndexRoute: ProfileIndexRoute,
   PurchasesIndexRoute: PurchasesIndexRoute,
   ReasonsIndexRoute: ReasonsIndexRoute,
   ReceiptsIndexRoute: ReceiptsIndexRoute,
