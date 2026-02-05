@@ -23,19 +23,34 @@ public class ReportGenerationService : IReportGenerationService
     private readonly IPdfConverterService _pdfConverter;
     private readonly IReceiptProvider _receiptProvider;
     private readonly IImageProcessingService _imageProcessing;
+    private readonly IProfileProvider _profileProvider;
 
-    public ReportGenerationService(IExpenseWorkbookBuilder workbookBuilder, IBookBuilder bookBuilder, IPdfConverterService pdfConverter, IImageProcessingService imageProcessing, IReceiptProvider receiptProvider)
+    public ReportGenerationService(IExpenseWorkbookBuilder workbookBuilder, IBookBuilder bookBuilder, IPdfConverterService pdfConverter, IImageProcessingService imageProcessing, IReceiptProvider receiptProvider, IProfileProvider profileProvider)
     {
         _workbookBuilder = workbookBuilder;
         _bookBuilder = bookBuilder;
         _pdfConverter = pdfConverter;
         _imageProcessing = imageProcessing;
         _receiptProvider = receiptProvider;
+        _profileProvider = profileProvider;
     }
 
     public async Task<ReportArtifacts?> GenerateAsync(DateOnly startDate, DateOnly endDate)
     {
-        var books = await _bookBuilder.BuildAsync(startDate, endDate);
+        var profile = await  _profileProvider.GetProfileAsync();
+        var bookProfile = new BookProfile
+        {
+            FullName = profile.FullName,
+            StaffNumber = profile.StaffNumber,
+            BusinessUnit = profile.BusinessUnit,
+            DepartmentSiteName = profile.DepartmentSiteName,
+            VehicleFuelType = profile.VehicleFuelType,
+            VehicleEngineSize = profile.VehicleEngineSize,
+            VehicleRegistration = profile.VehicleRegistration,
+            VehicleMake = profile.VehicleMake,
+            HomePostcode = profile.HomePostcode,
+        };
+        var books = await _bookBuilder.BuildAsync(startDate, endDate, bookProfile);
         
         if (books.Count == 0) return null;
         

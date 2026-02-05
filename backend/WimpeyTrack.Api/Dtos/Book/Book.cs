@@ -5,4 +5,5 @@ public class Book
     public ICollection<Sheet> Sheets { get; set; } = new List<Sheet>();
     public ICollection<PurchaseRow> PurchaseRows { get; set; } = new List<PurchaseRow>();
     public bool IsOverThreshold { get; set; }
+    public BookProfile BookProfile { get; set; } = new BookProfile();
 }

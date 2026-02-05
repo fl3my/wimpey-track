@@ -154,6 +154,12 @@ function RouteComponent() {
           key={form.key("vehicleMake")}
           {...form.getInputProps("vehicleMake")}
         />
+        <TextInput
+          label={"Home Postcode"}
+          placeholder={"Home Postcode"}
+          key={form.key("homePostcode")}
+          {...form.getInputProps("homePostcode")}
+        />
         <Select
           searchable
           label={"Home Location"}

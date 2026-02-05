@@ -14,6 +14,19 @@ public interface IExpenseWorkbookBuilder
 public class ExpenseWorkbookBuilder : IExpenseWorkbookBuilder
 {
     private readonly IWebHostEnvironment _env;
+
+    // Sheet 1
+    private const int FullNameRow = 4;
+    private const int FullNameColumn = 3;
+
+    private const int StaffNumberRow = 6;
+    private const int StaffNumberColumn = 3;
+
+    private const int BusinessUnitRow = 6;
+    private const int BusinessUnitColumn = 5;
+
+    private const int DeptSiteRow = 6;
+    private const int DeptSiteColumn = 9;
     
     private const int PurchaseStartRow = 12;
 
@@ -22,9 +35,29 @@ public class ExpenseWorkbookBuilder : IExpenseWorkbookBuilder
 
     private const int OverThresholdRow = 49;
     private const int OverThresholdColumn = 2;
-
+    
+    // Second sheets
     private const int MileageStartRow = 6;
+    
+    private const int StartHomePostcodeRow = 6;
+    private const int StartHomePostcodeColumn = 3;
+    
+    private const int EndHomePostcodeRow = 6;
+    private const int EndHomePostcodeColumn = 4;
 
+    private const int FuelTypeRow = 4;
+    private const int FuelTypeColumn = 13;
+
+    private const int EngineSizeRow = 5;
+    private const int EngineSizeColumn = 13;
+
+    private const int RegistrationNumberRow = 6;
+    private const int RegistrationNumberColumn = 13;
+
+    private const int MakeRow = 7;
+    private const int MakeColumn = 13;
+    
+    // Sheet indexes
     private const int ExpenseSheetIndex = 1;
     private const int FirstMileageSheetIndex = 3;
     
@@ -70,8 +103,32 @@ public class ExpenseWorkbookBuilder : IExpenseWorkbookBuilder
         
         PopulateClaimRate(sheet, book);
         PopulatePurchaseRows(sheet, book);
+        
+        PopulateUserDetails(sheet, book);
     }
 
+    private void PopulateUserDetails(IXLWorksheet sheet, Book book)
+    {
+        sheet.Cell(FullNameRow, FullNameColumn).Value = book.BookProfile.FullName;
+        sheet.Cell(StaffNumberRow, StaffNumberColumn).Value = book.BookProfile.StaffNumber;
+        sheet.Cell(BusinessUnitRow, BusinessUnitColumn).Value = book.BookProfile.BusinessUnit;
+        sheet.Cell(DeptSiteRow, DeptSiteColumn).Value = book.BookProfile.DepartmentSiteName;
+    }
+
+    private void PopulateVehicleDetails(IXLWorksheet sheet, Book book)
+    {
+        sheet.Cell(FuelTypeRow, FuelTypeColumn).Value = book.BookProfile.VehicleFuelType;
+        sheet.Cell(EngineSizeRow, EngineSizeColumn).Value = book.BookProfile.VehicleEngineSize;
+        sheet.Cell(RegistrationNumberRow, RegistrationNumberColumn).Value = book.BookProfile.VehicleRegistration;
+        sheet.Cell(MakeRow, MakeColumn).Value = book.BookProfile.VehicleMake;
+    }
+
+    private void PopualatePostcode(IXLWorksheet sheet, Book book)
+    {
+        sheet.Cell(StartHomePostcodeRow, StartHomePostcodeColumn).Value = book.BookProfile.HomePostcode;
+        sheet.Cell(EndHomePostcodeRow, EndHomePostcodeColumn).Value = book.BookProfile.HomePostcode;
+    }
+    
     private void PopulateClaimRate(IXLWorksheet sheet, Book book)
     {
         sheet.Cell(ClaimRateRow, ClaimRateColumn)
@@ -102,11 +159,13 @@ public class ExpenseWorkbookBuilder : IExpenseWorkbookBuilder
     private void PopulateMileageSheets(XLWorkbook workbook, Book book)
     {
         var sheetIndex = FirstMileageSheetIndex;
-
+        
         foreach (var sheet in book.Sheets)
         {
             var worksheet = workbook.Worksheet(sheetIndex);
             PopulateMileageSheet(worksheet, sheet);
+            PopulateVehicleDetails(worksheet, book);
+            PopualatePostcode(worksheet, book);
             sheetIndex++;
         }
     }

@@ -12,7 +12,7 @@ namespace WimpeyTrack.Api.Domain;
 /// </summary>
 public interface IBookBuilder
 {
-    Task<IReadOnlyList<Book>> BuildAsync(DateOnly startDate, DateOnly endDate);
+    Task<IReadOnlyList<Book>> BuildAsync(DateOnly startDate, DateOnly endDate, BookProfile profile);
 }
 
 public class BookBuilder : IBookBuilder
@@ -28,7 +28,7 @@ public class BookBuilder : IBookBuilder
         _context = context;
     }
 
-    public async Task<IReadOnlyList<Book>> BuildAsync(DateOnly startDate, DateOnly endDate)
+    public async Task<IReadOnlyList<Book>> BuildAsync(DateOnly startDate, DateOnly endDate, BookProfile profile)
     {
         // Load the journeys in the date range
         var journeys = await _context.Journeys
@@ -101,7 +101,8 @@ public class BookBuilder : IBookBuilder
                     purchases,
                     purchaseStart,
                     purchaseEnd),
-                Sheets = BuildSheets(currentGroup)
+                Sheets = BuildSheets(currentGroup),
+                BookProfile =  profile
             });
         }
 
