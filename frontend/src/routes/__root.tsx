@@ -34,7 +34,7 @@ function RootLayout() {
             <Title order={3}>WimpeyTrack</Title>
           </Group>
         </AppShell.Header>
-        <AppShell.Navbar p="md">
+        <AppShell.Navbar p="md" zIndex={2000}>
           <Navigation />
         </AppShell.Navbar>
         <AppShell.Main bg={"gray.1"}>

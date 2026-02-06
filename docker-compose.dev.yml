@@ -15,6 +15,7 @@ services:
       - ./data/db:/app/data
       - ./data/uploads:/app/wwwroot/uploads
       - ./data/reports:/app/wwwroot/reports
+      - ./data/tiles:/app/wwwroot/tiles
   
   document-vision-service:
     build:

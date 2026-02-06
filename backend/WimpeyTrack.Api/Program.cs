@@ -1,4 +1,5 @@
 using System.Text.Json.Serialization;
+using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.EntityFrameworkCore;
 using Scalar.AspNetCore;
 using WimpeyTrack.Api.Data;
@@ -77,7 +78,15 @@ db.Database.Migrate();
 // Seed data
 await DatabaseInitializer.InitializeAsync(app.Services);
 
-app.UseStaticFiles();
+// Add compatibility for pmtiles
+var provider = new FileExtensionContentTypeProvider();
+provider.Mappings[".pmtiles"] = "application/octet-stream";
+
+app.UseStaticFiles(new StaticFileOptions
+{
+    ContentTypeProvider = provider
+});
+
 app.MapFallbackToFile("index.html");
 
 app.UseAuthorization();
