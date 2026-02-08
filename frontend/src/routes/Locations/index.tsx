@@ -64,6 +64,9 @@ function RouteComponent() {
           New location
         </Button>
       </Group>
+      <Text size="sm" c="dimmed" mb={"md"}>
+        These Locations will show as options in the Journey creation page.
+      </Text>
       {locations?.length === 0 ? (
         <Text>No Purchases found</Text>
       ) : (
