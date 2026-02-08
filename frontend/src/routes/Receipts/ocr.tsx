@@ -3,13 +3,14 @@ import { useField } from "@mantine/form";
 import {
   Alert,
   Button,
+  Card,
+  Center,
   FileInput,
   Group,
   Image,
-  Loader,
-  Paper,
   Stack,
   Text,
+  Title,
 } from "@mantine/core";
 import {
   type CreateFuelReceiptDto,
@@ -25,6 +26,8 @@ import {
 import { FuelForm, type FuelFormValues } from "@/components/fuel-form.tsx";
 import { useServerErrors } from "@/hooks/use-server-errors.ts";
 import { ServerErrorAlert } from "@/components/server-error-alert.tsx";
+import { CustomLink } from "@/components/custom-link.tsx";
+import { CustomButtonLink } from "@/components/custom-button-link.tsx";
 
 enum ReceiptCategory {
   Purchase = 0,
@@ -43,6 +46,9 @@ function RouteComponent() {
     mutation: {
       onError: (error) => {
         serverErrors.setFromApiError(error);
+      },
+      onSuccess: () => {
+        serverErrors.clear();
       },
     },
   });
@@ -124,9 +130,14 @@ function RouteComponent() {
 
   return (
     <Stack gap={"lg"}>
-      <Paper p={"md"}>
-        <ServerErrorAlert errors={serverErrors.errors} />
-        <Group align={"end"}>
+      <ServerErrorAlert errors={serverErrors.errors} />
+      <Card withBorder radius={"md"}>
+        <Stack>
+          <Title order={2}>Automatic Receipt</Title>
+          <Text size="sm" c="dimmed">
+            Create a receipt automatically. This will automatically detect the
+            type of receipt, as well as extract information from it.
+          </Text>
           <FileInput
             label={"Receipt Image Upload"}
             accept={"image/jpeg"}
@@ -135,23 +146,25 @@ function RouteComponent() {
             clearable
             {...uploadField.getInputProps()}
           />
-          <Button
-            onClick={onHandleUpload}
-            disabled={!uploadField.getValue() || ocr.isPending}
-            loading={ocr.isPending}
-          >
-            {ocr.isPending ? "Processing..." : "Process Receipt"}
-          </Button>
-        </Group>
-        {ocr.isPending && (
-          <Stack align="center" gap="xs">
-            <Loader size="sm" />
-            <Text size="sm" c="dimmed">
-              Analyzing receipt...
-            </Text>
-          </Stack>
-        )}
-      </Paper>
+          <Group justify={"flex-end"}>
+            <CustomButtonLink to={"/Receipts"} variant={"light"}>
+              Cancel
+            </CustomButtonLink>
+            <Button
+              onClick={onHandleUpload}
+              disabled={!uploadField.getValue() || ocr.isPending}
+              loading={ocr.isPending}
+            >
+              {ocr.isPending ? "Processing..." : "Process Receipt"}
+            </Button>
+          </Group>
+          {serverErrors.errors.length > 0 && (
+            <CustomLink to={"/Receipts/new"} c={"red"}>
+              Not working? Try manual instead
+            </CustomLink>
+          )}
+        </Stack>
+      </Card>
 
       {ocr.data?.receiptData && ocr.data.receiptData.length === 0 && (
         <Alert color="blue" mt="md">
@@ -166,7 +179,15 @@ function RouteComponent() {
           case ReceiptCategory.Purchase:
             return (
               <div key={index}>
-                <Image h={300} fit={"contain"} src={imageSrc} alt="Receipt" />
+                <Center my={"md"}>
+                  <Image
+                    maw={200}
+                    fit={"contain"}
+                    src={imageSrc}
+                    alt="Receipt"
+                  />
+                </Center>
+
                 <PurchaseForm
                   initialValues={{
                     date: receipt.transactionDate ?? "",
@@ -187,7 +208,14 @@ function RouteComponent() {
           case ReceiptCategory.Fuel:
             return (
               <div key={index}>
-                <Image h={300} fit={"contain"} src={imageSrc} alt="Receipt" />
+                <Center my={"md"}>
+                  <Image
+                    maw={200}
+                    fit={"contain"}
+                    src={imageSrc}
+                    alt="Receipt"
+                  />
+                </Center>
                 <FuelForm
                   initialValues={{
                     date: receipt?.transactionDate?.toString() ?? "",

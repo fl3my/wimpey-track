@@ -1,9 +1,19 @@
 import { useForm } from "@mantine/form";
-import { Button, Group, NumberInput, Stack, TextInput } from "@mantine/core";
+import {
+  Button,
+  Card,
+  Group,
+  NumberInput,
+  Stack,
+  Text,
+  TextInput,
+  Title,
+} from "@mantine/core";
 import { DateInput } from "@mantine/dates";
 import { zod4Resolver } from "mantine-form-zod-resolver";
 import { postApiPurchasesBody } from "@/api/zod.gen.ts";
 import z from "zod";
+import { IconPlus } from "@tabler/icons-react";
 
 export type PurchaseFormValues = z.infer<typeof postApiPurchasesBody>;
 
@@ -28,7 +38,7 @@ export function PurchaseForm({
           name: "",
           quantity: 1,
           cost: 0,
-          reason: "For plastic surgery",
+          reason: "",
         },
       ],
     },
@@ -36,74 +46,92 @@ export function PurchaseForm({
   });
 
   return (
-    <form onSubmit={form.onSubmit(onSubmit)}>
-      <Stack>
-        <DateInput
-          label="Purchase Date"
-          placeholder="Purchase Date"
-          key={form.key("date")}
-          {...form.getInputProps("date")}
-        />
-        <TextInput
-          label="Store Name"
-          placeholder="Store Name"
-          key={form.key("storeName")}
-          {...form.getInputProps("storeName")}
-        />
-        {form.values.items.map((_, index) => (
-          <Group key={index}>
-            <TextInput
-              label="Item name"
-              placeholder="Item name"
-              key={form.key(`items.${index}.name`)}
-              {...form.getInputProps(`items.${index}.name`)}
-            />
-            <NumberInput
-              label="Quantity"
-              min={1}
-              key={form.key(`items.${index}.quantity`)}
-              {...form.getInputProps(`items.${index}.quantity`)}
-            />
-            <NumberInput
-              label="Cost"
-              min={0}
-              decimalScale={2}
-              fixedDecimalScale
-              key={form.key(`items.${index}.cost`)}
-              {...form.getInputProps(`items.${index}.cost`)}
-            />
-            <TextInput
-              label="Reason"
-              key={form.key(`items.${index}.reason`)}
-              {...form.getInputProps(`items.${index}.reason`)}
-            />
-            <Button
-              color="red"
-              variant="light"
-              disabled={form.values.items.length === 1}
-              onClick={() => form.removeListItem("items", index)}
-            >
-              Remove
+    <Card>
+      <form onSubmit={form.onSubmit(onSubmit)}>
+        <Stack>
+          <Title order={2}>Purchase Form</Title>
+          <Text size="sm" c="dimmed">
+            Please check the data extracted from the receipt below. This form
+            will automatically create a purchase.
+          </Text>
+          <DateInput
+            label="Purchase Date"
+            placeholder="Purchase Date"
+            key={form.key("date")}
+            {...form.getInputProps("date")}
+          />
+          <TextInput
+            label="Store Name"
+            placeholder="Store Name"
+            key={form.key("storeName")}
+            {...form.getInputProps("storeName")}
+          />
+          {form.values.items.map((_, index) => (
+            <Card key={index} withBorder>
+              <Title order={3} mb={"md"}>
+                Item {index + 1}
+              </Title>
+              <Stack>
+                <TextInput
+                  label="Item name"
+                  placeholder="Item name"
+                  key={form.key(`items.${index}.name`)}
+                  {...form.getInputProps(`items.${index}.name`)}
+                />
+                <TextInput
+                  label="Reason for purchase"
+                  placeholder="Reason for purchase"
+                  key={form.key(`items.${index}.reason`)}
+                  {...form.getInputProps(`items.${index}.reason`)}
+                />
+                <Group grow>
+                  <NumberInput
+                    label="Quantity"
+                    min={1}
+                    key={form.key(`items.${index}.quantity`)}
+                    {...form.getInputProps(`items.${index}.quantity`)}
+                  />
+                  <NumberInput
+                    label="Cost"
+                    min={0}
+                    decimalScale={2}
+                    fixedDecimalScale
+                    key={form.key(`items.${index}.cost`)}
+                    {...form.getInputProps(`items.${index}.cost`)}
+                  />
+                </Group>
+                <Button
+                  color="red"
+                  variant="light"
+                  disabled={form.values.items.length === 1}
+                  onClick={() => form.removeListItem("items", index)}
+                >
+                  Remove
+                </Button>
+              </Stack>
+            </Card>
+          ))}
+          <Button
+            variant="light"
+            leftSection={<IconPlus size={16} />}
+            onClick={() =>
+              form.insertListItem("items", {
+                name: "",
+                quantity: 1,
+                cost: 0,
+                reason: "",
+              })
+            }
+          >
+            Add Another Item
+          </Button>
+          <Group justify={"flex-end"}>
+            <Button type="submit" loading={isLoading}>
+              Submit
             </Button>
           </Group>
-        ))}
-        <Button
-          variant="light"
-          onClick={() =>
-            form.insertListItem("items", {
-              name: "",
-              quantity: 1,
-              cost: 0,
-              reason: "For plastic surgery",
-            })
-          }
-        >
-          Add Item
-        </Button>
-        <Button type="submit" loading={isLoading}>
-          Submit
-        </Button>
-      </Stack>
-    </form>
+        </Stack>
+      </form>
+    </Card>
   );
 }

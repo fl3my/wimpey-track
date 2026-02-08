@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useGetApiReceiptsId } from "@/api/api-client.gen.ts";
-import { Loader, Stack, Text, Image } from "@mantine/core";
+import { Loader, Stack, Text, Image, Card, Title } from "@mantine/core";
 
 export const Route = createFileRoute("/Receipts/$receiptId/")({
   component: RouteComponent,
@@ -22,12 +22,14 @@ function RouteComponent() {
     );
 
   return (
-    <Stack>
-      <Text size="xl">Receipt</Text>
-      <Text>Name: {receipt?.name}</Text>
-      <Text>Date: {receipt?.date}</Text>
-      <Text>Category: {receipt?.category}</Text>
-      <Image alt="text" h={400} fit={"contain"} src={receipt?.imagePath} />
-    </Stack>
+    <Card withBorder radius={"md"}>
+      <Stack>
+        <Title order={2}>View Receipt</Title>
+        <Text>{receipt?.date}</Text>
+        <Text>{receipt?.name}</Text>
+        <Text>{receipt?.category == 0 ? "Purchase" : "Fuel"}</Text>
+        <Image alt="text" mah={600} fit={"contain"} src={receipt?.imagePath} />
+      </Stack>
+    </Card>
   );
 }

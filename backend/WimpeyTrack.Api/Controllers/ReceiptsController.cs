@@ -35,7 +35,7 @@ public class ReceiptsController : ControllerBase
     [HttpGet]
     public async Task<ActionResult<IEnumerable<Receipt>>> GetReceipts()
     {
-        return await _context.Receipts.ToListAsync();
+        return await _context.Receipts.OrderByDescending(r => r.Date).ToListAsync();
     }
 
     // GET: api/Receipts/5

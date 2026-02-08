@@ -1,12 +1,11 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { usePostApiReceipts } from "@/api/api-client.gen.ts";
-import { CustomButtonLink } from "@/components/custom-button-link.tsx";
 import {
   ReceiptForm,
   type ReceiptFormValues,
 } from "@/components/receipt-form.tsx";
 import { useServerErrors } from "@/hooks/use-server-errors.ts";
-import { Stack } from "@mantine/core";
+import { Card, Stack, Text, Title } from "@mantine/core";
 import { ServerErrorAlert } from "@/components/server-error-alert.tsx";
 
 export const Route = createFileRoute("/Receipts/new")({
@@ -41,12 +40,16 @@ function RouteComponent() {
   };
 
   return (
-    <>
-      <CustomButtonLink to={"/Receipts"}>Back</CustomButtonLink>
+    <Card withBorder radius="md">
       <Stack>
+        <Title order={3}>New Manual Receipt</Title>
+        <Text size="sm" c="dimmed">
+          Create a receipt manually. This is uploaded to the report when an
+          expense report is created.
+        </Text>
         <ServerErrorAlert errors={serverErrors.errors} />
         <ReceiptForm onSubmit={handleSubmit} />
       </Stack>
-    </>
+    </Card>
   );
 }
