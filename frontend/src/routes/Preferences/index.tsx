@@ -10,7 +10,7 @@ import { zod4Resolver } from "mantine-form-zod-resolver";
 import z from "zod";
 import { useEffect, useState } from "react";
 import { ServerErrorAlert } from "@/components/server-error-alert.tsx";
-import { Alert, Button, NumberInput, Title } from "@mantine/core";
+import { Alert, Button, Card, NumberInput, Stack, Title } from "@mantine/core";
 
 export const Route = createFileRoute("/Preferences/")({
   component: RouteComponent,
@@ -60,7 +60,7 @@ function RouteComponent() {
   };
 
   return (
-    <>
+    <Card withBorder radius="md">
       <Title order={2} mb={"md"}>
         Edit Preferences
       </Title>
@@ -72,24 +72,26 @@ function RouteComponent() {
             Preferences saved successfully
           </Alert>
         )}
-        <NumberInput
-          min={0.5}
-          max={2}
-          label={"Miles Adjustment Factor"}
-          description={
-            "This setting is used to adjust the calculated distance between trips"
-          }
-          key={form.key("milesAdjustmentFactor")}
-          {...form.getInputProps("milesAdjustmentFactor")}
-        />
-        <Button
-          type="submit"
-          loading={mutation.isPending}
-          disabled={mutation.isPending}
-        >
-          Submit
-        </Button>
+        <Stack>
+          <NumberInput
+            min={0.5}
+            max={2}
+            label={"Miles Adjustment Factor"}
+            description={
+              "This setting is used to adjust the calculated distance between trips"
+            }
+            key={form.key("milesAdjustmentFactor")}
+            {...form.getInputProps("milesAdjustmentFactor")}
+          />
+          <Button
+            type="submit"
+            loading={mutation.isPending}
+            disabled={mutation.isPending}
+          >
+            Submit
+          </Button>
+        </Stack>
       </form>
-    </>
+    </Card>
   );
 }

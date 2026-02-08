@@ -14,8 +14,10 @@ import { ServerErrorAlert } from "@/components/server-error-alert.tsx";
 import {
   Alert,
   Button,
+  Card,
   NumberInput,
   Select,
+  Stack,
   TextInput,
   Title,
 } from "@mantine/core";
@@ -95,7 +97,7 @@ function RouteComponent() {
   };
 
   return (
-    <>
+    <Card withBorder radius="md">
       <Title order={2} mb={"md"}>
         Edit Profile
       </Title>
@@ -107,83 +109,85 @@ function RouteComponent() {
             Profile saved successfully.
           </Alert>
         )}
-        <TextInput
-          label={"Full Name"}
-          placeholder={"Full Name"}
-          key={form.key("fullName")}
-          {...form.getInputProps("fullName")}
-        />
-        <TextInput
-          label={"Staff Number"}
-          placeholder={"Staff Number"}
-          key={form.key("staffNumber")}
-          {...form.getInputProps("staffNumber")}
-        />
-        <TextInput
-          label={"Business Unit"}
-          placeholder={"Business Unit"}
-          key={form.key("businessUnit")}
-          {...form.getInputProps("businessUnit")}
-        />
-        <TextInput
-          label={"Department Site Name"}
-          placeholder={"Department Site Name"}
-          key={form.key("departmentSiteName")}
-          {...form.getInputProps("departmentSiteName")}
-        />
-        <TextInput
-          label={"Vehicle Fuel Type"}
-          placeholder={"Vehicle Fuel Type"}
-          key={form.key("vehicleFuelType")}
-          {...form.getInputProps("vehicleFuelType")}
-        />
-        <NumberInput
-          label={"Vehicle Engine Size"}
-          key={form.key("vehicleEngineSize")}
-          {...form.getInputProps("vehicleEngineSize")}
-        />
-        <TextInput
-          label={"Vehicle Registration"}
-          placeholder={"Vehicle Registration"}
-          key={form.key("vehicleRegistration")}
-          {...form.getInputProps("vehicleRegistration")}
-        />
-        <TextInput
-          label={"Vehicle Make"}
-          placeholder={"Vehicle Make"}
-          key={form.key("vehicleMake")}
-          {...form.getInputProps("vehicleMake")}
-        />
-        <TextInput
-          label={"Home Postcode"}
-          placeholder={"Home Postcode"}
-          key={form.key("homePostcode")}
-          {...form.getInputProps("homePostcode")}
-        />
-        <Select
-          searchable
-          label={"Home Location"}
-          placeholder={"Home Location"}
-          data={locationOptions}
-          key={form.key("homeLocationId")}
-          value={
-            form.values.homeLocationId
-              ? String(form.values.homeLocationId)
-              : null
-          }
-          onChange={(value) =>
-            form.setFieldValue("homeLocationId", value ? Number(value) : 0)
-          }
-        />
+        <Stack>
+          <TextInput
+            label={"Full Name"}
+            placeholder={"Full Name"}
+            key={form.key("fullName")}
+            {...form.getInputProps("fullName")}
+          />
+          <TextInput
+            label={"Staff Number"}
+            placeholder={"Staff Number"}
+            key={form.key("staffNumber")}
+            {...form.getInputProps("staffNumber")}
+          />
+          <TextInput
+            label={"Business Unit"}
+            placeholder={"Business Unit"}
+            key={form.key("businessUnit")}
+            {...form.getInputProps("businessUnit")}
+          />
+          <TextInput
+            label={"Department Site Name"}
+            placeholder={"Department Site Name"}
+            key={form.key("departmentSiteName")}
+            {...form.getInputProps("departmentSiteName")}
+          />
+          <TextInput
+            label={"Vehicle Fuel Type"}
+            placeholder={"Vehicle Fuel Type"}
+            key={form.key("vehicleFuelType")}
+            {...form.getInputProps("vehicleFuelType")}
+          />
+          <NumberInput
+            label={"Vehicle Engine Size"}
+            key={form.key("vehicleEngineSize")}
+            {...form.getInputProps("vehicleEngineSize")}
+          />
+          <TextInput
+            label={"Vehicle Registration"}
+            placeholder={"Vehicle Registration"}
+            key={form.key("vehicleRegistration")}
+            {...form.getInputProps("vehicleRegistration")}
+          />
+          <TextInput
+            label={"Vehicle Make"}
+            placeholder={"Vehicle Make"}
+            key={form.key("vehicleMake")}
+            {...form.getInputProps("vehicleMake")}
+          />
+          <TextInput
+            label={"Home Postcode"}
+            placeholder={"Home Postcode"}
+            key={form.key("homePostcode")}
+            {...form.getInputProps("homePostcode")}
+          />
+          <Select
+            searchable
+            label={"Home Location"}
+            placeholder={"Home Location"}
+            data={locationOptions}
+            key={form.key("homeLocationId")}
+            value={
+              form.values.homeLocationId
+                ? String(form.values.homeLocationId)
+                : null
+            }
+            onChange={(value) =>
+              form.setFieldValue("homeLocationId", value ? Number(value) : 0)
+            }
+          />
 
-        <Button
-          type="submit"
-          loading={mutation.isPending}
-          disabled={mutation.isPending}
-        >
-          Submit
-        </Button>
+          <Button
+            type="submit"
+            loading={mutation.isPending}
+            disabled={mutation.isPending}
+          >
+            Submit
+          </Button>
+        </Stack>
       </form>
-    </>
+    </Card>
   );
 }
