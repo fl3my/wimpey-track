@@ -44,7 +44,7 @@ namespace WimpeyTrack.Api.Data.Migrations
 
                     b.HasIndex("PurchaseId");
 
-                    b.ToTable("Items");
+                    b.ToTable("Items", (string)null);
                 });
 
             modelBuilder.Entity("WimpeyTrack.Api.Models.Journey", b =>
@@ -69,7 +69,7 @@ namespace WimpeyTrack.Api.Data.Migrations
 
                     b.HasIndex("HomeLocationId");
 
-                    b.ToTable("Journeys");
+                    b.ToTable("Journeys", (string)null);
                 });
 
             modelBuilder.Entity("WimpeyTrack.Api.Models.Location", b =>
@@ -90,7 +90,7 @@ namespace WimpeyTrack.Api.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Locations");
+                    b.ToTable("Locations", (string)null);
                 });
 
             modelBuilder.Entity("WimpeyTrack.Api.Models.Preference", b =>
@@ -104,7 +104,7 @@ namespace WimpeyTrack.Api.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Preferences");
+                    b.ToTable("Preferences", (string)null);
                 });
 
             modelBuilder.Entity("WimpeyTrack.Api.Models.Profile", b =>
@@ -155,7 +155,7 @@ namespace WimpeyTrack.Api.Data.Migrations
 
                     b.HasIndex("HomeLocationId");
 
-                    b.ToTable("Profiles");
+                    b.ToTable("Profiles", (string)null);
                 });
 
             modelBuilder.Entity("WimpeyTrack.Api.Models.Purchase", b =>
@@ -179,7 +179,7 @@ namespace WimpeyTrack.Api.Data.Migrations
                     b.HasIndex("ReceiptId")
                         .IsUnique();
 
-                    b.ToTable("Purchases");
+                    b.ToTable("Purchases", (string)null);
                 });
 
             modelBuilder.Entity("WimpeyTrack.Api.Models.Reason", b =>
@@ -194,7 +194,7 @@ namespace WimpeyTrack.Api.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Reasons");
+                    b.ToTable("Reasons", (string)null);
                 });
 
             modelBuilder.Entity("WimpeyTrack.Api.Models.Receipt", b =>
@@ -219,7 +219,7 @@ namespace WimpeyTrack.Api.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Receipts");
+                    b.ToTable("Receipts", (string)null);
                 });
 
             modelBuilder.Entity("WimpeyTrack.Api.Models.Report", b =>
@@ -243,7 +243,7 @@ namespace WimpeyTrack.Api.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Reports");
+                    b.ToTable("Reports", (string)null);
                 });
 
             modelBuilder.Entity("WimpeyTrack.Api.Models.Trip", b =>
@@ -269,7 +269,7 @@ namespace WimpeyTrack.Api.Data.Migrations
 
                     b.HasIndex("ReasonId");
 
-                    b.ToTable("Trips");
+                    b.ToTable("Trips", (string)null);
                 });
 
             modelBuilder.Entity("WimpeyTrack.Api.Models.Item", b =>

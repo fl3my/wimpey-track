@@ -24,7 +24,8 @@ namespace WimpeyTrack.Api.Controllers
             var reasons = await _context.Reasons.Select(r => new ReasonDto()
             {
                 Id = r.Id,
-                Name = r.Name
+                Name = r.Name,
+                TripCount = r.Trips.Count
             })
             .ToListAsync();
             
@@ -35,7 +36,9 @@ namespace WimpeyTrack.Api.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<ReasonDto>> GetReason(int id)
         {
-            var reason = await _context.Reasons.FindAsync(id);
+            var reason = await _context.Reasons
+                .Include(r => r.Trips)
+                .SingleOrDefaultAsync(r => r.Id == id);
 
             if (reason == null)
             {
@@ -45,7 +48,8 @@ namespace WimpeyTrack.Api.Controllers
             var dto = new ReasonDto()
             {
                 Id = reason.Id,
-                Name = reason.Name
+                Name = reason.Name,
+                TripCount = reason.Trips.Count
             };
                 
             return dto;
@@ -124,12 +128,19 @@ namespace WimpeyTrack.Api.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteReason(int id)
         {
-            var reason = await _context.Reasons.FindAsync(id);
+            var reason = await _context.Reasons
+                .Include(r => r.Trips)
+                .SingleOrDefaultAsync(r => r.Id == id);
+            
             if (reason == null)
             {
                 return NotFound();
             }
 
+            if (reason.Trips.Count != 0)
+                return BadRequest(new {message = "Cannot delete, reason belongs to journeys"});
+
+            
             _context.Reasons.Remove(reason);
             await _context.SaveChangesAsync();
 

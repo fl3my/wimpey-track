@@ -276,6 +276,7 @@ export interface PurchaseDto {
 export interface ReasonDto {
   id?: number;
   name?: string;
+  tripCount?: number;
 }
 
 export type ReceiptPurchase = null | Purchase;

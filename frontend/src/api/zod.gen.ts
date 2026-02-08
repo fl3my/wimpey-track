@@ -437,7 +437,8 @@ export const deleteApiPurchasesIdParams = zod.object({
 
 export const getApiReasonsResponseItem = zod.object({
   "id": zod.coerce.number().optional(),
-  "name": zod.coerce.string().optional()
+  "name": zod.coerce.string().optional(),
+  "tripCount": zod.coerce.number().optional()
 })
 export const getApiReasonsResponse = zod.array(getApiReasonsResponseItem)
 
@@ -453,7 +454,8 @@ export const postApiReasonsBody = zod.object({
 
 export const postApiReasonsResponse = zod.object({
   "id": zod.coerce.number().optional(),
-  "name": zod.coerce.string().optional()
+  "name": zod.coerce.string().optional(),
+  "tripCount": zod.coerce.number().optional()
 })
 
 
@@ -463,7 +465,8 @@ export const getApiReasonsIdParams = zod.object({
 
 export const getApiReasonsIdResponse = zod.object({
   "id": zod.coerce.number().optional(),
-  "name": zod.coerce.string().optional()
+  "name": zod.coerce.string().optional(),
+  "tripCount": zod.coerce.number().optional()
 })
 
 

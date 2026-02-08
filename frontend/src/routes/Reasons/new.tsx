@@ -1,6 +1,14 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useForm } from "@mantine/form";
-import { Button, TextInput } from "@mantine/core";
+import {
+  Button,
+  Card,
+  Group,
+  Stack,
+  Text,
+  TextInput,
+  Title,
+} from "@mantine/core";
 import { zod4Resolver } from "mantine-form-zod-resolver";
 import { postApiReasonsBody } from "@/api/zod.gen.ts";
 import { usePostApiReasons } from "@/api/api-client.gen.ts";
@@ -46,21 +54,36 @@ function RouteComponent() {
     });
   };
   return (
-    <form onSubmit={form.onSubmit(handleSubmit)}>
-      <ServerErrorAlert errors={serverErrors.errors} />
-      <TextInput
-        label={"Name"}
-        placeholder={"Name"}
-        key={form.key("name")}
-        {...form.getInputProps("name")}
-      />
-      <Button
-        type="submit"
-        loading={mutation.isPending}
-        disabled={mutation.isPending}
-      >
-        Submit
-      </Button>
-    </form>
+    <Card withBorder radius="md">
+      <Stack gap="md">
+        <Title order={3}>New Reason</Title>
+        <Text size="sm" c="dimmed">
+          This should be a short description of why you visited a location.
+        </Text>
+        <form onSubmit={form.onSubmit(handleSubmit)}>
+          <Stack gap={"md"}>
+            <ServerErrorAlert errors={serverErrors.errors} />
+            <TextInput
+              label={"Name"}
+              placeholder={"Name"}
+              description={
+                "This will be the name that appears on the spreadsheet"
+              }
+              key={form.key("name")}
+              {...form.getInputProps("name")}
+            />
+            <Group justify={"flex-end"}>
+              <Button
+                type="submit"
+                loading={mutation.isPending}
+                disabled={mutation.isPending}
+              >
+                Submit
+              </Button>
+            </Group>
+          </Stack>
+        </form>
+      </Stack>
+    </Card>
   );
 }
