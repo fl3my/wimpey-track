@@ -7,6 +7,7 @@ public class JourneyDto
     public int TotalMiles { get; set; }
     public bool IsManualMiles { get; set; }
     public int HomeLocationId { get; set; }
+    public string HomeLocationName { get; set; }= string.Empty;
     
     public ICollection<JourneyTripDto> Trips { get; set; } = new List<JourneyTripDto>();
 }

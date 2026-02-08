@@ -50,6 +50,7 @@ namespace WimpeyTrack.Api.Controllers
                     TotalMiles =  j.TotalMiles, 
                     IsManualMiles =  j.IsManualMiles, 
                     HomeLocationId =  j.HomeLocationId,
+                    HomeLocationName = j.HomeLocation.Name, 
                     Trips = j.Trips
                         .Select(t => new JourneyTripDto()
                     {

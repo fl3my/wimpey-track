@@ -1,5 +1,6 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import {
+  ActionIcon,
   Alert,
   Button,
   Center,
@@ -22,6 +23,7 @@ import { useState } from "react";
 import z from "zod";
 import { zod4Resolver } from "mantine-form-zod-resolver";
 import { LocationSortBy } from "@/routes/Locations";
+import { IconArrowLeft, IconArrowRight, IconTrash } from "@tabler/icons-react";
 
 const tripSchema = z.object({
   locationId: z.coerce.number().int().positive(),
@@ -138,6 +140,7 @@ function RouteComponent() {
     <Stack gap="lg">
       <Group justify="space-between">
         <Button
+          leftSection={<IconArrowLeft size={16} />}
           onClick={() =>
             navigate({
               to: "/Journeys",
@@ -153,6 +156,7 @@ function RouteComponent() {
         </Text>
 
         <Button
+          rightSection={<IconArrowRight size={16} />}
           onClick={() =>
             navigate({
               to: "/Journeys",
@@ -181,13 +185,20 @@ function RouteComponent() {
             )}
             {day.journey ? (
               <Stack mt="sm">
+                <Group>
+                  <Text>{day.journey.homeLocationName}</Text>
+                  <Text c="dimmed">{"Home (start)"}</Text>
+                </Group>
                 {day.journey.trips?.map((trip) => (
                   <Group key={trip.id}>
                     <Text>{trip.locationName}</Text>
                     <Text c="dimmed">{trip.reasonName}</Text>
                   </Group>
                 ))}
-
+                <Group>
+                  <Text>{day.journey.homeLocationName}</Text>
+                  <Text c="dimmed">{"Home (end)"}</Text>
+                </Group>
                 <Button
                   color="red"
                   variant="light"
@@ -201,30 +212,31 @@ function RouteComponent() {
                 <form onSubmit={form.onSubmit(handleSubmit)}>
                   <Stack>
                     {form.values.trips.map((_, index) => (
-                      <Group key={index} grow>
-                        <Select
-                          searchable
-                          placeholder={"Location"}
-                          data={locationOptions}
-                          limit={10}
-                          {...form.getInputProps(`trips.${index}.locationId`)}
-                        />
-                        <Select
-                          searchable
-                          placeholder={"Reason"}
-                          data={reasonOptions}
-                          limit={10}
-                          {...form.getInputProps(`trips.${index}.reasonId`)}
-                        />
-                        {form.values.trips.length > 1 && (
-                          <Button
-                            color="red"
-                            variant="subtle"
-                            onClick={() => form.removeListItem("trips", index)}
-                          >
-                            Remove
-                          </Button>
-                        )}
+                      <Group key={index}>
+                        <Group grow flex={1}>
+                          <Select
+                            searchable
+                            placeholder={"Location"}
+                            data={locationOptions}
+                            limit={10}
+                            {...form.getInputProps(`trips.${index}.locationId`)}
+                          />
+                          <Select
+                            searchable
+                            placeholder={"Reason"}
+                            data={reasonOptions}
+                            limit={10}
+                            {...form.getInputProps(`trips.${index}.reasonId`)}
+                          />
+                        </Group>
+                        <ActionIcon
+                          color="red"
+                          size={"lg"}
+                          disabled={form.values.trips.length === 1}
+                          onClick={() => form.removeListItem("trips", index)}
+                        >
+                          <IconTrash size={16} />
+                        </ActionIcon>
                       </Group>
                     ))}
 
@@ -237,7 +249,7 @@ function RouteComponent() {
                         })
                       }
                     >
-                      + Add another trip
+                      Add another trip
                     </Button>
 
                     <Group justify="flex-end">

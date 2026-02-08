@@ -211,6 +211,7 @@ export interface JourneyDto {
   totalMiles?: number;
   isManualMiles?: boolean;
   homeLocationId?: number;
+  homeLocationName?: string;
   trips?: JourneyTripDto[];
 }
 

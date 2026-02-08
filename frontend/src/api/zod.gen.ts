@@ -136,6 +136,7 @@ export const getApiJourneysResponse = zod.object({
   "totalMiles": zod.coerce.number().optional(),
   "isManualMiles": zod.coerce.boolean().optional(),
   "homeLocationId": zod.coerce.number().optional(),
+  "homeLocationName": zod.coerce.string().optional(),
   "trips": zod.array(zod.object({
   "id": zod.coerce.number().optional(),
   "locationName": zod.coerce.string().optional(),
@@ -164,6 +165,7 @@ export const postApiJourneysResponse = zod.object({
   "totalMiles": zod.coerce.number().optional(),
   "isManualMiles": zod.coerce.boolean().optional(),
   "homeLocationId": zod.coerce.number().optional(),
+  "homeLocationName": zod.coerce.string().optional(),
   "trips": zod.array(zod.object({
   "id": zod.coerce.number().optional(),
   "locationName": zod.coerce.string().optional(),
@@ -182,6 +184,7 @@ export const getApiJourneysIdResponse = zod.object({
   "totalMiles": zod.coerce.number().optional(),
   "isManualMiles": zod.coerce.boolean().optional(),
   "homeLocationId": zod.coerce.number().optional(),
+  "homeLocationName": zod.coerce.string().optional(),
   "trips": zod.array(zod.object({
   "id": zod.coerce.number().optional(),
   "locationName": zod.coerce.string().optional(),
