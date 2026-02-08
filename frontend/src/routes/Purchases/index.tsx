@@ -1,23 +1,37 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
+import { useGetApiPurchases } from "@/api/api-client.gen.ts";
 import {
-  useDeleteApiPurchasesId,
-  useGetApiPurchases,
-} from "@/api/api-client.gen.ts";
-import { Button, Loader, Table, Text } from "@mantine/core";
+  Card,
+  Group,
+  Loader,
+  Pagination,
+  Table,
+  Text,
+  Title,
+} from "@mantine/core";
+import { CustomButtonLink } from "@/components/custom-button-link.tsx";
+import { CustomLink } from "@/components/custom-link.tsx";
+import { useState } from "react";
 
 export const Route = createFileRoute("/Purchases/")({
   component: RouteComponent,
 });
 
+const PAGE_SIZE = 20;
+
 function RouteComponent() {
-  const {
-    data: purchases,
-    isLoading,
-    isError,
-    error,
-    refetch,
-  } = useGetApiPurchases();
-  const deletePurchase = useDeleteApiPurchasesId();
+  const { data: purchases, isLoading, isError, error } = useGetApiPurchases();
+  const [page, setPage] = useState(1);
+
+  const totalPages = Math.ceil((purchases?.length ?? 0) / PAGE_SIZE);
+  const paginatedPurchases = purchases?.slice(
+    (page - 1) * PAGE_SIZE,
+    page * PAGE_SIZE,
+  );
+
+  const totalCount = purchases?.length ?? 0;
+  const startItem = totalCount === 0 ? 0 : (page - 1) * PAGE_SIZE + 1;
+  const endItem = Math.min(page * PAGE_SIZE, totalCount);
 
   if (isLoading) return <Loader />;
   if (isError)
@@ -25,60 +39,58 @@ function RouteComponent() {
       <Text c="red">Error loading purchases: {(error as Error).message}</Text>
     );
 
-  const handleDelete = async (id: number) => {
-    try {
-      await deletePurchase.mutateAsync({ id });
-      await refetch();
-    } catch (err) {
-      console.error("Failed to delete purchase:", err);
-    }
-  };
-
   return (
-    <>
-      <Button component={Link} to={"/purchases/new"}>
-        New Purchase
-      </Button>
+    <Card withBorder radius={"md"}>
+      <Group justify={"space-between"} mb={"md"}>
+        <Title order={3}>Purchases</Title>
+        <CustomButtonLink to={"/Purchases/new"}>New Purchase</CustomButtonLink>
+      </Group>
+      <Text size="sm" c="dimmed" mb={"md"}>
+        Purchases added here will be added to the generated report.
+      </Text>
       {purchases?.length === 0 ? (
         <Text>No Purchases found</Text>
       ) : (
-        <Table>
-          <Table.Thead>
-            <Table.Tr>
-              <Table.Th>Date</Table.Th>
-              <Table.Th>Store Name</Table.Th>
-              <Table.Th>Actions</Table.Th>
-            </Table.Tr>
-          </Table.Thead>
-          <Table.Tbody>
-            {purchases?.map((purchase) => (
-              <Table.Tr key={purchase.id}>
-                <Table.Td>{purchase.date}</Table.Td>
-                <Table.Td>{purchase.storeName}</Table.Td>
-                <Table.Td>
-                  <Button
-                    size={"xs"}
-                    variant={"light"}
-                    component={Link}
-                    to={`/purchases/${purchase.id}`}
-                  >
-                    View
-                  </Button>
-                  <Button
-                    size="xs"
-                    color="red"
-                    variant="light"
-                    onClick={() => handleDelete(Number(purchase.id))}
-                    loading={deletePurchase.isPending}
-                  >
-                    Delete
-                  </Button>
-                </Table.Td>
+        <>
+          <Group justify="flex-end">
+            <Text size="xs" c="dimmed">
+              {startItem}–{endItem} / {totalCount}
+            </Text>
+            <Pagination
+              total={totalPages}
+              value={page}
+              onChange={setPage}
+              withPages={false}
+            />
+          </Group>
+          <Table>
+            <Table.Thead>
+              <Table.Tr>
+                <Table.Th>Date</Table.Th>
+                <Table.Th>Store Name</Table.Th>
+                <Table.Th>Actions</Table.Th>
               </Table.Tr>
-            ))}
-          </Table.Tbody>
-        </Table>
+            </Table.Thead>
+            <Table.Tbody>
+              {paginatedPurchases?.map((purchase) => (
+                <Table.Tr key={purchase.id}>
+                  <Table.Td>{purchase.date}</Table.Td>
+                  <Table.Td>{purchase.storeName}</Table.Td>
+                  <Table.Td>
+                    <CustomLink
+                      size={"sm"}
+                      to={"/Purchases/$purchaseId"}
+                      params={{ purchaseId: purchase.id!.toString() }}
+                    >
+                      View
+                    </CustomLink>
+                  </Table.Td>
+                </Table.Tr>
+              ))}
+            </Table.Tbody>
+          </Table>
+        </>
       )}
-    </>
+    </Card>
   );
 }
