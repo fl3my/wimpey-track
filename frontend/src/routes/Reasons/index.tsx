@@ -128,7 +128,7 @@ function RouteComponent() {
 
       <ServerErrorAlert errors={serverErrors.errors} />
 
-      <Card>
+      <Card withBorder radius="md">
         <Group justify="space-between" align="center" mb="sm">
           <Title order={2}>Reasons</Title>
           <CustomButtonLink
