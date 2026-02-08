@@ -19,18 +19,29 @@ namespace WimpeyTrack.Api.Controllers
 
         // GET: api/Locations
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<LocationDto>>> GetLocations()
+        public async Task<ActionResult<IEnumerable<LocationDto>>> GetLocations(
+            [FromQuery] LocationSortBy sortBy = LocationSortBy.TripCount
+            )
         {
-            var locations = await _context.Locations
-                .OrderByDescending(l => l.Trips.Count())
-                .Select(r => new LocationDto()
+
+            var query =  _context.Locations
+                .Select(l => new LocationDto()
+                {
+                    Id = l.Id,
+                    Name = l.Name,
+                    Latitude = l.Latitude,
+                    Longitude = l.Longitude,
+                    TripCount = l.Trips.Count()
+                });
+            
+            query = sortBy switch
             {
-                Id =  r.Id,
-                Name = r.Name,
-                Latitude = r.Latitude,
-                Longitude = r.Longitude,
-            })
-            .ToListAsync();
+                LocationSortBy.Name => query.OrderBy(l => l.Name),
+                LocationSortBy.TripCount => query.OrderByDescending(l => l.TripCount).ThenBy(l => l.Name),
+                _ => query
+            };
+
+            var locations = await query.ToListAsync();
             
             return locations;
         }
@@ -39,7 +50,9 @@ namespace WimpeyTrack.Api.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<LocationDto>> GetLocation(int id)
         {
-            var location = await _context.Locations.FindAsync(id);
+            var location = await _context.Locations
+                .Include(l => l.Trips)
+                .SingleOrDefaultAsync(l => l.Id == id); 
 
             if (location == null)
             {
@@ -52,6 +65,7 @@ namespace WimpeyTrack.Api.Controllers
                 Name = location.Name,
                 Latitude = location.Latitude,
                 Longitude = location.Longitude,
+                TripCount = location.Trips.Count
             };
             
             return dto;
@@ -122,11 +136,17 @@ namespace WimpeyTrack.Api.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteLocation(int id)
         {
-            var location = await _context.Locations.FindAsync(id);
+            var location = await _context.Locations
+                .Include(l => l.Trips)
+                .SingleOrDefaultAsync(l => l.Id == id);
+            
             if (location == null)
             {
                 return NotFound();
             }
+            
+            if (location.Trips.Count != 0)
+                return BadRequest(new {message = "Cannot delete, location belongs to journeys"});
 
             _context.Locations.Remove(location);
             await _context.SaveChangesAsync();

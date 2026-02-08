@@ -212,9 +212,16 @@ export const deleteApiJourneysIdParams = zod.object({
 })
 
 
+export const getApiLocationsQuerySortByDefault = 1;
+
+export const getApiLocationsQueryParams = zod.object({
+  "sortBy": zod.coerce.number().default(getApiLocationsQuerySortByDefault)
+})
+
 export const getApiLocationsResponseItem = zod.object({
   "id": zod.coerce.number().optional(),
   "name": zod.coerce.string().optional(),
+  "tripCount": zod.coerce.number().optional(),
   "latitude": zod.coerce.number().optional(),
   "longitude": zod.coerce.number().optional()
 })
@@ -241,6 +248,7 @@ export const postApiLocationsBody = zod.object({
 export const postApiLocationsResponse = zod.object({
   "id": zod.coerce.number().optional(),
   "name": zod.coerce.string().optional(),
+  "tripCount": zod.coerce.number().optional(),
   "latitude": zod.coerce.number().optional(),
   "longitude": zod.coerce.number().optional()
 })
@@ -253,6 +261,7 @@ export const getApiLocationsIdParams = zod.object({
 export const getApiLocationsIdResponse = zod.object({
   "id": zod.coerce.number().optional(),
   "name": zod.coerce.string().optional(),
+  "tripCount": zod.coerce.number().optional(),
   "latitude": zod.coerce.number().optional(),
   "longitude": zod.coerce.number().optional()
 })
@@ -316,16 +325,16 @@ export const getApiProfileResponse = zod.object({
 
 
 export const putApiProfileBody = zod.object({
-  "fullName": zod.coerce.string(),
-  "staffNumber": zod.coerce.string(),
-  "businessUnit": zod.coerce.string(),
-  "departmentSiteName": zod.coerce.string(),
-  "vehicleFuelType": zod.coerce.string(),
-  "vehicleEngineSize": zod.coerce.number(),
-  "vehicleRegistration": zod.coerce.string(),
-  "vehicleMake": zod.coerce.string(),
-  "homePostcode": zod.coerce.string(),
-  "homeLocationId": zod.coerce.number()
+  "fullName": zod.coerce.string().optional(),
+  "staffNumber": zod.coerce.string().optional(),
+  "businessUnit": zod.coerce.string().optional(),
+  "departmentSiteName": zod.coerce.string().optional(),
+  "vehicleFuelType": zod.coerce.string().optional(),
+  "vehicleEngineSize": zod.coerce.number().optional(),
+  "vehicleRegistration": zod.coerce.string().optional(),
+  "vehicleMake": zod.coerce.string().optional(),
+  "homePostcode": zod.coerce.string().optional(),
+  "homeLocationId": zod.coerce.number().optional()
 })
 
 

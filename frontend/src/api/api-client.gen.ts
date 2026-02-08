@@ -100,16 +100,16 @@ export interface CreatePreferenceDto {
 }
 
 export interface CreateProfileDto {
-  fullName: string;
-  staffNumber: string;
-  businessUnit: string;
-  departmentSiteName: string;
-  vehicleFuelType: string;
-  vehicleEngineSize: number;
-  vehicleRegistration: string;
-  vehicleMake: string;
-  homePostcode: string;
-  homeLocationId: number;
+  fullName?: string;
+  staffNumber?: string;
+  businessUnit?: string;
+  departmentSiteName?: string;
+  vehicleFuelType?: string;
+  vehicleEngineSize?: number;
+  vehicleRegistration?: string;
+  vehicleMake?: string;
+  homePostcode?: string;
+  homeLocationId?: number;
 }
 
 export type CreatePurchaseDtoReceiptId = null | number;
@@ -223,9 +223,12 @@ export interface JourneyTripDto {
 export interface LocationDto {
   id?: number;
   name?: string;
+  tripCount?: number;
   latitude?: number;
   longitude?: number;
 }
+
+export type LocationSortBy = number;
 
 export interface MonthlyMilesDto {
   month?: string;
@@ -430,6 +433,10 @@ export interface UpdateTripDto {
 
 export type GetApiJourneysParams = {
 weekStart?: string;
+};
+
+export type GetApiLocationsParams = {
+sortBy?: LocationSortBy;
 };
 
 export type PostApiReceiptsBody = {
@@ -1347,17 +1354,24 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
       return useMutation(mutationOptions, queryClient);
     }
     
-export const getGetApiLocationsUrl = () => {
+export const getGetApiLocationsUrl = (params?: GetApiLocationsParams,) => {
+  const normalizedParams = new URLSearchParams();
 
+  Object.entries(params || {}).forEach(([key, value]) => {
+    
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? 'null' : value.toString())
+    }
+  });
 
-  
+  const stringifiedParams = normalizedParams.toString();
 
-  return `/api/Locations`
+  return stringifiedParams.length > 0 ? `/api/Locations?${stringifiedParams}` : `/api/Locations`
 }
 
-export const getApiLocations = async ( options?: RequestInit): Promise<LocationDto[]> => {
+export const getApiLocations = async (params?: GetApiLocationsParams, options?: RequestInit): Promise<LocationDto[]> => {
   
-  return fetcher<LocationDto[]>(getGetApiLocationsUrl(),
+  return fetcher<LocationDto[]>(getGetApiLocationsUrl(params),
   {      
     ...options,
     method: 'GET'
@@ -1370,23 +1384,23 @@ export const getApiLocations = async ( options?: RequestInit): Promise<LocationD
 
 
 
-export const getGetApiLocationsQueryKey = () => {
+export const getGetApiLocationsQueryKey = (params?: GetApiLocationsParams,) => {
     return [
-    `/api/Locations`
+    `/api/Locations`, ...(params ? [params]: [])
     ] as const;
     }
 
     
-export const getGetApiLocationsQueryOptions = <TData = Awaited<ReturnType<typeof getApiLocations>>, TError = unknown>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiLocations>>, TError, TData>>, request?: SecondParameter<typeof fetcher>}
+export const getGetApiLocationsQueryOptions = <TData = Awaited<ReturnType<typeof getApiLocations>>, TError = unknown>(params?: GetApiLocationsParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiLocations>>, TError, TData>>, request?: SecondParameter<typeof fetcher>}
 ) => {
 
 const {query: queryOptions, request: requestOptions} = options ?? {};
 
-  const queryKey =  queryOptions?.queryKey ?? getGetApiLocationsQueryKey();
+  const queryKey =  queryOptions?.queryKey ?? getGetApiLocationsQueryKey(params);
 
   
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getApiLocations>>> = ({ signal }) => getApiLocations({ signal, ...requestOptions });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getApiLocations>>> = ({ signal }) => getApiLocations(params, { signal, ...requestOptions });
 
       
 
@@ -1400,7 +1414,7 @@ export type GetApiLocationsQueryError = unknown
 
 
 export function useGetApiLocations<TData = Awaited<ReturnType<typeof getApiLocations>>, TError = unknown>(
-  options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiLocations>>, TError, TData>> & Pick<
+ params: undefined |  GetApiLocationsParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiLocations>>, TError, TData>> & Pick<
         DefinedInitialDataOptions<
           Awaited<ReturnType<typeof getApiLocations>>,
           TError,
@@ -1410,7 +1424,7 @@ export function useGetApiLocations<TData = Awaited<ReturnType<typeof getApiLocat
  , queryClient?: QueryClient
   ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 export function useGetApiLocations<TData = Awaited<ReturnType<typeof getApiLocations>>, TError = unknown>(
-  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiLocations>>, TError, TData>> & Pick<
+ params?: GetApiLocationsParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiLocations>>, TError, TData>> & Pick<
         UndefinedInitialDataOptions<
           Awaited<ReturnType<typeof getApiLocations>>,
           TError,
@@ -1420,16 +1434,16 @@ export function useGetApiLocations<TData = Awaited<ReturnType<typeof getApiLocat
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 export function useGetApiLocations<TData = Awaited<ReturnType<typeof getApiLocations>>, TError = unknown>(
-  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiLocations>>, TError, TData>>, request?: SecondParameter<typeof fetcher>}
+ params?: GetApiLocationsParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiLocations>>, TError, TData>>, request?: SecondParameter<typeof fetcher>}
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 
 export function useGetApiLocations<TData = Awaited<ReturnType<typeof getApiLocations>>, TError = unknown>(
-  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiLocations>>, TError, TData>>, request?: SecondParameter<typeof fetcher>}
+ params?: GetApiLocationsParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiLocations>>, TError, TData>>, request?: SecondParameter<typeof fetcher>}
  , queryClient?: QueryClient 
  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
-  const queryOptions = getGetApiLocationsQueryOptions(options)
+  const queryOptions = getGetApiLocationsQueryOptions(params,options)
 
   const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 

@@ -21,6 +21,7 @@ import {
 import { useState } from "react";
 import z from "zod";
 import { zod4Resolver } from "mantine-form-zod-resolver";
+import { LocationSortBy } from "@/routes/Locations";
 
 const tripSchema = z.object({
   locationId: z.coerce.number().int().positive(),
@@ -59,7 +60,9 @@ function RouteComponent() {
   });
 
   const journeysByWeek = useGetApiJourneys({ weekStart });
-  const locationsQuery = useGetApiLocations();
+  const locationsQuery = useGetApiLocations({
+    sortBy: LocationSortBy.TripCount,
+  });
   const reasonsQuery = useGetApiReasons();
   const createJourney = usePostApiJourneys();
   const deleteJourney = useDeleteApiJourneysId();
@@ -104,6 +107,7 @@ function RouteComponent() {
       {
         onSuccess: async () => {
           await journeysByWeek.refetch();
+          await locationsQuery.refetch();
           setAddingForDate(null);
           form.reset();
         },
@@ -117,6 +121,7 @@ function RouteComponent() {
       {
         onSuccess: async () => {
           await journeysByWeek.refetch();
+          await locationsQuery.refetch();
         },
       },
     );
@@ -201,12 +206,14 @@ function RouteComponent() {
                           searchable
                           placeholder={"Location"}
                           data={locationOptions}
+                          limit={10}
                           {...form.getInputProps(`trips.${index}.locationId`)}
                         />
                         <Select
                           searchable
                           placeholder={"Reason"}
                           data={reasonOptions}
+                          limit={10}
                           {...form.getInputProps(`trips.${index}.reasonId`)}
                         />
                         {form.values.trips.length > 1 && (
