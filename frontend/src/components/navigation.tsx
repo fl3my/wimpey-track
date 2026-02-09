@@ -2,6 +2,7 @@ import {
   IconCash,
   IconFileExport,
   IconHome2,
+  IconMail,
   IconMap2,
   IconReceipt,
   IconRoute,
@@ -54,6 +55,11 @@ export function Navigation() {
         to="/Preferences"
         label={"Preferences"}
         leftSection={<IconSettings size={16} stroke={1.5} />}
+      />
+      <CustomNavLink
+        to="/emailrecipients"
+        label={"Email Recipients"}
+        leftSection={<IconMail size={16} stroke={1.5} />}
       />
       <CustomNavLink
         to="/Profile"

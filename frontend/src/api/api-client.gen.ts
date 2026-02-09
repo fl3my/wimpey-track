@@ -31,6 +31,12 @@ export interface BoundingBox {
   height?: number;
 }
 
+export interface CreateEmailRecipientDto {
+  firstName: string;
+  lastName: string;
+  email: string;
+}
+
 export interface CreateFuelReceiptDto {
   /**
    * @minLength 2
@@ -160,6 +166,13 @@ export interface DashboardSummary {
   totalClaimedThisTaxYear?: number;
   totalClaimedThisMonth?: number;
   totalMileageThisTaxYear?: number;
+}
+
+export interface EmailRecipientDto {
+  id: number;
+  firstName: string;
+  lastName: string;
+  email: string;
 }
 
 export interface FileLinkDto {
@@ -562,6 +575,327 @@ export function useGetApiDashboard<TData = Awaited<ReturnType<typeof getApiDashb
 
 
 
+export const getGetApiEmailRecipientsUrl = () => {
+
+
+  
+
+  return `/api/EmailRecipients`
+}
+
+export const getApiEmailRecipients = async ( options?: RequestInit): Promise<EmailRecipientDto[]> => {
+  
+  return fetcher<EmailRecipientDto[]>(getGetApiEmailRecipientsUrl(),
+  {      
+    ...options,
+    method: 'GET'
+    
+    
+  }
+);}
+
+
+
+
+
+export const getGetApiEmailRecipientsQueryKey = () => {
+    return [
+    `/api/EmailRecipients`
+    ] as const;
+    }
+
+    
+export const getGetApiEmailRecipientsQueryOptions = <TData = Awaited<ReturnType<typeof getApiEmailRecipients>>, TError = unknown>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiEmailRecipients>>, TError, TData>>, request?: SecondParameter<typeof fetcher>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetApiEmailRecipientsQueryKey();
+
+  
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getApiEmailRecipients>>> = ({ signal }) => getApiEmailRecipients({ signal, ...requestOptions });
+
+      
+
+      
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getApiEmailRecipients>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type GetApiEmailRecipientsQueryResult = NonNullable<Awaited<ReturnType<typeof getApiEmailRecipients>>>
+export type GetApiEmailRecipientsQueryError = unknown
+
+
+export function useGetApiEmailRecipients<TData = Awaited<ReturnType<typeof getApiEmailRecipients>>, TError = unknown>(
+  options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiEmailRecipients>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getApiEmailRecipients>>,
+          TError,
+          Awaited<ReturnType<typeof getApiEmailRecipients>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof fetcher>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetApiEmailRecipients<TData = Awaited<ReturnType<typeof getApiEmailRecipients>>, TError = unknown>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiEmailRecipients>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getApiEmailRecipients>>,
+          TError,
+          Awaited<ReturnType<typeof getApiEmailRecipients>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof fetcher>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetApiEmailRecipients<TData = Awaited<ReturnType<typeof getApiEmailRecipients>>, TError = unknown>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiEmailRecipients>>, TError, TData>>, request?: SecondParameter<typeof fetcher>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+
+export function useGetApiEmailRecipients<TData = Awaited<ReturnType<typeof getApiEmailRecipients>>, TError = unknown>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiEmailRecipients>>, TError, TData>>, request?: SecondParameter<typeof fetcher>}
+ , queryClient?: QueryClient 
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getGetApiEmailRecipientsQueryOptions(options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  query.queryKey = queryOptions.queryKey ;
+
+  return query;
+}
+
+
+
+
+
+export const getPostApiEmailRecipientsUrl = () => {
+
+
+  
+
+  return `/api/EmailRecipients`
+}
+
+export const postApiEmailRecipients = async (createEmailRecipientDto: CreateEmailRecipientDto, options?: RequestInit): Promise<EmailRecipientDto> => {
+  
+  return fetcher<EmailRecipientDto>(getPostApiEmailRecipientsUrl(),
+  {      
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(
+      createEmailRecipientDto,)
+  }
+);}
+
+
+
+
+export const getPostApiEmailRecipientsMutationOptions = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiEmailRecipients>>, TError,{data: CreateEmailRecipientDto}, TContext>, request?: SecondParameter<typeof fetcher>}
+): UseMutationOptions<Awaited<ReturnType<typeof postApiEmailRecipients>>, TError,{data: CreateEmailRecipientDto}, TContext> => {
+
+const mutationKey = ['postApiEmailRecipients'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+      
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof postApiEmailRecipients>>, {data: CreateEmailRecipientDto}> = (props) => {
+          const {data} = props ?? {};
+
+          return  postApiEmailRecipients(data,requestOptions)
+        }
+
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type PostApiEmailRecipientsMutationResult = NonNullable<Awaited<ReturnType<typeof postApiEmailRecipients>>>
+    export type PostApiEmailRecipientsMutationBody = CreateEmailRecipientDto
+    export type PostApiEmailRecipientsMutationError = unknown
+
+    export const usePostApiEmailRecipients = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiEmailRecipients>>, TError,{data: CreateEmailRecipientDto}, TContext>, request?: SecondParameter<typeof fetcher>}
+ , queryClient?: QueryClient): UseMutationResult<
+        Awaited<ReturnType<typeof postApiEmailRecipients>>,
+        TError,
+        {data: CreateEmailRecipientDto},
+        TContext
+      > => {
+
+      const mutationOptions = getPostApiEmailRecipientsMutationOptions(options);
+
+      return useMutation(mutationOptions, queryClient);
+    }
+    
+export const getGetApiEmailRecipientsIdUrl = (id: number,) => {
+
+
+  
+
+  return `/api/EmailRecipients/${id}`
+}
+
+export const getApiEmailRecipientsId = async (id: number, options?: RequestInit): Promise<EmailRecipientDto> => {
+  
+  return fetcher<EmailRecipientDto>(getGetApiEmailRecipientsIdUrl(id),
+  {      
+    ...options,
+    method: 'GET'
+    
+    
+  }
+);}
+
+
+
+
+
+export const getGetApiEmailRecipientsIdQueryKey = (id?: number,) => {
+    return [
+    `/api/EmailRecipients/${id}`
+    ] as const;
+    }
+
+    
+export const getGetApiEmailRecipientsIdQueryOptions = <TData = Awaited<ReturnType<typeof getApiEmailRecipientsId>>, TError = unknown>(id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiEmailRecipientsId>>, TError, TData>>, request?: SecondParameter<typeof fetcher>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetApiEmailRecipientsIdQueryKey(id);
+
+  
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getApiEmailRecipientsId>>> = ({ signal }) => getApiEmailRecipientsId(id, { signal, ...requestOptions });
+
+      
+
+      
+
+   return  { queryKey, queryFn, enabled: !!(id), ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getApiEmailRecipientsId>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type GetApiEmailRecipientsIdQueryResult = NonNullable<Awaited<ReturnType<typeof getApiEmailRecipientsId>>>
+export type GetApiEmailRecipientsIdQueryError = unknown
+
+
+export function useGetApiEmailRecipientsId<TData = Awaited<ReturnType<typeof getApiEmailRecipientsId>>, TError = unknown>(
+ id: number, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiEmailRecipientsId>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getApiEmailRecipientsId>>,
+          TError,
+          Awaited<ReturnType<typeof getApiEmailRecipientsId>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof fetcher>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetApiEmailRecipientsId<TData = Awaited<ReturnType<typeof getApiEmailRecipientsId>>, TError = unknown>(
+ id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiEmailRecipientsId>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getApiEmailRecipientsId>>,
+          TError,
+          Awaited<ReturnType<typeof getApiEmailRecipientsId>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof fetcher>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetApiEmailRecipientsId<TData = Awaited<ReturnType<typeof getApiEmailRecipientsId>>, TError = unknown>(
+ id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiEmailRecipientsId>>, TError, TData>>, request?: SecondParameter<typeof fetcher>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+
+export function useGetApiEmailRecipientsId<TData = Awaited<ReturnType<typeof getApiEmailRecipientsId>>, TError = unknown>(
+ id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiEmailRecipientsId>>, TError, TData>>, request?: SecondParameter<typeof fetcher>}
+ , queryClient?: QueryClient 
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getGetApiEmailRecipientsIdQueryOptions(id,options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  query.queryKey = queryOptions.queryKey ;
+
+  return query;
+}
+
+
+
+
+
+export const getDeleteApiEmailRecipientsIdUrl = (id: number,) => {
+
+
+  
+
+  return `/api/EmailRecipients/${id}`
+}
+
+export const deleteApiEmailRecipientsId = async (id: number, options?: RequestInit): Promise<void> => {
+  
+  return fetcher<void>(getDeleteApiEmailRecipientsIdUrl(id),
+  {      
+    ...options,
+    method: 'DELETE'
+    
+    
+  }
+);}
+
+
+
+
+export const getDeleteApiEmailRecipientsIdMutationOptions = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteApiEmailRecipientsId>>, TError,{id: number}, TContext>, request?: SecondParameter<typeof fetcher>}
+): UseMutationOptions<Awaited<ReturnType<typeof deleteApiEmailRecipientsId>>, TError,{id: number}, TContext> => {
+
+const mutationKey = ['deleteApiEmailRecipientsId'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+      
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof deleteApiEmailRecipientsId>>, {id: number}> = (props) => {
+          const {id} = props ?? {};
+
+          return  deleteApiEmailRecipientsId(id,requestOptions)
+        }
+
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type DeleteApiEmailRecipientsIdMutationResult = NonNullable<Awaited<ReturnType<typeof deleteApiEmailRecipientsId>>>
+    
+    export type DeleteApiEmailRecipientsIdMutationError = unknown
+
+    export const useDeleteApiEmailRecipientsId = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteApiEmailRecipientsId>>, TError,{id: number}, TContext>, request?: SecondParameter<typeof fetcher>}
+ , queryClient?: QueryClient): UseMutationResult<
+        Awaited<ReturnType<typeof deleteApiEmailRecipientsId>>,
+        TError,
+        {id: number},
+        TContext
+      > => {
+
+      const mutationOptions = getDeleteApiEmailRecipientsIdMutationOptions(options);
+
+      return useMutation(mutationOptions, queryClient);
+    }
+    
 export const getGetApiPurchasesPurchaseIdItemsUrl = (purchaseId: string,) => {
 
 

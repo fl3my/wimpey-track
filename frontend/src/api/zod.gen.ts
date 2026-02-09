@@ -25,6 +25,46 @@ export const getApiDashboardResponse = zod.object({
 })
 
 
+export const getApiEmailRecipientsResponseItem = zod.object({
+  "id": zod.coerce.number(),
+  "firstName": zod.coerce.string(),
+  "lastName": zod.coerce.string(),
+  "email": zod.coerce.string()
+})
+export const getApiEmailRecipientsResponse = zod.array(getApiEmailRecipientsResponseItem)
+
+
+export const postApiEmailRecipientsBody = zod.object({
+  "firstName": zod.coerce.string(),
+  "lastName": zod.coerce.string(),
+  "email": zod.coerce.string()
+})
+
+export const postApiEmailRecipientsResponse = zod.object({
+  "id": zod.coerce.number(),
+  "firstName": zod.coerce.string(),
+  "lastName": zod.coerce.string(),
+  "email": zod.coerce.string()
+})
+
+
+export const getApiEmailRecipientsIdParams = zod.object({
+  "id": zod.coerce.number()
+})
+
+export const getApiEmailRecipientsIdResponse = zod.object({
+  "id": zod.coerce.number(),
+  "firstName": zod.coerce.string(),
+  "lastName": zod.coerce.string(),
+  "email": zod.coerce.string()
+})
+
+
+export const deleteApiEmailRecipientsIdParams = zod.object({
+  "id": zod.coerce.number()
+})
+
+
 export const getApiPurchasesPurchaseIdItemsParams = zod.object({
   "purchaseId": zod.coerce.string()
 })

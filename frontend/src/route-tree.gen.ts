@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as EmailrecipientsIndexRouteImport } from './routes/emailrecipients/index'
 import { Route as ReportsIndexRouteImport } from './routes/Reports/index'
 import { Route as ReceiptsIndexRouteImport } from './routes/Receipts/index'
 import { Route as ReasonsIndexRouteImport } from './routes/Reasons/index'
@@ -18,6 +19,7 @@ import { Route as ProfileIndexRouteImport } from './routes/Profile/index'
 import { Route as PreferencesIndexRouteImport } from './routes/Preferences/index'
 import { Route as LocationsIndexRouteImport } from './routes/Locations/index'
 import { Route as JourneysIndexRouteImport } from './routes/Journeys/index'
+import { Route as EmailrecipientsNewRouteImport } from './routes/emailrecipients/new'
 import { Route as ReportsNewRouteImport } from './routes/Reports/new'
 import { Route as ReceiptsOcrRouteImport } from './routes/Receipts/ocr'
 import { Route as ReceiptsNewRouteImport } from './routes/Receipts/new'
@@ -34,6 +36,11 @@ import { Route as JourneysJourneyIdEditRouteImport } from './routes/Journeys/$jo
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EmailrecipientsIndexRoute = EmailrecipientsIndexRouteImport.update({
+  id: '/emailrecipients/',
+  path: '/emailrecipients/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ReportsIndexRoute = ReportsIndexRouteImport.update({
@@ -74,6 +81,11 @@ const LocationsIndexRoute = LocationsIndexRouteImport.update({
 const JourneysIndexRoute = JourneysIndexRouteImport.update({
   id: '/Journeys/',
   path: '/Journeys/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EmailrecipientsNewRoute = EmailrecipientsNewRouteImport.update({
+  id: '/emailrecipients/new',
+  path: '/emailrecipients/new',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ReportsNewRoute = ReportsNewRouteImport.update({
@@ -147,6 +159,7 @@ export interface FileRoutesByFullPath {
   '/Receipts/new': typeof ReceiptsNewRoute
   '/Receipts/ocr': typeof ReceiptsOcrRoute
   '/Reports/new': typeof ReportsNewRoute
+  '/emailrecipients/new': typeof EmailrecipientsNewRoute
   '/Journeys': typeof JourneysIndexRoute
   '/Locations': typeof LocationsIndexRoute
   '/Preferences': typeof PreferencesIndexRoute
@@ -155,6 +168,7 @@ export interface FileRoutesByFullPath {
   '/Reasons': typeof ReasonsIndexRoute
   '/Receipts': typeof ReceiptsIndexRoute
   '/Reports': typeof ReportsIndexRoute
+  '/emailrecipients': typeof EmailrecipientsIndexRoute
   '/Journeys/$journeyId/edit': typeof JourneysJourneyIdEditRoute
   '/Purchases/$purchaseId/edit': typeof PurchasesPurchaseIdEditRoute
   '/Locations/$locationId': typeof LocationsLocationIdIndexRoute
@@ -170,6 +184,7 @@ export interface FileRoutesByTo {
   '/Receipts/new': typeof ReceiptsNewRoute
   '/Receipts/ocr': typeof ReceiptsOcrRoute
   '/Reports/new': typeof ReportsNewRoute
+  '/emailrecipients/new': typeof EmailrecipientsNewRoute
   '/Journeys': typeof JourneysIndexRoute
   '/Locations': typeof LocationsIndexRoute
   '/Preferences': typeof PreferencesIndexRoute
@@ -178,6 +193,7 @@ export interface FileRoutesByTo {
   '/Reasons': typeof ReasonsIndexRoute
   '/Receipts': typeof ReceiptsIndexRoute
   '/Reports': typeof ReportsIndexRoute
+  '/emailrecipients': typeof EmailrecipientsIndexRoute
   '/Journeys/$journeyId/edit': typeof JourneysJourneyIdEditRoute
   '/Purchases/$purchaseId/edit': typeof PurchasesPurchaseIdEditRoute
   '/Locations/$locationId': typeof LocationsLocationIdIndexRoute
@@ -194,6 +210,7 @@ export interface FileRoutesById {
   '/Receipts/new': typeof ReceiptsNewRoute
   '/Receipts/ocr': typeof ReceiptsOcrRoute
   '/Reports/new': typeof ReportsNewRoute
+  '/emailrecipients/new': typeof EmailrecipientsNewRoute
   '/Journeys/': typeof JourneysIndexRoute
   '/Locations/': typeof LocationsIndexRoute
   '/Preferences/': typeof PreferencesIndexRoute
@@ -202,6 +219,7 @@ export interface FileRoutesById {
   '/Reasons/': typeof ReasonsIndexRoute
   '/Receipts/': typeof ReceiptsIndexRoute
   '/Reports/': typeof ReportsIndexRoute
+  '/emailrecipients/': typeof EmailrecipientsIndexRoute
   '/Journeys/$journeyId/edit': typeof JourneysJourneyIdEditRoute
   '/Purchases/$purchaseId/edit': typeof PurchasesPurchaseIdEditRoute
   '/Locations/$locationId/': typeof LocationsLocationIdIndexRoute
@@ -219,6 +237,7 @@ export interface FileRouteTypes {
     | '/Receipts/new'
     | '/Receipts/ocr'
     | '/Reports/new'
+    | '/emailrecipients/new'
     | '/Journeys'
     | '/Locations'
     | '/Preferences'
@@ -227,6 +246,7 @@ export interface FileRouteTypes {
     | '/Reasons'
     | '/Receipts'
     | '/Reports'
+    | '/emailrecipients'
     | '/Journeys/$journeyId/edit'
     | '/Purchases/$purchaseId/edit'
     | '/Locations/$locationId'
@@ -242,6 +262,7 @@ export interface FileRouteTypes {
     | '/Receipts/new'
     | '/Receipts/ocr'
     | '/Reports/new'
+    | '/emailrecipients/new'
     | '/Journeys'
     | '/Locations'
     | '/Preferences'
@@ -250,6 +271,7 @@ export interface FileRouteTypes {
     | '/Reasons'
     | '/Receipts'
     | '/Reports'
+    | '/emailrecipients'
     | '/Journeys/$journeyId/edit'
     | '/Purchases/$purchaseId/edit'
     | '/Locations/$locationId'
@@ -265,6 +287,7 @@ export interface FileRouteTypes {
     | '/Receipts/new'
     | '/Receipts/ocr'
     | '/Reports/new'
+    | '/emailrecipients/new'
     | '/Journeys/'
     | '/Locations/'
     | '/Preferences/'
@@ -273,6 +296,7 @@ export interface FileRouteTypes {
     | '/Reasons/'
     | '/Receipts/'
     | '/Reports/'
+    | '/emailrecipients/'
     | '/Journeys/$journeyId/edit'
     | '/Purchases/$purchaseId/edit'
     | '/Locations/$locationId/'
@@ -289,6 +313,7 @@ export interface RootRouteChildren {
   ReceiptsNewRoute: typeof ReceiptsNewRoute
   ReceiptsOcrRoute: typeof ReceiptsOcrRoute
   ReportsNewRoute: typeof ReportsNewRoute
+  EmailrecipientsNewRoute: typeof EmailrecipientsNewRoute
   JourneysIndexRoute: typeof JourneysIndexRoute
   LocationsIndexRoute: typeof LocationsIndexRoute
   PreferencesIndexRoute: typeof PreferencesIndexRoute
@@ -297,6 +322,7 @@ export interface RootRouteChildren {
   ReasonsIndexRoute: typeof ReasonsIndexRoute
   ReceiptsIndexRoute: typeof ReceiptsIndexRoute
   ReportsIndexRoute: typeof ReportsIndexRoute
+  EmailrecipientsIndexRoute: typeof EmailrecipientsIndexRoute
   JourneysJourneyIdEditRoute: typeof JourneysJourneyIdEditRoute
   PurchasesPurchaseIdEditRoute: typeof PurchasesPurchaseIdEditRoute
   LocationsLocationIdIndexRoute: typeof LocationsLocationIdIndexRoute
@@ -312,6 +338,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/emailrecipients/': {
+      id: '/emailrecipients/'
+      path: '/emailrecipients'
+      fullPath: '/emailrecipients'
+      preLoaderRoute: typeof EmailrecipientsIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/Reports/': {
@@ -368,6 +401,13 @@ declare module '@tanstack/react-router' {
       path: '/Journeys'
       fullPath: '/Journeys'
       preLoaderRoute: typeof JourneysIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/emailrecipients/new': {
+      id: '/emailrecipients/new'
+      path: '/emailrecipients/new'
+      fullPath: '/emailrecipients/new'
+      preLoaderRoute: typeof EmailrecipientsNewRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/Reports/new': {
@@ -465,6 +505,7 @@ const rootRouteChildren: RootRouteChildren = {
   ReceiptsNewRoute: ReceiptsNewRoute,
   ReceiptsOcrRoute: ReceiptsOcrRoute,
   ReportsNewRoute: ReportsNewRoute,
+  EmailrecipientsNewRoute: EmailrecipientsNewRoute,
   JourneysIndexRoute: JourneysIndexRoute,
   LocationsIndexRoute: LocationsIndexRoute,
   PreferencesIndexRoute: PreferencesIndexRoute,
@@ -473,6 +514,7 @@ const rootRouteChildren: RootRouteChildren = {
   ReasonsIndexRoute: ReasonsIndexRoute,
   ReceiptsIndexRoute: ReceiptsIndexRoute,
   ReportsIndexRoute: ReportsIndexRoute,
+  EmailrecipientsIndexRoute: EmailrecipientsIndexRoute,
   JourneysJourneyIdEditRoute: JourneysJourneyIdEditRoute,
   PurchasesPurchaseIdEditRoute: PurchasesPurchaseIdEditRoute,
   LocationsLocationIdIndexRoute: LocationsLocationIdIndexRoute,
