@@ -49,7 +49,7 @@ export const postApiEmailRecipientsResponse = zod.object({
 
 
 export const getApiEmailRecipientsIdParams = zod.object({
-  "id": zod.coerce.string()
+  "id": zod.uuid()
 })
 
 export const getApiEmailRecipientsIdResponse = zod.object({
@@ -61,7 +61,7 @@ export const getApiEmailRecipientsIdResponse = zod.object({
 
 
 export const deleteApiEmailRecipientsIdParams = zod.object({
-  "id": zod.coerce.string()
+  "id": zod.uuid()
 })
 
 
@@ -734,6 +734,19 @@ export const getApiReportIdResponse = zod.object({
   "fileName": zod.coerce.string().optional(),
   "url": zod.coerce.string().optional()
 })).optional()
+})
+
+
+export const postApiReportReportIdDraftParams = zod.object({
+  "reportId": zod.uuid()
+})
+
+export const postApiReportReportIdDraftBody = zod.object({
+  "recipientIds": zod.array(zod.uuid()).optional()
+})
+
+export const postApiReportReportIdDraftResponse = zod.object({
+  "draftId": zod.coerce.string().optional()
 })
 
 

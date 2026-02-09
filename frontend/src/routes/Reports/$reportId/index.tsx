@@ -17,6 +17,8 @@ import {
 import { CustomButtonLink } from "@/components/custom-button-link.tsx";
 import { useServerErrors } from "@/hooks/use-server-errors.ts";
 import { useDisclosure } from "@mantine/hooks";
+import { CreateDraftReportEmailModal } from "@/components/create-draft-report-email-modal.tsx";
+import { IconMail } from "@tabler/icons-react";
 
 export const Route = createFileRoute("/Reports/$reportId/")({
   component: RouteComponent,
@@ -34,6 +36,8 @@ function RouteComponent() {
   const serverErrors = useServerErrors();
   const navigate = useNavigate();
   const [opened, { open, close }] = useDisclosure(false);
+  const [draftOpened, { open: openDraft, close: closeDraft }] =
+    useDisclosure(false);
 
   const deleteReport = useDeleteApiReportId({
     mutation: {
@@ -75,6 +79,11 @@ function RouteComponent() {
 
   return (
     <>
+      <CreateDraftReportEmailModal
+        opened={draftOpened}
+        onClose={closeDraft}
+        reportId={reportId}
+      />
       <Modal
         opened={opened}
         onClose={close}
@@ -158,6 +167,11 @@ function RouteComponent() {
             )}
           </Stack>
         </Stack>
+        <Group justify={"flex-end"} pt={"md"}>
+          <Button onClick={openDraft} leftSection={<IconMail size={16} />}>
+            Create Gmail Draft
+          </Button>
+        </Group>
       </Card>
     </>
   );

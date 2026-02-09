@@ -63,10 +63,17 @@ namespace WimpeyTrack.Api.Controllers
         }
 
         [HttpPost("{reportId}/draft")]
-        public async Task<ActionResult<string>> CreateDraft(Guid reportId, SendReportRequestDto request)
+        public async Task<ActionResult <ReportDraftEmailDto>> CreateDraft(Guid reportId, SendReportRequestDto request)
         {
-            var draftUrl = await _reportService.CreateGmailDraftAsync(reportId, request.RecipientIds);
-            return Ok(new {draftUrl});
+            var draftId = await _reportService.CreateGmailDraftAsync(reportId, request.RecipientIds);
+            if (draftId == null)
+            {
+                return BadRequest(new {message = "Unable to create draft email"});
+            }
+
+            var dto = new ReportDraftEmailDto() { DraftId = draftId };
+            
+            return Ok(dto);
         }
     }
 }

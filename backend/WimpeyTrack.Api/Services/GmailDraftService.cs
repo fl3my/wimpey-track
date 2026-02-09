@@ -49,7 +49,7 @@ public class GmailDraftService : IGmailDraftService
         message.Subject = subject;
         
         // Build the body
-        var builder = new BodyBuilder{HtmlBody = body};
+        var builder = new BodyBuilder{TextBody = body};
         foreach (var attachment in attachments)
         {
             await builder.Attachments.AddAsync(attachment.FileName, attachment.Content, ContentType.Parse(attachment.ContentType));
@@ -67,8 +67,10 @@ public class GmailDraftService : IGmailDraftService
         };
         
         var created = await gmailService.Users.Drafts.Create(draft, "me").ExecuteAsync();
-
-        return created.Id!;
+        if (created == null)
+            throw new InvalidOperationException("Could not create draft");
+        
+        return created.Message.Id;
     }
 
     private async Task<GmailService> GetGmailServiceAsync()

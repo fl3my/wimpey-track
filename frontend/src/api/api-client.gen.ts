@@ -346,6 +346,10 @@ export interface ReceiptOcrResultDto {
   receiptData?: ReceiptData[];
 }
 
+export interface ReportDraftEmailDto {
+  draftId?: string;
+}
+
 export interface ReportDto {
   id?: string;
   startDate?: string;
@@ -360,6 +364,10 @@ export interface ReportPreviewDto {
   endDate?: string;
   expenseDocuments?: FileLinkDto[];
   receiptPages?: FileLinkDto[];
+}
+
+export interface SendReportRequestDto {
+  recipientIds?: string[];
 }
 
 export interface TripDto {
@@ -4048,6 +4056,73 @@ export function useGetApiReportId<TData = Awaited<ReturnType<typeof getApiReport
 
 
 
+export const getPostApiReportReportIdDraftUrl = (reportId: string,) => {
+
+
+  
+
+  return `/api/Report/${reportId}/draft`
+}
+
+export const postApiReportReportIdDraft = async (reportId: string,
+    sendReportRequestDto: SendReportRequestDto, options?: RequestInit): Promise<ReportDraftEmailDto> => {
+  
+  return fetcher<ReportDraftEmailDto>(getPostApiReportReportIdDraftUrl(reportId),
+  {      
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(
+      sendReportRequestDto,)
+  }
+);}
+
+
+
+
+export const getPostApiReportReportIdDraftMutationOptions = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiReportReportIdDraft>>, TError,{reportId: string;data: SendReportRequestDto}, TContext>, request?: SecondParameter<typeof fetcher>}
+): UseMutationOptions<Awaited<ReturnType<typeof postApiReportReportIdDraft>>, TError,{reportId: string;data: SendReportRequestDto}, TContext> => {
+
+const mutationKey = ['postApiReportReportIdDraft'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+      
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof postApiReportReportIdDraft>>, {reportId: string;data: SendReportRequestDto}> = (props) => {
+          const {reportId,data} = props ?? {};
+
+          return  postApiReportReportIdDraft(reportId,data,requestOptions)
+        }
+
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type PostApiReportReportIdDraftMutationResult = NonNullable<Awaited<ReturnType<typeof postApiReportReportIdDraft>>>
+    export type PostApiReportReportIdDraftMutationBody = SendReportRequestDto
+    export type PostApiReportReportIdDraftMutationError = unknown
+
+    export const usePostApiReportReportIdDraft = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiReportReportIdDraft>>, TError,{reportId: string;data: SendReportRequestDto}, TContext>, request?: SecondParameter<typeof fetcher>}
+ , queryClient?: QueryClient): UseMutationResult<
+        Awaited<ReturnType<typeof postApiReportReportIdDraft>>,
+        TError,
+        {reportId: string;data: SendReportRequestDto},
+        TContext
+      > => {
+
+      const mutationOptions = getPostApiReportReportIdDraftMutationOptions(options);
+
+      return useMutation(mutationOptions, queryClient);
+    }
+    
 export const getGetApiJourneysJourneyIdTripsUrl = (journeyId: number,) => {
 
 
