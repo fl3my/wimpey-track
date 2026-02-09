@@ -22,6 +22,8 @@ public class ImageProcessingService : IImageProcessingService
     {
         using var image = await Image.LoadAsync(imageStream, cancellationToken);
         
+        image.Mutate(x => x.AutoOrient());
+        
         // Clamp bounding box to image bounds
         var x = Math.Max(0, box.X);
         var y = Math.Max(0, box.Y);
@@ -46,6 +48,8 @@ public class ImageProcessingService : IImageProcessingService
     {
         // Load the image
         using var image = Image.Load(imageBytes);
+        
+        image.Mutate(x => x.AutoOrient());
         
         // Add padding/ Add padding
         int padX = (int)(box.Width * paddingPercent);
