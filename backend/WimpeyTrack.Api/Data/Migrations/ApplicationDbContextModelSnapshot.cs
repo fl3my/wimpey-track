@@ -17,6 +17,29 @@ namespace WimpeyTrack.Api.Data.Migrations
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "10.0.2");
 
+            modelBuilder.Entity("WimpeyTrack.Api.Models.EmailRecipient", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("EmailRecipients");
+                });
+
             modelBuilder.Entity("WimpeyTrack.Api.Models.Item", b =>
                 {
                     b.Property<int>("Id")
@@ -44,7 +67,7 @@ namespace WimpeyTrack.Api.Data.Migrations
 
                     b.HasIndex("PurchaseId");
 
-                    b.ToTable("Items", (string)null);
+                    b.ToTable("Items");
                 });
 
             modelBuilder.Entity("WimpeyTrack.Api.Models.Journey", b =>
@@ -69,7 +92,7 @@ namespace WimpeyTrack.Api.Data.Migrations
 
                     b.HasIndex("HomeLocationId");
 
-                    b.ToTable("Journeys", (string)null);
+                    b.ToTable("Journeys");
                 });
 
             modelBuilder.Entity("WimpeyTrack.Api.Models.Location", b =>
@@ -90,7 +113,7 @@ namespace WimpeyTrack.Api.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Locations", (string)null);
+                    b.ToTable("Locations");
                 });
 
             modelBuilder.Entity("WimpeyTrack.Api.Models.Preference", b =>
@@ -104,7 +127,7 @@ namespace WimpeyTrack.Api.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Preferences", (string)null);
+                    b.ToTable("Preferences");
                 });
 
             modelBuilder.Entity("WimpeyTrack.Api.Models.Profile", b =>
@@ -155,7 +178,7 @@ namespace WimpeyTrack.Api.Data.Migrations
 
                     b.HasIndex("HomeLocationId");
 
-                    b.ToTable("Profiles", (string)null);
+                    b.ToTable("Profiles");
                 });
 
             modelBuilder.Entity("WimpeyTrack.Api.Models.Purchase", b =>
@@ -179,7 +202,7 @@ namespace WimpeyTrack.Api.Data.Migrations
                     b.HasIndex("ReceiptId")
                         .IsUnique();
 
-                    b.ToTable("Purchases", (string)null);
+                    b.ToTable("Purchases");
                 });
 
             modelBuilder.Entity("WimpeyTrack.Api.Models.Reason", b =>
@@ -194,7 +217,7 @@ namespace WimpeyTrack.Api.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Reasons", (string)null);
+                    b.ToTable("Reasons");
                 });
 
             modelBuilder.Entity("WimpeyTrack.Api.Models.Receipt", b =>
@@ -219,7 +242,7 @@ namespace WimpeyTrack.Api.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Receipts", (string)null);
+                    b.ToTable("Receipts");
                 });
 
             modelBuilder.Entity("WimpeyTrack.Api.Models.Report", b =>
@@ -243,7 +266,7 @@ namespace WimpeyTrack.Api.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Reports", (string)null);
+                    b.ToTable("Reports");
                 });
 
             modelBuilder.Entity("WimpeyTrack.Api.Models.Trip", b =>
@@ -269,7 +292,7 @@ namespace WimpeyTrack.Api.Data.Migrations
 
                     b.HasIndex("ReasonId");
 
-                    b.ToTable("Trips", (string)null);
+                    b.ToTable("Trips");
                 });
 
             modelBuilder.Entity("WimpeyTrack.Api.Models.Item", b =>
@@ -329,7 +352,7 @@ namespace WimpeyTrack.Api.Data.Migrations
                         .IsRequired();
 
                     b.HasOne("WimpeyTrack.Api.Models.Reason", "Reason")
-                        .WithMany()
+                        .WithMany("Trips")
                         .HasForeignKey("ReasonId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -354,6 +377,11 @@ namespace WimpeyTrack.Api.Data.Migrations
             modelBuilder.Entity("WimpeyTrack.Api.Models.Purchase", b =>
                 {
                     b.Navigation("Items");
+                });
+
+            modelBuilder.Entity("WimpeyTrack.Api.Models.Reason", b =>
+                {
+                    b.Navigation("Trips");
                 });
 
             modelBuilder.Entity("WimpeyTrack.Api.Models.Receipt", b =>

@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages.Manage;
 using WimpeyTrack.Api.Models;
 
 namespace WimpeyTrack.Api.Data;
@@ -17,4 +18,5 @@ public class ApplicationDbContext : DbContext
     public DbSet<Report> Reports { get; set; }
     public DbSet<Preference> Preferences { get; set; }
     public DbSet<Profile> Profiles { get; set; }
+    public DbSet<EmailRecipient> EmailRecipients { get; set; }
 }

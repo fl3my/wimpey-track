@@ -52,7 +52,7 @@ namespace WimpeyTrack.Api.Controllers
                 TripCount = reason.Trips.Count
             };
                 
-            return dto;
+            return Ok(dto);
         }
 
         // PUT: api/Reasons/5
