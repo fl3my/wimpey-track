@@ -9,6 +9,7 @@ public interface IReportStorageService
     Task<bool> ExistsAsync(Guid reportId);
     IReadOnlyList<string> GetExpenseFiles(Guid reportId);
     IReadOnlyList<string> GetReceiptFiles(Guid reportId);
+    IReadOnlyList<string> GetAllFiles(Guid reportId);
 }
 
 public class ReportStorageService  : IReportStorageService
@@ -83,6 +84,19 @@ public class ReportStorageService  : IReportStorageService
         
         return Directory
             .GetFiles(path)
+            .Order()
+            .ToList();
+    }
+
+    public IReadOnlyList<string> GetAllFiles(Guid reportId)
+    {
+        var reportRoot = Path.Combine(_wwwroot, "reports", reportId.ToString());
+
+        if (!Directory.Exists(reportRoot))
+            return [];
+
+        return Directory
+            .GetFiles(reportRoot, "*", SearchOption.AllDirectories)
             .Order()
             .ToList();
     }

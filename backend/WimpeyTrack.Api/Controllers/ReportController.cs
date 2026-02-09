@@ -61,5 +61,12 @@ namespace WimpeyTrack.Api.Controllers
             
             return Ok(preview);
         }
+
+        [HttpPost("{reportId}/draft")]
+        public async Task<ActionResult<string>> CreateDraft(Guid reportId, SendReportRequestDto request)
+        {
+            var draftUrl = await _reportService.CreateGmailDraftAsync(reportId, request.RecipientIds);
+            return Ok(new {draftUrl});
+        }
     }
 }

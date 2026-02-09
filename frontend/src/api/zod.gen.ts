@@ -26,7 +26,7 @@ export const getApiDashboardResponse = zod.object({
 
 
 export const getApiEmailRecipientsResponseItem = zod.object({
-  "id": zod.coerce.number(),
+  "id": zod.uuid(),
   "firstName": zod.coerce.string(),
   "lastName": zod.coerce.string(),
   "email": zod.coerce.string()
@@ -41,7 +41,7 @@ export const postApiEmailRecipientsBody = zod.object({
 })
 
 export const postApiEmailRecipientsResponse = zod.object({
-  "id": zod.coerce.number(),
+  "id": zod.uuid(),
   "firstName": zod.coerce.string(),
   "lastName": zod.coerce.string(),
   "email": zod.coerce.string()
@@ -49,11 +49,11 @@ export const postApiEmailRecipientsResponse = zod.object({
 
 
 export const getApiEmailRecipientsIdParams = zod.object({
-  "id": zod.coerce.number()
+  "id": zod.coerce.string()
 })
 
 export const getApiEmailRecipientsIdResponse = zod.object({
-  "id": zod.coerce.number(),
+  "id": zod.uuid(),
   "firstName": zod.coerce.string(),
   "lastName": zod.coerce.string(),
   "email": zod.coerce.string()
@@ -61,7 +61,7 @@ export const getApiEmailRecipientsIdResponse = zod.object({
 
 
 export const deleteApiEmailRecipientsIdParams = zod.object({
-  "id": zod.coerce.number()
+  "id": zod.coerce.string()
 })
 
 

@@ -40,7 +40,7 @@ function RouteComponent() {
   const serverErrors = useServerErrors();
 
   const [selectedRecipient, setSelectedRecipient] = useState<{
-    id: number;
+    id: string;
     name: string;
   } | null>(null);
 
@@ -59,7 +59,7 @@ function RouteComponent() {
     },
   });
 
-  const openDeleteModal = (recipient: { id: number; name: string }) => {
+  const openDeleteModal = (recipient: { id: string; name: string }) => {
     setSelectedRecipient(recipient);
     open();
   };
@@ -154,7 +154,7 @@ function RouteComponent() {
                       variant="light"
                       onClick={() =>
                         openDeleteModal({
-                          id: Number(recipient.id),
+                          id: recipient.id,
                           name: recipient.firstName ?? "",
                         })
                       }

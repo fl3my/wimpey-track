@@ -32,7 +32,7 @@ public class EmailRecipientsController : ControllerBase
     }
 
     [HttpGet("{id}")]
-    public async Task<ActionResult<EmailRecipientDto>> GetEmailRecipient(int id)
+    public async Task<ActionResult<EmailRecipientDto>> GetEmailRecipient(Guid id)
     {
         var  email = await _context.EmailRecipients.FindAsync(id);
         if (email == null)
@@ -73,7 +73,7 @@ public class EmailRecipientsController : ControllerBase
     }
 
     [HttpDelete("{id}")]
-    public async Task<IActionResult> DeleteEmailRecipient(int id)
+    public async Task<IActionResult> DeleteEmailRecipient(Guid id)
     {
         var email = await _context.EmailRecipients.FindAsync(id);
         if (email == null)

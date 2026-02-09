@@ -1,5 +1,7 @@
+using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.EntityFrameworkCore;
 using WimpeyTrack.Api.Data;
+using WimpeyTrack.Api.Dtos.EmailRecipient;
 using WimpeyTrack.Api.Dtos.Report;
 using WimpeyTrack.Api.Models;
 
@@ -11,6 +13,7 @@ public interface IReportService
     Task<IEnumerable<ReportDto>> GetReportsAsync();
     Task<ReportPreviewDto?> GetReportPreview(Guid reportId);
     Task DeleteAsync(Guid id);
+    Task<string?> CreateGmailDraftAsync(Guid reportId, IReadOnlyList<Guid> recipientIds);
     
 }
 
@@ -19,12 +22,15 @@ public class ReportService : IReportService
     private readonly IReportGenerationService _generationService;
     private readonly IReportStorageService _storageService;
     private readonly ApplicationDbContext _context;
+    private static readonly FileExtensionContentTypeProvider ContentTypeProvider = new();
+    private readonly IGmailDraftService _gmailDraftService;
 
-    public ReportService(IReportGenerationService generationService, IReportStorageService storageService, ApplicationDbContext context)
+    public ReportService(IReportGenerationService generationService, IReportStorageService storageService, ApplicationDbContext context, IGmailDraftService gmailDraftService)
     {
         _generationService = generationService;
         _storageService = storageService;
         _context = context;
+        _gmailDraftService = gmailDraftService;
     }
 
     public async Task<Guid?> GenerateAndSaveAsync(DateOnly start, DateOnly end)
@@ -112,5 +118,53 @@ public class ReportService : IReportService
         
         _context.Reports.Remove(report);
         await _context.SaveChangesAsync();
+    }
+
+    public async Task<string?> CreateGmailDraftAsync(Guid reportId,  IReadOnlyList<Guid> recipientIds)
+    {
+        // Get recipients
+        var recipientsData = await _context.EmailRecipients
+            .Where(r => recipientIds.Contains(r.Id))
+            .ToListAsync();
+
+        // Convert to a tuple
+        var recipients= recipientsData.
+            Select(r => (r.FirstName, r.Email))
+            .ToList();
+        
+        if (recipients.Count != recipientIds.Count)
+            throw new InvalidOperationException("One or more recipients are invalid");
+        
+        // Get the sender
+        var sender = await _context.Profiles.FirstOrDefaultAsync();
+        if (sender is null)
+            return null;
+        
+        // Get files and construct attachments
+        var files = _storageService.GetAllFiles(reportId);
+        var attachments = files.Select(p =>
+        {
+            ContentTypeProvider.TryGetContentType(p, out var contentType);
+            
+            return new EmailAttachment
+            {
+                FileName = Path.GetFileName(p),
+                Content = File.OpenRead(p),
+                ContentType = contentType!
+            };
+        });
+        
+        // Construct message
+        var message = "Hello";
+        
+        // Create Gmail Draft
+        var draftUrl = await _gmailDraftService.CreateDraftAsync(
+            sender.FullName,
+            recipients,
+            "Expenses",
+            message,
+            attachments);
+        
+        return draftUrl;
     }
 }
