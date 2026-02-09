@@ -9,6 +9,10 @@ services:
       - ASPNETCORE_URLS=http://+:8080
       - AzureDocumentIntelligence__EndPoint=${AZURE_DOCUMENT_ENDPOINT}
       - AzureDocumentIntelligence__ApiKey=${AZURE_DOCUMENT_APIKEY}
+      - Gmail__ClientId=${GMAIL_CLIENT_ID}
+      - Gmail__ClientSecret=${GMAIL_CLIENT_SECRET}
+      - Gmail__RefreshToken=${GMAIL_REFRESH_TOKEN}
+      - Gmail__ClientEmail=${GMAIL_CLIENT_EMAIL}
     ports:
       - "5002:8080"
     volumes:

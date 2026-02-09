@@ -45,7 +45,7 @@ builder.Services.AddScoped<IDashboardService, DashboardService>();
 builder.Services.AddScoped<IJourneyDistanceService, JourneyDistanceService>();
 builder.Services.AddScoped<IPreferenceProvider, PreferenceProvider>();
 builder.Services.AddScoped<IProfileProvider, ProfileProvider>();
-
+builder.Services.AddScoped<IGmailDraftService, GmailDraftService>();
 
 
 // Add custom vision service

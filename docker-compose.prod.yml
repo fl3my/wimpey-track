@@ -6,6 +6,9 @@ services:
       - ASPNETCORE_ENVIRONMENT=Production
       - AzureDocumentIntelligence__EndPoint=${AZURE_DOCUMENT_ENDPOINT}
       - AzureDocumentIntelligence__ApiKey=${AZURE_DOCUMENT_APIKEY}
+      - Gmail__ClientId=${GMAIL_CLIENT_ID}
+      - Gmail__ClientSecret=${GMAIL_CLIENT_SECRET}
+      - Gmail__ClientEmail=${GMAIL_CLIENT_EMAIL}
     restart: unless-stopped
     volumes:
       - wimpeytrack-db:/app/data
