@@ -133,7 +133,7 @@ function RouteComponent() {
       <ServerErrorAlert errors={serverErrors.errors} />
       <Card withBorder radius={"md"}>
         <Stack>
-          <Title order={2}>Automatic Receipt</Title>
+          <Title order={3}>Automatic Receipt</Title>
           <Text size="sm" c="dimmed">
             Create a receipt automatically. This will automatically detect the
             type of receipt, as well as extract information from it.

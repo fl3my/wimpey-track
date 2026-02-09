@@ -172,9 +172,9 @@ function RouteComponent() {
         {days.map((day) => (
           <Paper key={day.date} withBorder p="md">
             <Text fw={500}>
-              {new Date(day.date).toLocaleDateString("en-US", {
-                weekday: "short",
-                month: "short",
+              {new Date(day.date).toLocaleDateString("en-gb", {
+                weekday: "long",
+                month: "long",
                 day: "numeric",
               })}
             </Text>

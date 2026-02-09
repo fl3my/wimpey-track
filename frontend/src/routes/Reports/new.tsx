@@ -1,10 +1,11 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useForm } from "@mantine/form";
 import { MonthPickerInput } from "@mantine/dates";
-import { Button, Group } from "@mantine/core";
+import { Button, Card, Group, Stack, Text, Title } from "@mantine/core";
 import { usePostApiReport } from "@/api/api-client.gen.ts";
 import { useServerErrors } from "@/hooks/use-server-errors.ts";
 import { ServerErrorAlert } from "@/components/server-error-alert.tsx";
+import { CustomButtonLink } from "@/components/custom-button-link.tsx";
 
 export const Route = createFileRoute("/Reports/new")({
   component: RouteComponent,
@@ -71,20 +72,29 @@ function RouteComponent() {
   };
 
   return (
-    <form onSubmit={form.onSubmit(handleSubmit)}>
-      <ServerErrorAlert errors={serverErrors.errors} />
-      <Group align={"flex-end"}>
-        <MonthPickerInput
-          label={"Expenses start month"}
-          placeholder={"Expenses start month"}
-          key={form.key("startMonth")}
-          {...form.getInputProps("startMonth")}
-        />
-        <Button type="submit" loading={mutation.isPending}>
-          Download
-        </Button>
+    <Card>
+      <Group justify={"space-between"} mb={"md"}>
+        <Title order={3}>Generate Report</Title>
+        <CustomButtonLink to={"/Reports"}>Cancel</CustomButtonLink>
       </Group>
-    </form>
+      <Text size="sm" c="dimmed" mb={"md"}>
+        Select the month you want to generate your expense report for.
+      </Text>
+      <form onSubmit={form.onSubmit(handleSubmit)}>
+        <ServerErrorAlert errors={serverErrors.errors} />
+        <Stack>
+          <MonthPickerInput
+            label={"Expenses start month"}
+            placeholder={"Expenses start month"}
+            key={form.key("startMonth")}
+            {...form.getInputProps("startMonth")}
+          />
+          <Button type="submit" loading={mutation.isPending}>
+            Generate
+          </Button>
+        </Stack>
+      </form>
+    </Card>
   );
 }
 

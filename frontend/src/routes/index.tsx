@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { Card, SimpleGrid, Text, Title } from "@mantine/core";
+import { Card, Group, SimpleGrid, Text, Title } from "@mantine/core";
 import { LineChart, BarChart } from "@mantine/charts";
 import { useGetApiDashboard } from "@/api/api-client.gen.ts";
 
@@ -16,18 +16,11 @@ function Home() {
 
   return (
     <>
-      <Title order={2} mb={"md"}>
+      <Title order={3} mb={"md"}>
         Dashboard
       </Title>
 
-      <SimpleGrid cols={3} spacing="md" mb="lg">
-        <Card shadow="sm" p="md">
-          <Text w={500}>Total claimed this month</Text>
-          <Text size="xl" w={700}>
-            £{Number(summary?.totalClaimedThisMonth).toFixed(2)}
-          </Text>
-        </Card>
-
+      <Group grow mb={"md"}>
         <Card shadow="sm" p="md">
           <Text w={500}>Total claimed this tax year</Text>
           <Text size="xl" w={700}>
@@ -41,11 +34,11 @@ function Home() {
             {summary?.totalMileageThisTaxYear?.toLocaleString()} miles
           </Text>
         </Card>
-      </SimpleGrid>
+      </Group>
       <SimpleGrid cols={1} spacing="md">
         <Card shadow="sm" p="md">
           <Text w={500} mb={"sm"}>
-            Total Miles per Month
+            Total Miles and Claim per Expense Month
           </Text>
           <BarChart
             h={300}

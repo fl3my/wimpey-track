@@ -12,6 +12,7 @@ import {
 import { CustomButtonLink } from "@/components/custom-button-link.tsx";
 import { CustomLink } from "@/components/custom-link.tsx";
 import { useState } from "react";
+import { IconPlus } from "@tabler/icons-react";
 
 export const Route = createFileRoute("/Purchases/")({
   component: RouteComponent,
@@ -43,7 +44,12 @@ function RouteComponent() {
     <Card withBorder radius={"md"}>
       <Group justify={"space-between"} mb={"md"}>
         <Title order={3}>Purchases</Title>
-        <CustomButtonLink to={"/Purchases/new"}>New Purchase</CustomButtonLink>
+        <CustomButtonLink
+          to={"/Purchases/new"}
+          leftSection={<IconPlus size={16} />}
+        >
+          New Purchase
+        </CustomButtonLink>
       </Group>
       <Text size="sm" c="dimmed" mb={"md"}>
         Purchases added here will be added to the generated report.

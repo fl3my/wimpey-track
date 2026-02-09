@@ -684,6 +684,8 @@ export const getApiReportIdParams = zod.object({
 
 export const getApiReportIdResponse = zod.object({
   "reportId": zod.uuid().optional(),
+  "startDate": zod.iso.date().optional(),
+  "endDate": zod.iso.date().optional(),
   "expenseDocuments": zod.array(zod.object({
   "fileName": zod.coerce.string().optional(),
   "url": zod.coerce.string().optional()

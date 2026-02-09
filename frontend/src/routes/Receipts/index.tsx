@@ -44,7 +44,7 @@ function RouteComponent() {
   return (
     <Card withBorder radius="md">
       <Group justify="space-between" align="center" mb="sm">
-        <Title order={2}>Receipts</Title>
+        <Title order={3}>Receipts</Title>
         <Group>
           <CustomButtonLink
             variant="outline"

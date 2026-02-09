@@ -60,7 +60,7 @@ public class ReportService : IReportService
             EndDate = r.EndDate,
             GeneratedAtUtc = r.GeneratedAtUtc,
             FolderPath = r.FolderPath
-        }).ToListAsync();
+        }).OrderByDescending(r => r.GeneratedAtUtc).ToListAsync();
     }
 
     public async Task<ReportPreviewDto?> GetReportPreview(Guid reportId)
@@ -73,10 +73,17 @@ public class ReportService : IReportService
         var expenseFiles =  _storageService.GetExpenseFiles(reportId);
         var receiptFiles = _storageService.GetReceiptFiles(reportId);
         
+        // Get Report information
+        var report = await _context.Reports.FindAsync(reportId);
+        if (report is null)
+            return null;
+        
         // Generate preview
         var preview = new ReportPreviewDto()
         {
             ReportId = reportId,
+            StartDate = report.StartDate,
+            EndDate = report.EndDate,
             ExpenseDocuments = expenseFiles.Select(f => new FileLinkDto
             {
                 FileName = Path.GetFileName(f),

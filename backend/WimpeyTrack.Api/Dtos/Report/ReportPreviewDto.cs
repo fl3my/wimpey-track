@@ -3,7 +3,8 @@ namespace WimpeyTrack.Api.Dtos.Report;
 public class ReportPreviewDto
 {
     public Guid ReportId { get; set; }
-
+    public DateOnly StartDate { get; set; }
+    public DateOnly EndDate { get; set; }
     public IReadOnlyList<FileLinkDto> ExpenseDocuments { get; init; } = [];
     public IReadOnlyList<FileLinkDto> ReceiptPages { get; init; } = [];
 }

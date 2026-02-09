@@ -130,7 +130,7 @@ function RouteComponent() {
 
       <Card withBorder radius="md">
         <Group justify="space-between" align="center" mb="sm">
-          <Title order={2}>Reasons</Title>
+          <Title order={3}>Reasons</Title>
           <CustomButtonLink
             to="/Reasons/new"
             leftSection={<IconPlus size={16} />}

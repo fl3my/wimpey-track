@@ -98,7 +98,7 @@ function RouteComponent() {
 
   return (
     <Card withBorder radius="md">
-      <Title order={2} mb={"md"}>
+      <Title order={3} mb={"md"}>
         Edit Profile
       </Title>
 

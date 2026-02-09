@@ -343,6 +343,8 @@ export interface ReportDto {
 
 export interface ReportPreviewDto {
   reportId?: string;
+  startDate?: string;
+  endDate?: string;
   expenseDocuments?: FileLinkDto[];
   receiptPages?: FileLinkDto[];
 }
