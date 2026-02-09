@@ -22,11 +22,7 @@ export function CreateDraftReportEmailModal({
     mutation: {
       onSuccess: (result) => {
         if (result.draftId) {
-          console.log(result.draftId);
-          window.open(
-            `https://mail.google.com/mail/u/0/#drafts?compose=${result.draftId}`,
-            "_blank",
-          );
+          window.location.href = `https://mail.google.com/mail/u/0/#drafts?compose=${result.draftId}`;
         }
         onClose();
       },
