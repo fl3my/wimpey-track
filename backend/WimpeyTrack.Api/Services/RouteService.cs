@@ -2,6 +2,11 @@ using System.Text.Json;
 
 namespace WimpeyTrack.Api.Services;
 
+public interface IRouteService
+{
+    Task<double> CalculateAllTripsDistancesAsync(List<(double Latitude, double Longitude)> coordinates);
+}
+
 public class RouteService : IRouteService
 {
     private readonly HttpClient _httpClient;

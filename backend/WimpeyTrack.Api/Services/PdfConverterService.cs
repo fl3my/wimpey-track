@@ -2,6 +2,11 @@ using System.Diagnostics;
 
 namespace WimpeyTrack.Api.Services;
 
+public interface IPdfConverterService
+{
+    Task<byte[]> ConvertXlsxToPdfAsync(Stream xlsxStream, string? pageRange = null);
+}
+
 public class PdfConverterService : IPdfConverterService
 {
     private readonly string _tempPath;

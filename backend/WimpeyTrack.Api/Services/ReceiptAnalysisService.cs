@@ -6,6 +6,11 @@ using WimpeyTrack.Api.Enums;
 
 namespace WimpeyTrack.Api.Services;
 
+public interface IReceiptAnalysisService
+{
+    Task<ReceiptData?> AnalyseReceiptAsync(BinaryData receiptData);
+}
+
 public class ReceiptAnalysisService : IReceiptAnalysisService
 {
     private readonly DocumentIntelligenceClient  _documentClient;
