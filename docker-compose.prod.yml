@@ -15,7 +15,7 @@ services:
       - wimpeytrack-db:/app/data
       - wimpeytrack-uploads:/app/wwwroot/uploads
       - wimpeytrack-reports:/app/wwwroot/reports
-      - /srv/wimpeytrack/tiles:/app/wwwroot/tiles:ro
+      - ./srv/wimpeytrack/tiles:/app/wwwroot/tiles:ro
     networks:
       - proxy
   
