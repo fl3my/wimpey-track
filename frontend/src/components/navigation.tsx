@@ -52,11 +52,6 @@ export function Navigation() {
         leftSection={<IconFileExport size={16} stroke={1.5} />}
       />
       <CustomNavLink
-        to="/Preferences"
-        label={"Preferences"}
-        leftSection={<IconSettings size={16} stroke={1.5} />}
-      />
-      <CustomNavLink
         to="/emailrecipients"
         label={"Email Recipients"}
         leftSection={<IconMail size={16} stroke={1.5} />}
@@ -65,6 +60,11 @@ export function Navigation() {
         to="/Profile"
         label={"Profile"}
         leftSection={<IconUser size={16} stroke={1.5} />}
+      />
+      <CustomNavLink
+        to="/Preferences"
+        label={"Preferences"}
+        leftSection={<IconSettings size={16} stroke={1.5} />}
       />
     </>
   );
