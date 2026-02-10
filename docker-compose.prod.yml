@@ -8,6 +8,7 @@ services:
       - AzureDocumentIntelligence__ApiKey=${AZURE_DOCUMENT_APIKEY}
       - Gmail__ClientId=${GMAIL_CLIENT_ID}
       - Gmail__ClientSecret=${GMAIL_CLIENT_SECRET}
+      - Gmail__RefreshToken=${GMAIL_REFRESH_TOKEN}
       - Gmail__ClientEmail=${GMAIL_CLIENT_EMAIL}
     restart: unless-stopped
     volumes:
