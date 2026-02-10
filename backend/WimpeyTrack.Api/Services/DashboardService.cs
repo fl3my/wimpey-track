@@ -50,27 +50,33 @@ public class DashboardService : IDashboardService
         var taxYear = TaxYear.Current();
         
         // Get the month data by number
-        var monthlyData = await _context.Journeys
+        var journeys = await _context.Journeys
             .Where(j => j.Date >= taxYear.Start && j.Date <= taxYear.End)
-            .GroupBy(j => j.Date.Day >= 20 
-                ? j.Date.Month 
-                : j.Date.Month == 1 ? 12: j.Date.Month - 1)
-            .Select(g => new
+            .Select(j => new
             {
-                MonthNumber = g.Key,
-                Miles = g.Sum(j => j.TotalMiles)
+                Date = j.Date,
+                TotalMiles = j.TotalMiles
             })
-            .OrderBy(x => x.MonthNumber < 4 ? x.MonthNumber + 12 : x.MonthNumber)
             .ToListAsync();
 
-        // Get list for full year
-        var reportingMonths = taxYear.GetReportingMonthsUpToToday();
+        var monthlyData = journeys
+            .GroupBy(j => TaxYear.GetTaxMonthStart(j.Date))
+            .Select(g => new
+            {
+                TaxMonthStart = g.Key,
+                Miles = g.Sum(x => x.TotalMiles)
+            })
+            .OrderBy(x => x.TaxMonthStart)
+            .ToList();
         
+        // Get list for full year
+        var taxMonths = taxYear.GetTaxMonthsUpToToday();
         var remainingHighRateMiles = MileageRateThreshold;
         
-        var monthlyMiles = reportingMonths.Select(m =>
+        var monthlyMiles = taxMonths.Select(taxMonth =>
         {
-            var miles = monthlyData.FirstOrDefault(d => d.MonthNumber == m)?.Miles ?? 0;
+            var miles = monthlyData
+                .FirstOrDefault(d => d.TaxMonthStart == taxMonth)?.Miles ?? 0;
 
             var highRateMiles = Math.Min(miles, remainingHighRateMiles);
             var lowRateMiles = miles - highRateMiles;
@@ -82,7 +88,8 @@ public class DashboardService : IDashboardService
             remainingHighRateMiles -= highRateMiles;
             return new MonthlyMilesDto()
             {
-                Month = MonthLabel(m),
+                Month = CultureInfo.InvariantCulture.DateTimeFormat
+                    .GetAbbreviatedMonthName(taxMonth.AddMonths(1).Month),
                 Miles = miles,
                 Claim = claim
             };
@@ -120,11 +127,13 @@ public class DashboardService : IDashboardService
         return (highRateMiles * highRate) + (lowRateMiles * lowRate);
     }
     
-    private static string MonthLabel(int monthNumber)
+    
+    private static string TaxMonthLabel(int taxMonthStartMonth)
     {
-        return CultureInfo
-            .InvariantCulture
+        var labelMonth = taxMonthStartMonth == 12 ? 1 : taxMonthStartMonth + 1;
+
+        return CultureInfo.InvariantCulture
             .DateTimeFormat
-            .GetAbbreviatedMonthName(monthNumber);
+            .GetAbbreviatedMonthName(labelMonth);
     }
 }

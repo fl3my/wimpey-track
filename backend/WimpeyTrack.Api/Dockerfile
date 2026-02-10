@@ -44,6 +44,6 @@ COPY --from=frontend-build /frontend/dist /app/wwwroot
 
 # Copy the seed data
 RUN mkdir -p /app/seed
-COPY backend/WimpeyTrack.Api/Data/SeedData/central-belt-locations.tsv /app/seed/central-belt-locations.tsv
+COPY backend/WimpeyTrack.Api/Data/SeedData /app/seed
 
 ENTRYPOINT ["dotnet", "WimpeyTrack.Api.dll"]

@@ -40,15 +40,26 @@ public sealed class TaxYear
         return today < End ? today : End;
     }
     
-    public IReadOnlyList<int> GetReportingMonthsUpToToday()
+    public static DateOnly GetTaxMonthStart(DateOnly date)
     {
-        var months = new List<int>();
-        var cursor = Start;
+        if (date.Day >= 20)
+            return new DateOnly(date.Year, date.Month, 20);
+
+        var previous = date.AddMonths(-1);
+        return new DateOnly(previous.Year, previous.Month, 20);
+    }
+
+    public IReadOnlyList<DateOnly> GetTaxMonthsUpToToday()
+    {
+        var months = new List<DateOnly>();
+
+        // first tax month that overlaps this tax year
+        var cursor = GetTaxMonthStart(Start);
         var end = CurrentEnd();
 
         while (cursor <= end)
         {
-            months.Add(cursor.Month);
+            months.Add(cursor);
             cursor = cursor.AddMonths(1);
         }
 
