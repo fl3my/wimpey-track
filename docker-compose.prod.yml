@@ -14,13 +14,12 @@ services:
       - wimpeytrack-db:/app/data
       - wimpeytrack-uploads:/app/wwwroot/uploads
       - wimpeytrack-reports:/app/wwwroot/reports
+      - /srv/wimpeytrack/tiles:/app/wwwroot/tiles:ro
     networks:
       - proxy
   
   document-vision-service:
     image: ghcr.io/fl3my/document-vision-service:latest
-    depends_on:
-      - wimpeytrack-api
     restart: unless-stopped
     networks: 
       - proxy
@@ -28,7 +27,7 @@ services:
   osrm-backend:
     image: ghcr.io/project-osrm/osrm-backend:latest
     volumes:
-      - /opt/osrm/scotland-osrm:/data:ro
+      - ./srv/wimpeytrack/osrm/scotland-osrm:/data:ro
     command: osrm-routed --algorithm mld /data/scotland-latest.osrm
     restart: unless-stopped
     networks:

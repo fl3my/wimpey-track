@@ -3,7 +3,6 @@ services:
     build:
       context: .
       dockerfile: backend/WimpeyTrack.Api/Dockerfile
-    container_name: wimpeytrack-api
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+:8080
@@ -30,11 +29,6 @@ services:
   osrm-backend:
     image: ghcr.io/project-osrm/osrm-backend:latest
     volumes:
-      - ./osrm/scotland:/data
+      - ./data/osrm/scotland:/data
     command: osrm-routed --algorithm mld /data/scotland-latest.osrm
     restart: unless-stopped
-
-volumes:
-  wimpeytrack-db:
-  wimpeytrack-uploads:
-  wimpeytrack-reports:

@@ -4,9 +4,8 @@ EXPOSE 8080
 EXPOSE 8081
 
 # Install Libreoffice for pdf conversion
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    libreoffice-core \
-    libreoffice-calc \
+RUN apt-get update && apt-get install -y libreoffice-calc-nogui \
+    --no-install-recommends \
     && rm -rf /var/lib/apt/lists/* 
 
 # build frontend
