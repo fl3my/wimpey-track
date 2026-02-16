@@ -12,7 +12,7 @@ mkdir -p "$BACKUP_ROOT/$DATE"
 for VOLUME in wimpeytrack-db wimpeytrack-uploads wimpeytrack-reports; do
   echo "Backing up volume: $VOLUME"
   
-  docker run --rm \
+  /usr/bin/docker run --rm \
     -v ${VOLUME}:/volume:ro \
     -v "$BACKUP_ROOT/$DATE":/backup \
     alpine \
