@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { Card, Group, SimpleGrid, Text, Title } from "@mantine/core";
+import { Button, Card, Group, SimpleGrid, Text, Title } from "@mantine/core";
 import { LineChart, BarChart } from "@mantine/charts";
 import { useGetApiDashboard } from "@/api/api-client.gen.ts";
 
@@ -14,11 +14,20 @@ function Home() {
 
   const { summary, monthlyMiles, cumulativeMiles } = dashboard;
 
+  const webcalUrl = `${window.location.origin}/api/cal/calendar.ics`.replace(
+    /^http/,
+    "webcal",
+  );
+
   return (
     <>
       <Title order={3} mb={"md"}>
         Dashboard
       </Title>
+
+      <Button component="a" href={webcalUrl} mb={"md"}>
+        Subscribe to calendar
+      </Button>
 
       <Group grow mb={"md"}>
         <Card shadow="sm" p="md">
