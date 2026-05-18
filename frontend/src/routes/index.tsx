@@ -14,10 +14,9 @@ function Home() {
 
   const { summary, monthlyMiles, cumulativeMiles } = dashboard;
 
-  const webcalUrl = `${window.location.origin}/api/cal/calendar.ics`.replace(
-    /^http/,
-    "webcal",
-  );
+  const webcalUrl = `${window.location.origin}/api/cal/calendar.ics`
+    .replace("https://", "webcal://")
+    .replace("http://", "webcal://");
 
   return (
     <>
