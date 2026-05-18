@@ -4,7 +4,7 @@ using Google.Apis.Util.Store;
 
 Console.WriteLine("Starting Gmail OAuth flow...");
 
-var secrets = GoogleClientSecrets.FromFile("client_secret.json");
+var secrets = GoogleClientSecrets.FromFile("/Users/rossfleming/Projects/wimpey-track/backend/WimpeyTrack.GmailTokenTool/client_secret.json");
 
 var scopes = new[]
 {
