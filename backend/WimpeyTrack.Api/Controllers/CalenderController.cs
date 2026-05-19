@@ -46,7 +46,7 @@ public class CalenderController : ControllerBase
             // All day event for total mileage
             calendar.Events.Add( new CalendarEvent()
             {
-                Uid = journey.Id.ToString(),
+                Uid = $"journey-{journey.Id}",
                 Summary = "Total Miles: " + journey.TotalMiles,
                 Start = new CalDateTime(journey.Date),
                 End = new CalDateTime(journey.Date),
@@ -65,7 +65,7 @@ public class CalenderController : ControllerBase
                 
                 calendar.Events.Add(new CalendarEvent()
                 {
-                    Uid = trip.Id.ToString(),
+                    Uid = $"trip-{trip.Id}",
                     Summary = $"{trip.Location.Name} {trip.Reason.Name}",
                     Start = new CalDateTime(tripStart),
                     End = new CalDateTime(tripEnd),
@@ -85,6 +85,6 @@ public class CalenderController : ControllerBase
         
         Response.Headers.CacheControl = "no-cache";
         
-        return Content(ics!, "text/calendar");
+        return Content(ics!, "text/calendar; charset=utf-8");
     }
 }
